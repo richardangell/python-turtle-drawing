@@ -59,9 +59,30 @@ def draw_curved_line(
     end: Vec2D,
     off_line: OffsetFromLine = OffsetFromLine(),
     steps: int = 10,
+    draw_points: bool = False,
 ) -> None:
-    """Draw a curved line."""
+    """Draw a curved line.
+
+    Args:
+        start (Vec2D): start point of line.
+        end (Vec2D): end point of line.
+        off_line (OffsetFromLine) definition of point off of line that controls
+            line curvature.
+        steps (int): number of steps to take in line.
+        draw_points (bool): draw the start, end and off_line points that define
+            the line.
+
+    """
     off_line_point = off_line.to_point(start, end)
+
+    if draw_points:
+        turtle.penup()
+
+        for position in [end, off_line_point, start]:
+            turtle.goto(position)
+            turtle.dot()
+
+        turtle.pendown()
 
     increments = np.linspace(0, 1, steps)
 
