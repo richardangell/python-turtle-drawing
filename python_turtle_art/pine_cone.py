@@ -9,10 +9,16 @@ class PineCone:
     """Class for drawing pine cone."""
 
     def __init__(
-        self, outer_kite: CurvedConvexKite, inner_kite_factory: CurvedConvexKiteFactory
+        self,
+        outer_kite: CurvedConvexKite,
+        inner_kite_factory: CurvedConvexKiteFactory,
+        horizontal_offset: int = 5,
+        vertical_offset: int = 5,
     ):
         self.outer_kite = outer_kite
         self.inner_kite_factory = inner_kite_factory
+        self.horizontal_offset = horizontal_offset
+        self.vertical_offset = vertical_offset
 
     def draw(self, turtle: Turtle):
         """Draw the pine cone."""
@@ -28,6 +34,15 @@ class PineCone:
             raise ValueError("inner_kite_factory.width not specified")
         else:
             inner_kite_factory_half_width = self.inner_kite_factory.width / 2
+
+        if self.inner_kite_factory.diagonal_intersection_along_height is None:
+            raise ValueError(
+                "inner_kite_factory.diagonal_intersection_along_height not specified"
+            )
+        else:
+            inner_kite_factory_diagonal_intersection_along_height = (
+                self.inner_kite_factory.diagonal_intersection_along_height
+            )
 
         # number of inner kites to be drawn either side of the vertical bisector
         n_side_inner_kites = (
@@ -64,38 +79,79 @@ class PineCone:
             center_origin = (
                 self.outer_kite.origin
                 + row_number
-                * self.inner_kite_factory.height
+                * (self.inner_kite_factory.height + self.vertical_offset)
                 * unit_vector_vertical_move
             )
 
-            inner_kite = self.inner_kite_factory.get_kite(origin=center_origin)
+            self.inner_kite_factory.get_kite(origin=center_origin).draw(
+                turtle=turtle, fill=False, colour="black"
+            )
 
-            inner_kite.draw(turtle=turtle, fill=False, colour="black")
+            center_origin_half_row_up = center_origin + Vec2D(
+                x=0,
+                y=self.vertical_offset
+                + inner_kite_factory_diagonal_intersection_along_height
+                * inner_kite_factory_height,
+            )
+
+            half_row_up_half_horizontal_move = (
+                self.inner_kite_factory.width / 2 + 2 * self.horizontal_offset
+            )
+
+            half_row_up_half_negative_horizontal_move = (
+                self.inner_kite_factory.width / 2 - self.horizontal_offset
+            )
 
             # fill out row right from the center
             for i in range(n_side_inner_kites):
                 offset_origin = (
                     center_origin
                     + (i + 1)
-                    * self.inner_kite_factory.width
+                    * (self.inner_kite_factory.width + self.horizontal_offset)
                     * unit_vector_horizontal_move
                 )
 
-                inner_kite = self.inner_kite_factory.get_kite(origin=offset_origin)
+                self.inner_kite_factory.get_kite(origin=offset_origin).draw(
+                    turtle=turtle, fill=False, colour="black"
+                )
 
-                inner_kite.draw(turtle=turtle, fill=False, colour="black")
+                offset_origin_half_row_up = (
+                    center_origin_half_row_up
+                    + (
+                        half_row_up_half_horizontal_move
+                        + i * (self.inner_kite_factory.width + self.horizontal_offset)
+                    )
+                    * unit_vector_horizontal_move
+                )
+
+                self.inner_kite_factory.get_kite(origin=offset_origin_half_row_up).draw(
+                    turtle=turtle, fill=False, colour="black"
+                )
 
             # fill out row left from the center
             for i in range(n_side_inner_kites):
                 offset_origin = (
                     center_origin
                     - (i + 1)
-                    * self.inner_kite_factory.width
+                    * (self.inner_kite_factory.width + self.horizontal_offset)
                     * unit_vector_horizontal_move
                 )
 
-                inner_kite = self.inner_kite_factory.get_kite(origin=offset_origin)
+                self.inner_kite_factory.get_kite(origin=offset_origin).draw(
+                    turtle=turtle, fill=False, colour="black"
+                )
 
-                inner_kite.draw(turtle=turtle, fill=False, colour="black")
+                offset_origin_half_row_up = (
+                    center_origin_half_row_up
+                    - (
+                        half_row_up_half_negative_horizontal_move
+                        + i * (self.inner_kite_factory.width + self.horizontal_offset)
+                    )
+                    * unit_vector_horizontal_move
+                )
+
+                self.inner_kite_factory.get_kite(origin=offset_origin_half_row_up).draw(
+                    turtle=turtle, fill=False, colour="black"
+                )
 
         self.outer_kite.draw(turtle=turtle, fill=False, colour="black")
