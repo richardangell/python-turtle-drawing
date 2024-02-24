@@ -53,6 +53,29 @@ def quadratic_bezier_curve(t: float, p0: Vec2D, p1: Vec2D, p2: Vec2D):
     return p1 + (1 - t) ** 2 * (p0 - p1) + t**2 * (p2 - p1)
 
 
+def get_points_on_curve(
+    start: Vec2D,
+    end: Vec2D,
+    off_line_point: Vec2D,
+    steps: int = 10,
+) -> list[Vec2D]:
+    """Get points on quadratic bezier curve.
+
+    Args:
+        start (Vec2D): start point of line.
+        end (Vec2D): end point of line.
+        off_line_point (Vec2D) point off of line to control line curvature.
+        steps (int): number of steps to take in line.
+
+    """
+    increments = np.linspace(0, 1, steps)
+
+    return [
+        quadratic_bezier_curve(increment, start, off_line_point, end)
+        for increment in increments
+    ]
+
+
 def draw_curved_line(
     turtle: Turtle,
     start: Vec2D,
@@ -84,10 +107,6 @@ def draw_curved_line(
 
         turtle.pendown()
 
-    increments = np.linspace(0, 1, steps)
-
-    for increment in increments:
-        position = quadratic_bezier_curve(increment, start, off_line_point, end)
-
+    for position in get_points_on_curve(start, end, off_line_point, steps):
         turtle.setheading(turtle.towards(position))
         turtle.goto(position)
