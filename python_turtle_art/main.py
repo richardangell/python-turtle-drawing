@@ -50,7 +50,11 @@ def main():
     turtle_.end_fill()
 
     ConvexKite(
-        origin=s1, height=100, width=100, diagonal_intersection_along_height=0.8
+        origin=s1,
+        height=150,
+        width=100,
+        diagonal_intersection_along_height=0.3,
+        rotation=5,
     ).draw(turtle_, True, "white")
 
 
