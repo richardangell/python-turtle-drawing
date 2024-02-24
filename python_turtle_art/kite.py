@@ -3,8 +3,10 @@ from helpers import jump_to, rotate_about_point
 from math import sqrt
 from typing import Union
 
+from shape import Shape
 
-class ConvexKite:
+
+class ConvexKite(Shape):
     """Class for drawing a convex kite shape.
 
     Args:
@@ -26,7 +28,7 @@ class ConvexKite:
         rotation: Union[int, float] = 0,
         diagonal_intersection_along_height: float = 0.5,
     ):
-        """"""
+        """Initialise the ConvexKite object."""
         self.origin = origin
         self.height = height
         self.width = width
@@ -53,8 +55,7 @@ class ConvexKite:
         if fill:
             turtle.begin_fill()
 
-        for point in reversed(self.points):
-            turtle.goto(point)
+        self._draw_points(turtle)
 
         if fill:
             turtle.end_fill()
