@@ -36,21 +36,25 @@ def rotate_about_point(
 
     """
 
-    angle_radians = convert_degrees_to_radians(angle)
+    if point == rotate_about_point:
+        return point
 
-    x_minus_alpha = point[0] - rotate_about_point[0]
-    y_minus_beta = point[1] - rotate_about_point[1]
+    else:
+        angle_radians = convert_degrees_to_radians(angle)
 
-    rotated_x = (
-        rotate_about_point[0]
-        + x_minus_alpha * cos(angle_radians)
-        - y_minus_beta * sin(angle_radians)
-    )
+        x_minus_alpha = point[0] - rotate_about_point[0]
+        y_minus_beta = point[1] - rotate_about_point[1]
 
-    rotated_y = (
-        rotate_about_point[0]
-        + x_minus_alpha * sin(angle_radians)
-        + y_minus_beta * cos(angle_radians)
-    )
+        rotated_x = (
+            rotate_about_point[0]
+            + x_minus_alpha * cos(angle_radians)
+            - y_minus_beta * sin(angle_radians)
+        )
 
-    return Vec2D(rotated_x, rotated_y)
+        rotated_y = (
+            rotate_about_point[1]
+            + x_minus_alpha * sin(angle_radians)
+            + y_minus_beta * cos(angle_radians)
+        )
+
+        return Vec2D(rotated_x, rotated_y)
