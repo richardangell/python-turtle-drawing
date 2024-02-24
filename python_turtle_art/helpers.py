@@ -26,10 +26,20 @@ def convert_degrees_to_radians(degrees: Union[int, float]) -> float:
     return degrees * pi / 180
 
 
+def convert_clockwise_angle_to_counter_clockwise(
+    degrees: Union[int, float],
+) -> Union[int, float]:
+    """Convert clockwise positive angle to counter clockwise positive."""
+    return 360 - (degrees % 360)
+
+
 def rotate_about_point(
     point: Vec2D, angle: Union[int, float], rotate_about_point: Vec2D = Vec2D(0, 0)
 ) -> Vec2D:
     """Rotate point through angle (in degrees) about another point.
+
+    Note, formula is for counterclockwise rotation being positive so
+    angle is reversed before calculating.
 
     References:
         https://math.stackexchange.com/a/4434146
@@ -40,7 +50,8 @@ def rotate_about_point(
         return point
 
     else:
-        angle_radians = convert_degrees_to_radians(angle)
+        angle_reversed = convert_clockwise_angle_to_counter_clockwise(angle)
+        angle_radians = convert_degrees_to_radians(angle_reversed)
 
         x_minus_alpha = point[0] - rotate_about_point[0]
         y_minus_beta = point[1] - rotate_about_point[1]

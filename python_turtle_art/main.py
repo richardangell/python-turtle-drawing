@@ -3,9 +3,10 @@ import argparse
 
 import numpy as np
 
-from kite import ConvexKite, CurvedConvexKite
+from kite import ConvexKite, CurvedConvexKite, CurvedConvexKiteFactory
 from line import draw_curved_line, OffsetFromLine
 import helpers
+from pine_cone import PineCone
 
 
 def _aaa():
@@ -32,12 +33,14 @@ def _aaa():
     draw_curved_line(turtle_, s4, s1, OffsetFromLine(offset=20), steps=20)
 
 
-def main():
+def main(turtle: Turtle):
     """Main drawing function."""
 
     s1 = Vec2D(0, 0)
 
-    CurvedConvexKite(
+    rotation = 20
+
+    outer_kite = CurvedConvexKite(
         origin=s1,
         off_lines=(
             OffsetFromLine(offset=20),
@@ -48,16 +51,26 @@ def main():
         height=300,
         width=200,
         diagonal_intersection_along_height=0.4,
-        rotation=15,
-    ).draw(turtle_, True, "black")
+        rotation=rotation,
+    )
 
-    ConvexKite(
-        origin=s1,
-        height=150,
-        width=100,
-        diagonal_intersection_along_height=0.3,
-        rotation=5,
-    ).draw(turtle_, True, "white")
+    inner_kite_factor = CurvedConvexKiteFactory(
+        off_lines=(
+            OffsetFromLine(offset=3),
+            OffsetFromLine(offset=-3),
+            OffsetFromLine(offset=-3),
+            OffsetFromLine(offset=3),
+        ),
+        height=30,
+        width=20,
+        diagonal_intersection_along_height=0.5,
+        rotation=rotation,
+        rotation_point=s1,
+    )
+
+    PineCone(outer_kite=outer_kite, inner_kite_factory=inner_kite_factor).draw(
+        turtle=turtle
+    )
 
 
 if __name__ == "__main__":
@@ -72,7 +85,7 @@ if __name__ == "__main__":
     if args.quick:
         helpers.turn_off_turtle_animation()
 
-    main()
+    main(turtle_)
 
     if args.quick:
         helpers.update_screen()
