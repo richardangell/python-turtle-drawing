@@ -4,7 +4,7 @@ import argparse
 
 import numpy as np
 
-from diamond import ConvexKite
+from kite import ConvexKite
 from line import draw_curved_line, OffsetFromLine
 
 
