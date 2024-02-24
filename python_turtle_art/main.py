@@ -3,7 +3,7 @@ import argparse
 
 import numpy as np
 
-from kite import ConvexKite
+from kite import ConvexKite, CurvedConvexKite
 from line import draw_curved_line, OffsetFromLine
 import helpers
 
@@ -36,18 +36,20 @@ def main():
     """Main drawing function."""
 
     s1 = Vec2D(0, 0)
-    s2 = Vec2D(-100, 100)
-    s3 = Vec2D(0, 200)
-    s4 = Vec2D(100, 100)
 
-    turtle_.begin_fill()
-
-    draw_curved_line(turtle_, s1, s2, OffsetFromLine(offset=20), steps=20)
-    draw_curved_line(turtle_, s2, s3, OffsetFromLine(offset=10), steps=20)
-    draw_curved_line(turtle_, s3, s4, OffsetFromLine(offset=15), steps=20)
-    draw_curved_line(turtle_, s4, s1, OffsetFromLine(offset=20), steps=20)
-
-    turtle_.end_fill()
+    CurvedConvexKite(
+        origin=s1,
+        off_lines=(
+            OffsetFromLine(offset=20),
+            OffsetFromLine(offset=10),
+            OffsetFromLine(offset=15),
+            OffsetFromLine(offset=20),
+        ),
+        height=300,
+        width=200,
+        diagonal_intersection_along_height=0.4,
+        rotation=15,
+    ).draw(turtle_, True, "black")
 
     ConvexKite(
         origin=s1,
