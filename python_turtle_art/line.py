@@ -1,5 +1,4 @@
-from turtle import Vec2D
-import turtle
+from turtle import Vec2D, Turtle
 import numpy as np
 from math import sqrt
 
@@ -55,6 +54,7 @@ def quadratic_bezier_curve(t: float, p0: Vec2D, p1: Vec2D, p2: Vec2D):
 
 
 def draw_curved_line(
+    turtle: Turtle,
     start: Vec2D,
     end: Vec2D,
     off_line: OffsetFromLine = OffsetFromLine(),
