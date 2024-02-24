@@ -4,8 +4,25 @@ import argparse
 
 import numpy as np
 
-from diamond import Diamond
+from diamond import ConvexKite
 from line import draw_curved_line, OffsetFromLine
+
+
+def aaa():
+    mult = 1
+
+    for x in np.linspace(-100, 100, 11):
+        for y in np.linspace(-100, 100, 11):
+            ConvexKite(Vec2D(x + (mult * 10), y)).draw(
+                turtle_, fill=True, colour="white"
+            )
+
+            mult *= -1
+
+    draw_curved_line(turtle_, s1, s2, OffsetFromLine(offset=20), steps=20)
+    draw_curved_line(turtle_, s2, s3, OffsetFromLine(offset=10), steps=20)
+    draw_curved_line(turtle_, s3, s4, OffsetFromLine(offset=15), steps=20)
+    draw_curved_line(turtle_, s4, s1, OffsetFromLine(offset=20), steps=20)
 
 
 if __name__ == "__main__":
@@ -35,18 +52,9 @@ if __name__ == "__main__":
 
     turtle_.end_fill()
 
-    mult = 1
-
-    for x in np.linspace(-100, 100, 11):
-        for y in np.linspace(-100, 100, 11):
-            Diamond(Vec2D(x + (mult * 10), y)).draw(turtle_, fill=True, colour="white")
-
-            mult *= -1
-
-    draw_curved_line(turtle_, s1, s2, OffsetFromLine(offset=20), steps=20)
-    draw_curved_line(turtle_, s2, s3, OffsetFromLine(offset=10), steps=20)
-    draw_curved_line(turtle_, s3, s4, OffsetFromLine(offset=15), steps=20)
-    draw_curved_line(turtle_, s4, s1, OffsetFromLine(offset=20), steps=20)
+    ConvexKite(
+        origin=s1, height=100, width=100, diagonal_intersection_along_height=0.8
+    ).draw(turtle_, True, "white")
 
     if args.quick:
         t.update()
