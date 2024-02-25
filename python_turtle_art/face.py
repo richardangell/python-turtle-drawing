@@ -1,12 +1,13 @@
 from turtle import Turtle, Vec2D
 from typing import Optional
-from abc import ABC, abstractmethod
+from abc import abstractmethod
 
 from helpers import jump_to
 from line import draw_curved_line, OffsetFromLine
+from body_part import BodyPart
 
 
-class Eyes:
+class Eyes(BodyPart):
     """Class for drawing simple eyes."""
 
     def __init__(
@@ -29,7 +30,7 @@ class Eyes:
         turtle.dot(self.right_eye_size)
 
 
-class Mouth(ABC):
+class Mouth(BodyPart):
     @abstractmethod
     def draw(self, turtle: Turtle):
         raise NotImplementedError

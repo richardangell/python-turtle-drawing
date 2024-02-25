@@ -6,7 +6,7 @@ import numpy as np
 from kite import ConvexKite, CurvedConvexKite, CurvedConvexKiteFactory
 from line import draw_curved_line, OffsetFromLine
 from face import Eyes, RoundMouth, CurvedMouth
-from body_parts import Extremity
+from body import Limb
 import helpers
 from pine_cone import PineCone
 
@@ -106,14 +106,14 @@ def main(turtle: Turtle):
     #    size = 12
     # ).draw(turtle)
 
-    Extremity(
+    Limb(
         start=helpers.rotate_about_point(Vec2D(-80, 160), rotation, s1),
         end=helpers.rotate_about_point(Vec2D(-90, 180), rotation, s1),
         off_line=OffsetFromLine(0.8, -10),
         size=8,
     ).draw(turtle)
 
-    Extremity(
+    Limb(
         start=helpers.rotate_about_point(Vec2D(90, 160), rotation, s1),
         end=helpers.rotate_about_point(Vec2D(95, 180), rotation, s1),
         off_line=OffsetFromLine(0.7, 10),
