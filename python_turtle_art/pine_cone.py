@@ -91,11 +91,14 @@ class PineCone:
                 turtle=turtle, fill=self.inner_kite_fill, colour=self.inner_kite_colour
             )
 
-            center_origin_half_row_up = center_origin + Vec2D(
-                x=0,
-                y=self.vertical_offset
-                + inner_kite_factory_diagonal_intersection_along_height
-                * inner_kite_factory_height,
+            center_origin_half_row_up = (
+                center_origin
+                + (
+                    self.vertical_offset
+                    + inner_kite_factory_diagonal_intersection_along_height
+                    * inner_kite_factory_height
+                )
+                * unit_vector_vertical_move
             )
 
             half_row_up_half_horizontal_move = (

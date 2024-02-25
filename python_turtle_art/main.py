@@ -38,7 +38,7 @@ def main(turtle: Turtle):
 
     s1 = Vec2D(0, 0)
 
-    rotation = 0
+    rotation = 10
 
     outer_kite = CurvedConvexKite(
         origin=s1,
@@ -62,8 +62,8 @@ def main(turtle: Turtle):
             OffsetFromLine(offset=3),
         ),
         height=40,
-        width=40,
-        diagonal_intersection_along_height=0.45,
+        width=30,
+        diagonal_intersection_along_height=0.4,
         rotation=rotation,
         rotation_point=s1,
     )
