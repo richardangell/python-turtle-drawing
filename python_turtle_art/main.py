@@ -1,42 +1,22 @@
 from turtle import Screen, Vec2D, Turtle
 import argparse
 
-import numpy as np
-
-from kite import ConvexKite, CurvedConvexKite, CurvedConvexKiteFactory
-from line import draw_curved_line, OffsetFromLine
+from kite import CurvedConvexKite, CurvedConvexKiteFactory
+from line import OffsetFromLine
 from face import Eyes, CurvedMouth
 from body import Limb
 import helpers
 from pine_cone import PineCone
 
 
-def _aaa():
-    """WIP function, overlays kites over curved kite."""
-
-    s1 = Vec2D(0, 0)
-    s2 = Vec2D(-100, 100)
-    s3 = Vec2D(0, 200)
-    s4 = Vec2D(100, 100)
-
-    mult = 1
-
-    for x in np.linspace(-100, 100, 11):
-        for y in np.linspace(-100, 100, 11):
-            ConvexKite(origin=Vec2D(x + (mult * 10), y), height=30, width=20).draw(
-                turtle_, fill=True, colour="white"
-            )
-
-            mult *= -1
-
-    draw_curved_line(turtle_, s1, s2, OffsetFromLine(offset=20), steps=20)
-    draw_curved_line(turtle_, s2, s3, OffsetFromLine(offset=10), steps=20)
-    draw_curved_line(turtle_, s3, s4, OffsetFromLine(offset=15), steps=20)
-    draw_curved_line(turtle_, s4, s1, OffsetFromLine(offset=20), steps=20)
-
-
 def main(turtle: Turtle):
     """Main drawing function."""
+
+    draw_pine_cone(turtle)
+
+
+def draw_pine_cone(turtle: Turtle):
+    """Draw specific character."""
 
     s1 = Vec2D(0, 0)
 
@@ -52,7 +32,7 @@ def main(turtle: Turtle):
         ),
         height=300,
         width=200,
-        diagonal_intersection_along_height=0.4,
+        diagonal_intersection_along_height=0.45,
         rotation=rotation,
     )
 
@@ -63,7 +43,7 @@ def main(turtle: Turtle):
             OffsetFromLine(offset=-3),
             OffsetFromLine(offset=3),
         ),
-        height=35,
+        height=30,
         width=60,
         diagonal_intersection_along_height=0.45,
         rotation=rotation + 2,
