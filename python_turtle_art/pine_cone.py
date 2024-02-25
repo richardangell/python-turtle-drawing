@@ -12,6 +12,7 @@ class PineCone:
         self,
         outer_kite: CurvedConvexKite,
         inner_kite_factory: CurvedConvexKiteFactory,
+        outer_kite_line_width: int = 5,
         horizontal_offset: int = 5,
         vertical_offset: int = 5,
         inner_kite_fill: bool = True,
@@ -19,6 +20,7 @@ class PineCone:
     ):
         self.outer_kite = outer_kite
         self.inner_kite_factory = inner_kite_factory
+        self.outer_kite_line_width = outer_kite_line_width
         self.horizontal_offset = horizontal_offset
         self.vertical_offset = vertical_offset
         self.inner_kite_fill = inner_kite_fill
@@ -169,4 +171,6 @@ class PineCone:
                     colour=self.inner_kite_colour,
                 )
 
-        self.outer_kite.draw(turtle=turtle, fill=False, colour="black")
+        self.outer_kite.draw(
+            turtle=turtle, fill=False, colour="black", size=self.outer_kite_line_width
+        )

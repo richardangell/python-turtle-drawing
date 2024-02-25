@@ -46,7 +46,13 @@ class ConvexKite(Shape):
         self.half_width = width / 2
         self.points = self._calculate_points()
 
-    def draw(self, turtle: Turtle, fill: bool = False, colour: str = "black"):
+    def draw(
+        self,
+        turtle: Turtle,
+        fill: bool = False,
+        colour: str = "black",
+        size: Optional[int] = None,
+    ):
         """Draw the diamond shape.
 
         Args:
@@ -59,6 +65,8 @@ class ConvexKite(Shape):
 
         original_colour = turtle.pencolor()
         turtle.color(colour)
+        original_pensize = turtle.pensize()
+        turtle.pensize(size)
 
         if fill:
             turtle.begin_fill()
@@ -69,6 +77,7 @@ class ConvexKite(Shape):
             turtle.end_fill()
 
         turtle.color(original_colour)
+        turtle.pensize(original_pensize)
 
     def _calculate_points(self):
         """Calculate the points of the kite."""
