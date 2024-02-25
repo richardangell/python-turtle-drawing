@@ -3,6 +3,7 @@ from math import cos, sin
 
 from helpers import convert_degrees_to_radians
 from kite import CurvedConvexKite, CurvedConvexKiteFactory
+from body_part import BodyPart
 
 
 class PineCone:
@@ -17,6 +18,8 @@ class PineCone:
         vertical_offset: int = 5,
         inner_kite_fill: bool = True,
         inner_kite_colour: str = "white",
+        initial_body_parts: tuple[BodyPart, ...] = (),
+        final_body_parts: tuple[BodyPart, ...] = (),
     ):
         self.outer_kite = outer_kite
         self.inner_kite_factory = inner_kite_factory
@@ -25,9 +28,13 @@ class PineCone:
         self.vertical_offset = vertical_offset
         self.inner_kite_fill = inner_kite_fill
         self.inner_kite_colour = inner_kite_colour
+        self.initial_body_parts = initial_body_parts
+        self.final_body_parts = final_body_parts
 
     def draw(self, turtle: Turtle):
         """Draw the pine cone."""
+
+        self._draw_initial_body_parts(turtle)
 
         self.outer_kite.draw(turtle=turtle, fill=True, colour="black")
 
@@ -174,3 +181,13 @@ class PineCone:
         self.outer_kite.draw(
             turtle=turtle, fill=False, colour="black", size=self.outer_kite_line_width
         )
+
+        self._draw_final_body_parts(turtle)
+
+    def _draw_initial_body_parts(self, turtle: Turtle):
+        for body_part in self.initial_body_parts:
+            body_part.draw(turtle)
+
+    def _draw_final_body_parts(self, turtle: Turtle):
+        for body_part in self.final_body_parts:
+            body_part.draw(turtle)

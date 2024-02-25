@@ -5,7 +5,7 @@ import numpy as np
 
 from kite import ConvexKite, CurvedConvexKite, CurvedConvexKiteFactory
 from line import draw_curved_line, OffsetFromLine
-from face import Eyes, RoundMouth, CurvedMouth
+from face import Eyes, CurvedMouth
 from body import Limb
 import helpers
 from pine_cone import PineCone
@@ -70,55 +70,60 @@ def main(turtle: Turtle):
         rotation_point=s1,
     )
 
-    CurvedMouth(
+    left_arm = Limb(
         start=helpers.rotate_about_point(Vec2D(-20, 20), rotation, s1),
         end=helpers.rotate_about_point(Vec2D(-25, -100), rotation, s1),
         off_line=OffsetFromLine(0.8, -10),
         size=8,
-    ).draw(turtle)
+    )
 
-    CurvedMouth(
+    right_arm = Limb(
         start=helpers.rotate_about_point(Vec2D(15, 20), rotation, s1),
         end=helpers.rotate_about_point(Vec2D(35, -95), rotation, s1),
         off_line=OffsetFromLine(0.7, 10),
         size=8,
-    ).draw(turtle)
-
-    PineCone(outer_kite=outer_kite, inner_kite_factory=inner_kite_factor).draw(
-        turtle=turtle
     )
 
-    Eyes(
+    eyes = Eyes(
         left_eye=helpers.rotate_about_point(Vec2D(-20, 230), rotation, s1),
         right_eye=helpers.rotate_about_point(Vec2D(20, 230), rotation, s1),
         left_eye_size=15,
         right_eye_size=25,
-    ).draw(turtle)
+    )
 
-    RoundMouth(
-        location=helpers.rotate_about_point(Vec2D(0, 180), rotation, s1), size=35
-    ).draw(turtle)
+    # mouth = RoundMouth(
+    #    location=helpers.rotate_about_point(Vec2D(0, 180), rotation, s1), size=35
+    # )
 
-    # CurvedMouth(
-    #    start=helpers.rotate_about_point(Vec2D(-20, 180), rotation, s1),
-    #    end=helpers.rotate_about_point(Vec2D(20, 180), rotation, s1),
-    #    off_line=OffsetFromLine(0.8, -40),
-    #    size = 12
-    # ).draw(turtle)
+    mouth = CurvedMouth(
+        start=helpers.rotate_about_point(Vec2D(-20, 180), rotation, s1),
+        end=helpers.rotate_about_point(Vec2D(20, 180), rotation, s1),
+        off_line=OffsetFromLine(0.8, -40),
+        size=12,
+    )
 
-    Limb(
+    left_leg = Limb(
         start=helpers.rotate_about_point(Vec2D(-80, 160), rotation, s1),
         end=helpers.rotate_about_point(Vec2D(-90, 180), rotation, s1),
         off_line=OffsetFromLine(0.8, -10),
         size=8,
-    ).draw(turtle)
+    )
 
-    Limb(
+    right_leg = Limb(
         start=helpers.rotate_about_point(Vec2D(90, 160), rotation, s1),
         end=helpers.rotate_about_point(Vec2D(95, 180), rotation, s1),
         off_line=OffsetFromLine(0.7, 10),
         size=8,
-    ).draw(turtle)
+    )
+
+    pine_cone = PineCone(
+        outer_kite=outer_kite,
+        inner_kite_factory=inner_kite_factor,
+        initial_body_parts=(left_arm, right_arm),
+        final_body_parts=(eyes, mouth, left_leg, right_leg),
+    )
+
+    pine_cone.draw(turtle=turtle)
 
 
 if __name__ == "__main__":
