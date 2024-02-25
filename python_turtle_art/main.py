@@ -63,7 +63,7 @@ def main(turtle: Turtle):
             OffsetFromLine(offset=-3),
             OffsetFromLine(offset=3),
         ),
-        height=70,
+        height=35,
         width=60,
         diagonal_intersection_along_height=0.45,
         rotation=rotation + 2,
