@@ -14,16 +14,20 @@ class PineCone:
         inner_kite_factory: CurvedConvexKiteFactory,
         horizontal_offset: int = 5,
         vertical_offset: int = 5,
+        inner_kite_fill: bool = True,
+        inner_kite_colour: str = "white",
     ):
         self.outer_kite = outer_kite
         self.inner_kite_factory = inner_kite_factory
         self.horizontal_offset = horizontal_offset
         self.vertical_offset = vertical_offset
+        self.inner_kite_fill = inner_kite_fill
+        self.inner_kite_colour = inner_kite_colour
 
     def draw(self, turtle: Turtle):
         """Draw the pine cone."""
 
-        self.outer_kite.draw(turtle=turtle, fill=False, colour="black")
+        self.outer_kite.draw(turtle=turtle, fill=True, colour="black")
 
         if self.inner_kite_factory.height is None:
             raise ValueError("inner_kite_factory.height not specified")
@@ -79,12 +83,12 @@ class PineCone:
             center_origin = (
                 self.outer_kite.origin
                 + row_number
-                * (self.inner_kite_factory.height + self.vertical_offset)
+                * (self.inner_kite_factory.height + 2 * self.vertical_offset)
                 * unit_vector_vertical_move
             )
 
             self.inner_kite_factory.get_kite(origin=center_origin).draw(
-                turtle=turtle, fill=False, colour="black"
+                turtle=turtle, fill=self.inner_kite_fill, colour=self.inner_kite_colour
             )
 
             center_origin_half_row_up = center_origin + Vec2D(
@@ -95,12 +99,12 @@ class PineCone:
             )
 
             half_row_up_half_horizontal_move = (
-                self.inner_kite_factory.width / 2 + 2 * self.horizontal_offset
-            )
+                self.inner_kite_factory.width + self.horizontal_offset
+            ) / 2
 
             half_row_up_half_negative_horizontal_move = (
-                self.inner_kite_factory.width / 2 - self.horizontal_offset
-            )
+                self.inner_kite_factory.width + self.horizontal_offset
+            ) / 2
 
             # fill out row right from the center
             for i in range(n_side_inner_kites):
@@ -112,7 +116,9 @@ class PineCone:
                 )
 
                 self.inner_kite_factory.get_kite(origin=offset_origin).draw(
-                    turtle=turtle, fill=False, colour="black"
+                    turtle=turtle,
+                    fill=self.inner_kite_fill,
+                    colour=self.inner_kite_colour,
                 )
 
                 offset_origin_half_row_up = (
@@ -125,7 +131,9 @@ class PineCone:
                 )
 
                 self.inner_kite_factory.get_kite(origin=offset_origin_half_row_up).draw(
-                    turtle=turtle, fill=False, colour="black"
+                    turtle=turtle,
+                    fill=self.inner_kite_fill,
+                    colour=self.inner_kite_colour,
                 )
 
             # fill out row left from the center
@@ -138,7 +146,9 @@ class PineCone:
                 )
 
                 self.inner_kite_factory.get_kite(origin=offset_origin).draw(
-                    turtle=turtle, fill=False, colour="black"
+                    turtle=turtle,
+                    fill=self.inner_kite_fill,
+                    colour=self.inner_kite_colour,
                 )
 
                 offset_origin_half_row_up = (
@@ -151,7 +161,9 @@ class PineCone:
                 )
 
                 self.inner_kite_factory.get_kite(origin=offset_origin_half_row_up).draw(
-                    turtle=turtle, fill=False, colour="black"
+                    turtle=turtle,
+                    fill=self.inner_kite_fill,
+                    colour=self.inner_kite_colour,
                 )
 
         self.outer_kite.draw(turtle=turtle, fill=False, colour="black")
