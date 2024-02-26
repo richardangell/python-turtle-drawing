@@ -13,7 +13,7 @@ def main(turtle: Turtle):
     """Main drawing function."""
 
     random_pine_cone = RandomPineConeFactory(
-        origin=Vec2D(0, 0), height_range=(300, 350), seed=None, verbose=True
+        origin=Vec2D(-50, -50), height_range=(300, 350), seed=None, verbose=True
     ).create()
 
     random_pine_cone.draw(turtle)

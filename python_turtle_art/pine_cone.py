@@ -8,7 +8,7 @@ from kite import CurvedConvexKite, CurvedConvexKiteFactory
 from body_part import BodyPart
 from body import Limb
 from line import OffsetFromLine
-from face import CurvedMouth, Eyes
+from face import CurvedMouth, Eyes, Mouth
 
 
 class PineCone:
@@ -199,6 +199,8 @@ class PineCone:
 
 
 class RandomPineConeFactory:
+    """Class that creates randomised PineCone objects."""
+
     def __init__(
         self,
         origin: Vec2D,
@@ -206,6 +208,7 @@ class RandomPineConeFactory:
         seed: Optional[int] = None,
         verbose: bool = False,
     ):
+        """Set random values to use in the PineCone object."""
         self.origin = origin
         self.height_range = height_range
         self.seed = seed
@@ -220,144 +223,14 @@ class RandomPineConeFactory:
         self._set_eye_values()
 
     def create(self) -> PineCone:
-        outer_kite = CurvedConvexKite(
-            origin=self.origin,
-            off_lines=(
-                OffsetFromLine(offset=self._outer_kite_offsets[0]),
-                OffsetFromLine(offset=self._outer_kite_offsets[1]),
-                OffsetFromLine(offset=self._outer_kite_offsets[2]),
-                OffsetFromLine(offset=self._outer_kite_offsets[3]),
-            ),
-            height=self._outer_kite_height,
-            width=self._outer_kite_width,
-            diagonal_intersection_along_height=self._outer_kite_diagonal_intersection_along_height,
-            rotation=self._outer_kite_rotation,
-        )
+        """Return randomised PineCone object."""
 
-        inner_kite_factor = CurvedConvexKiteFactory(
-            off_lines=(
-                OffsetFromLine(offset=self._inner_kite_offset),
-                OffsetFromLine(offset=-self._inner_kite_offset),
-                OffsetFromLine(offset=-self._inner_kite_offset),
-                OffsetFromLine(offset=self._inner_kite_offset),
-            ),
-            height=self._inner_kite_height,
-            width=self._inner_kite_width,
-            diagonal_intersection_along_height=self._inner_kite_diagonal_intersection_along_height,
-            rotation=self._inner_kite_rotation,
-            rotation_point=self.origin,
-        )
-
-        left_leg = Limb(
-            start=rotate_about_point(
-                Vec2D(-self._legs_offset_from_center, self._leg_start_height),
-                self._outer_kite_rotation,
-                self.origin,
-            ),
-            end=rotate_about_point(
-                Vec2D(
-                    -(
-                        self._legs_offset_from_center
-                        + self._left_leg_horizontal_distance
-                    ),
-                    self._leg_end_height,
-                ),
-                self._outer_kite_rotation,
-                self.origin,
-            ),
-            off_line=OffsetFromLine(random.uniform(0.2, 0.8), -random.randint(3, 100)),
-            size=self._limb_wdith,
-        )
-
-        right_leg = Limb(
-            start=rotate_about_point(
-                Vec2D(self._legs_offset_from_center, self._leg_start_height),
-                self._outer_kite_rotation,
-                self.origin,
-            ),
-            end=rotate_about_point(
-                Vec2D(
-                    self._legs_offset_from_center + self._right_leg_horizontal_distance,
-                    self._leg_end_height,
-                ),
-                self._outer_kite_rotation,
-                self.origin,
-            ),
-            off_line=OffsetFromLine(random.uniform(0.2, 0.8), random.randint(3, 100)),
-            size=self._limb_wdith,
-        )
-
-        eyes = Eyes(
-            left_eye=rotate_about_point(
-                Vec2D(-self._eyes_offset_from_center, self._eyes_height),
-                self._outer_kite_rotation,
-                self.origin,
-            ),
-            right_eye=rotate_about_point(
-                Vec2D(self._eyes_offset_from_center, self._eyes_height),
-                self._outer_kite_rotation,
-                self.origin,
-            ),
-            left_eye_size=int(self._eyes_sizes[0]),
-            right_eye_size=int(self._eyes_sizes[1]),
-        )
-
-        # mouth = RoundMouth(
-        #    location=helpers.rotate_about_point(Vec2D(0, 180), rotation, s1), size=35
-        # )
-
-        mouth = CurvedMouth(
-            start=rotate_about_point(
-                Vec2D(-20, 180), self._outer_kite_rotation, self.origin
-            ),
-            end=rotate_about_point(
-                Vec2D(20, 180), self._outer_kite_rotation, self.origin
-            ),
-            off_line=OffsetFromLine(0.8, -40),
-            size=12,
-        )
-
-        left_arm = Limb(
-            start=rotate_about_point(
-                Vec2D(-self._right_arm_offset_from_center, self._arm_start_height),
-                self._outer_kite_rotation,
-                self.origin,
-            ),
-            end=rotate_about_point(
-                Vec2D(
-                    -(
-                        self._right_arm_offset_from_center
-                        + self._right_arm_horizontal_distance
-                    ),
-                    self._arm_end_height,
-                ),
-                self._outer_kite_rotation,
-                self.origin,
-            ),
-            off_line=OffsetFromLine(random.uniform(0.2, 0.8), -random.randint(3, 10)),
-            size=self._limb_wdith,
-        )
-
-        right_arm = Limb(
-            start=rotate_about_point(
-                Vec2D(self._left_arm_offset_from_center, self._arm_start_height),
-                self._outer_kite_rotation,
-                self.origin,
-            ),
-            end=rotate_about_point(
-                Vec2D(
-                    (
-                        self._left_arm_offset_from_center
-                        + self._left_arm_horizontal_distance
-                    ),
-                    self._arm_end_height,
-                ),
-                self._outer_kite_rotation,
-                self.origin,
-            ),
-            off_line=OffsetFromLine(random.uniform(0.2, 0.8), random.randint(3, 10)),
-            size=self._limb_wdith,
-        )
+        outer_kite = self._create_outer_kite()
+        inner_kite_factor = self._create_inner_kite_factory()
+        left_leg, right_leg = self._create_legs()
+        left_arm, right_arm = self._create_arms()
+        eyes = self._create_eyes()
+        mouth = self._create_mouth()
 
         pine_cone = PineCone(
             outer_kite=outer_kite,
@@ -551,3 +424,164 @@ class RandomPineConeFactory:
         self._eyes_sizes = tuple(eye_sizes)
 
         self._print_attribute_values(RANDOM_VALUES)
+
+    def _create_outer_kite(self) -> CurvedConvexKite:
+        """Create CurvedConvexKite object for the PineCone."""
+
+        return CurvedConvexKite(
+            origin=self.origin,
+            off_lines=(
+                OffsetFromLine(offset=self._outer_kite_offsets[0]),
+                OffsetFromLine(offset=self._outer_kite_offsets[1]),
+                OffsetFromLine(offset=self._outer_kite_offsets[2]),
+                OffsetFromLine(offset=self._outer_kite_offsets[3]),
+            ),
+            height=self._outer_kite_height,
+            width=self._outer_kite_width,
+            diagonal_intersection_along_height=self._outer_kite_diagonal_intersection_along_height,
+            rotation=self._outer_kite_rotation,
+        )
+
+    def _create_inner_kite_factory(self) -> CurvedConvexKiteFactory:
+        """Create CurvedConvexKiteFactory object for the PineCone."""
+
+        return CurvedConvexKiteFactory(
+            off_lines=(
+                OffsetFromLine(offset=self._inner_kite_offset),
+                OffsetFromLine(offset=-self._inner_kite_offset),
+                OffsetFromLine(offset=-self._inner_kite_offset),
+                OffsetFromLine(offset=self._inner_kite_offset),
+            ),
+            height=self._inner_kite_height,
+            width=self._inner_kite_width,
+            diagonal_intersection_along_height=self._inner_kite_diagonal_intersection_along_height,
+            rotation=self._inner_kite_rotation,
+            rotation_point=self.origin,
+        )
+
+    def _create_legs(self) -> tuple[Limb, Limb]:
+        """Create left and right leg Limb objects for the PineCone."""
+
+        left_leg = Limb(
+            start=rotate_about_point(
+                Vec2D(-self._legs_offset_from_center, self._leg_start_height),
+                self._outer_kite_rotation,
+                self.origin,
+            ),
+            end=rotate_about_point(
+                Vec2D(
+                    -(
+                        self._legs_offset_from_center
+                        + self._left_leg_horizontal_distance
+                    ),
+                    self._leg_end_height,
+                ),
+                self._outer_kite_rotation,
+                self.origin,
+            ),
+            off_line=OffsetFromLine(random.uniform(0.2, 0.8), -random.randint(3, 100)),
+            size=self._limb_wdith,
+        )
+
+        right_leg = Limb(
+            start=rotate_about_point(
+                Vec2D(self._legs_offset_from_center, self._leg_start_height),
+                self._outer_kite_rotation,
+                self.origin,
+            ),
+            end=rotate_about_point(
+                Vec2D(
+                    self._legs_offset_from_center + self._right_leg_horizontal_distance,
+                    self._leg_end_height,
+                ),
+                self._outer_kite_rotation,
+                self.origin,
+            ),
+            off_line=OffsetFromLine(random.uniform(0.2, 0.8), random.randint(3, 100)),
+            size=self._limb_wdith,
+        )
+
+        return left_leg, right_leg
+
+    def _create_eyes(self) -> Eyes:
+        """Create Eyes object for the PineCone."""
+
+        return Eyes(
+            left_eye=rotate_about_point(
+                Vec2D(-self._eyes_offset_from_center, self._eyes_height),
+                self._outer_kite_rotation,
+                self.origin,
+            ),
+            right_eye=rotate_about_point(
+                Vec2D(self._eyes_offset_from_center, self._eyes_height),
+                self._outer_kite_rotation,
+                self.origin,
+            ),
+            left_eye_size=int(self._eyes_sizes[0]),
+            right_eye_size=int(self._eyes_sizes[1]),
+        )
+
+    def _create_mouth(self) -> Mouth:
+        """Create Mouth object for the PineCone."""
+
+        # mouth = RoundMouth(
+        #    location=helpers.rotate_about_point(Vec2D(0, 180), rotation, s1), size=35
+        # )
+
+        return CurvedMouth(
+            start=rotate_about_point(
+                Vec2D(-20, 180), self._outer_kite_rotation, self.origin
+            ),
+            end=rotate_about_point(
+                Vec2D(20, 180), self._outer_kite_rotation, self.origin
+            ),
+            off_line=OffsetFromLine(0.8, -40),
+            size=12,
+        )
+
+    def _create_arms(self) -> tuple[Limb, Limb]:
+        """Create left and right arm Limb objects for the PineCone."""
+
+        left_arm = Limb(
+            start=rotate_about_point(
+                Vec2D(-self._right_arm_offset_from_center, self._arm_start_height),
+                self._outer_kite_rotation,
+                self.origin,
+            ),
+            end=rotate_about_point(
+                Vec2D(
+                    -(
+                        self._right_arm_offset_from_center
+                        + self._right_arm_horizontal_distance
+                    ),
+                    self._arm_end_height,
+                ),
+                self._outer_kite_rotation,
+                self.origin,
+            ),
+            off_line=OffsetFromLine(random.uniform(0.2, 0.8), -random.randint(3, 10)),
+            size=self._limb_wdith,
+        )
+
+        right_arm = Limb(
+            start=rotate_about_point(
+                Vec2D(self._left_arm_offset_from_center, self._arm_start_height),
+                self._outer_kite_rotation,
+                self.origin,
+            ),
+            end=rotate_about_point(
+                Vec2D(
+                    (
+                        self._left_arm_offset_from_center
+                        + self._left_arm_horizontal_distance
+                    ),
+                    self._arm_end_height,
+                ),
+                self._outer_kite_rotation,
+                self.origin,
+            ),
+            off_line=OffsetFromLine(random.uniform(0.2, 0.8), random.randint(3, 10)),
+            size=self._limb_wdith,
+        )
+
+        return left_arm, right_arm
