@@ -1,6 +1,7 @@
 from turtle import Turtle, Vec2D
 from math import cos, sin
 import random
+from typing import Optional
 
 from helpers import convert_degrees_to_radians, rotate_about_point
 from kite import CurvedConvexKite, CurvedConvexKiteFactory
@@ -202,122 +203,21 @@ class RandomPineConeFactory:
         self,
         origin: Vec2D,
         height_range: tuple[int, int] = (50, 70),
-        seed: int = 0,
+        seed: Optional[int] = None,
+        verbose: bool = False,
     ):
         self.origin = origin
         self.height_range = height_range
         self.seed = seed
+        self.verbose = verbose
 
         random.seed(seed)
 
-        self._outer_kite_rotation = random.randint(0, 360)
-        self._inner_kite_rotation = self._outer_kite_rotation + random.randint(-5, 5)
-
-        self._outer_kite_height = random.randint(*height_range)
-        self._outer_kite_width = random.randint(
-            a=int(self._outer_kite_height / 3), b=self._outer_kite_height
-        )
-
-        self._outer_kite_diagonal_intersection_along_height = random.randint(2, 7) / 10
-        self._inner_kite_diagonal_intersection_along_height = random.randint(4, 6) / 10
-
-        self._outer_kite_offsets = (
-            int(self._outer_kite_width / 4 + random.randint(-20, 20)),
-            int(self._outer_kite_width / 10 + random.randint(-5, 5)),
-            int(self._outer_kite_width / 10 + random.randint(-5, 5)),
-            int(self._outer_kite_width / 4 + random.randint(-20, 20)),
-        )
-
-        self._outer_kite_line_width = min(1, int(5 / 300 * self._outer_kite_height))
-
-        self._inner_kite_horizontal_offset = min(
-            1, int(5 / 300 * self._outer_kite_height)
-        )
-        self._inner_kite_vertical_offset = min(1, int(5 / 200 * self._outer_kite_width))
-
-        self._inner_kite_offset = random.randint(2, 6)
-
-        self._inner_kite_height = random.randint(
-            a=int(self._outer_kite_height / 10), b=int(self._outer_kite_height / 5)
-        )
-        self._inner_kite_width = random.randint(
-            a=int(0.66 * self._inner_kite_height), b=int(2.25 * self._inner_kite_height)
-        )
-
-        self._limb_wdith = self._outer_kite_line_width + random.randint(a=0, b=3)
-
-        self._right_arm_offset_from_center = random.randint(
-            a=int(0.7 * self._outer_kite_width / 2),
-            b=int(0.9 * self._outer_kite_width / 2),
-        )
-        self._right_arm_horizontal_distance = random.randint(
-            a=1,
-            b=15,
-        )
-
-        self._arm_start_height = random.randint(
-            a=int(0.55 * self._outer_kite_height),
-            b=int(0.7 * self._outer_kite_height),
-        )
-        self._arm_end_height = self._arm_start_height + random.randint(
-            a=int(0.1 * self._outer_kite_height),
-            b=int(0.35 * self._outer_kite_height),
-        )
-
-        self._left_arm_offset_from_center = random.randint(
-            a=int(0.7 * self._outer_kite_width / 2),
-            b=int(0.9 * self._outer_kite_width / 2),
-        )
-        self._left_arm_horizontal_distance = random.randint(
-            a=1,
-            b=15,
-        )
-
-        self._legs_offset_from_center = random.randint(
-            a=int(0.1 * self._outer_kite_width / 2),
-            b=int(0.2 * self._outer_kite_width / 2),
-        )
-
-        self._right_leg_horizontal_distance = random.randint(
-            a=1,
-            b=6,
-        )
-
-        self._left_leg_horizontal_distance = random.randint(
-            a=1,
-            b=6,
-        )
-
-        self._leg_start_height = 0.1 * self._outer_kite_height
-
-        self._leg_end_height = -random.randint(
-            a=int(0.3 * self._outer_kite_height),
-            b=int(0.5 * self._outer_kite_height),
-        )
-
-        self._eyes_height = random.randint(
-            a=int(0.7 * self._outer_kite_height),
-            b=int(0.85 * self._outer_kite_height),
-        )
-        self._eyes_offset_from_center = random.randint(
-            a=int(0.1 * self._outer_kite_width / 2),
-            b=int(0.2 * self._outer_kite_width / 2),
-        )
-
-        eye_size = random.randint(
-            a=self._outer_kite_line_width, b=2 * self._outer_kite_line_width
-        )
-
-        eye_sizes = [float(eye_size), float(eye_size)]
-
-        different_sized_eye = random.choices(
-            population=[0, 1, 2], weights=[0.1, 0.1, 0.8], k=1
-        )[0]
-
-        if different_sized_eye < 2:
-            eye_sizes[different_sized_eye] *= random.uniform(a=0.75, b=1.3)
-
-        self._eyes_sizes = tuple(eye_sizes)
+        self._set_outer_kite_values()
+        self._set_inner_kite_values()
+        self._set_arm_values()
+        self._set_leg_values()
+        self._set_eye_values()
 
     def create(self) -> PineCone:
         outer_kite = CurvedConvexKite(
@@ -465,8 +365,189 @@ class RandomPineConeFactory:
             outer_kite_line_width=self._outer_kite_line_width,
             horizontal_offset=self._inner_kite_horizontal_offset,
             vertical_offset=self._inner_kite_vertical_offset,
-            initial_body_parts=(left_arm, right_arm),
-            final_body_parts=(eyes, mouth, left_leg, right_leg),
+            initial_body_parts=(left_leg, right_leg),
+            final_body_parts=(eyes, mouth, left_arm, right_arm),
         )
 
         return pine_cone
+
+    def _print_attribute_values(self, attribute_names: list[str]):
+        if self.verbose:
+            for attribute in attribute_names:
+                print(f"{attribute[1:]}: {getattr(self, attribute)}")
+
+    def _set_outer_kite_values(self):
+        """Set random values for the outer kite."""
+
+        RANDOM_VALUES = [
+            "_outer_kite_rotation",
+            "_outer_kite_height",
+            "_outer_kite_width",
+            "_outer_kite_diagonal_intersection_along_height",
+            "_outer_kite_offsets",
+            "_outer_kite_line_width",
+        ]
+
+        self._outer_kite_rotation = random.randint(0, 30)
+        self._outer_kite_height = random.randint(*self.height_range)
+        self._outer_kite_width = random.randint(
+            a=int(self._outer_kite_height / 3), b=self._outer_kite_height
+        )
+        self._outer_kite_diagonal_intersection_along_height = random.randint(2, 7) / 10
+
+        self._outer_kite_offsets = (
+            int(self._outer_kite_width / 4 + random.randint(-20, 20)),
+            int(self._outer_kite_width / 10 + random.randint(-5, 5)),
+            int(self._outer_kite_width / 10 + random.randint(-5, 5)),
+            int(self._outer_kite_width / 4 + random.randint(-20, 20)),
+        )
+
+        self._outer_kite_line_width = min(1, int(5 / 300 * self._outer_kite_height))
+
+        self._print_attribute_values(RANDOM_VALUES)
+
+    def _set_inner_kite_values(self):
+        """Set random values for the inner kites."""
+
+        RANDOM_VALUES = [
+            "_inner_kite_rotation",
+            "_inner_kite_diagonal_intersection_along_height",
+            "_inner_kite_horizontal_offset",
+            "_inner_kite_vertical_offset",
+            "_inner_kite_offset",
+            "_inner_kite_height",
+            "_inner_kite_width",
+        ]
+
+        self._inner_kite_rotation = self._outer_kite_rotation + random.randint(-5, 5)
+        self._inner_kite_diagonal_intersection_along_height = random.randint(4, 6) / 10
+
+        self._inner_kite_horizontal_offset = min(
+            1, int(5 / 300 * self._outer_kite_height)
+        )
+        self._inner_kite_vertical_offset = min(1, int(5 / 200 * self._outer_kite_width))
+
+        self._inner_kite_offset = random.randint(2, 6)
+
+        self._inner_kite_height = random.randint(
+            a=int(self._outer_kite_height / 10), b=int(self._outer_kite_height / 5)
+        )
+        self._inner_kite_width = random.randint(
+            a=int(0.66 * self._inner_kite_height), b=int(2.25 * self._inner_kite_height)
+        )
+
+        self._print_attribute_values(RANDOM_VALUES)
+
+    def _set_arm_values(self):
+        """Set random values for arms."""
+
+        RANDOM_VALUES = [
+            "_limb_wdith",
+            "_right_arm_offset_from_center",
+            "_right_arm_horizontal_distance",
+            "_arm_start_height",
+            "_arm_end_height",
+            "_left_arm_offset_from_center",
+            "_left_arm_horizontal_distance",
+        ]
+
+        self._limb_wdith = self._outer_kite_line_width + random.randint(a=0, b=3)
+
+        self._right_arm_offset_from_center = random.randint(
+            a=int(0.7 * self._outer_kite_width / 2),
+            b=int(0.9 * self._outer_kite_width / 2),
+        )
+        self._right_arm_horizontal_distance = random.randint(
+            a=1,
+            b=15,
+        )
+
+        self._arm_start_height = random.randint(
+            a=int(0.55 * self._outer_kite_height),
+            b=int(0.7 * self._outer_kite_height),
+        )
+        self._arm_end_height = self._arm_start_height + random.randint(
+            a=int(0.1 * self._outer_kite_height),
+            b=int(0.35 * self._outer_kite_height),
+        )
+
+        self._left_arm_offset_from_center = random.randint(
+            a=int(0.7 * self._outer_kite_width / 2),
+            b=int(0.9 * self._outer_kite_width / 2),
+        )
+        self._left_arm_horizontal_distance = random.randint(
+            a=1,
+            b=15,
+        )
+
+        self._print_attribute_values(RANDOM_VALUES)
+
+    def _set_leg_values(self):
+        """Set random values for legs."""
+
+        RANDOM_VALUES = [
+            "_legs_offset_from_center",
+            "_right_leg_horizontal_distance",
+            "_left_leg_horizontal_distance",
+            "_leg_start_height",
+            "_leg_end_height",
+        ]
+
+        self._legs_offset_from_center = random.randint(
+            a=int(0.1 * self._outer_kite_width / 2),
+            b=int(0.2 * self._outer_kite_width / 2),
+        )
+
+        self._right_leg_horizontal_distance = random.randint(
+            a=1,
+            b=6,
+        )
+
+        self._left_leg_horizontal_distance = random.randint(
+            a=1,
+            b=6,
+        )
+
+        self._leg_start_height = 0.1 * self._outer_kite_height
+
+        self._leg_end_height = -random.randint(
+            a=int(0.3 * self._outer_kite_height),
+            b=int(0.5 * self._outer_kite_height),
+        )
+
+        self._print_attribute_values(RANDOM_VALUES)
+
+    def _set_eye_values(self):
+        """Set random values for eyes."""
+
+        RANDOM_VALUES = [
+            "_eyes_height",
+            "_eyes_offset_from_center",
+            "_eyes_sizes",
+        ]
+
+        self._eyes_height = random.randint(
+            a=int(0.7 * self._outer_kite_height),
+            b=int(0.85 * self._outer_kite_height),
+        )
+        self._eyes_offset_from_center = random.randint(
+            a=int(0.1 * self._outer_kite_width / 2),
+            b=int(0.2 * self._outer_kite_width / 2),
+        )
+
+        eye_size = random.randint(
+            a=5 * self._outer_kite_line_width, b=10 * self._outer_kite_line_width
+        )
+
+        eye_sizes = [float(eye_size), float(eye_size)]
+
+        different_sized_eye = random.choices(
+            population=[0, 1, 2], weights=[0.1, 0.1, 0.8], k=1
+        )[0]
+
+        if different_sized_eye < 2:
+            eye_sizes[different_sized_eye] *= random.uniform(a=0.75, b=1.3)
+
+        self._eyes_sizes = tuple(eye_sizes)
+
+        self._print_attribute_values(RANDOM_VALUES)

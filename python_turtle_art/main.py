@@ -6,13 +6,17 @@ from line import OffsetFromLine
 from face import Eyes, CurvedMouth
 from body import Limb
 import helpers
-from pine_cone import PineCone
+from pine_cone import PineCone, RandomPineConeFactory
 
 
 def main(turtle: Turtle):
     """Main drawing function."""
 
-    draw_pine_cone(turtle)
+    random_pine_cone = RandomPineConeFactory(
+        origin=Vec2D(0, 0), height_range=(300, 350), seed=None, verbose=True
+    ).create()
+
+    random_pine_cone.draw(turtle)
 
 
 def draw_pine_cone(turtle: Turtle):
