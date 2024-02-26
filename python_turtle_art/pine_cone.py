@@ -265,7 +265,7 @@ class RandomPineConeFactory:
                 self._outer_kite_rotation,
                 self.origin,
             ),
-            off_line=OffsetFromLine(random.uniform(0.2, 0.8), -random.randint(3, 10)),
+            off_line=OffsetFromLine(random.uniform(0.2, 0.8), -random.randint(3, 100)),
             size=self._limb_wdith,
         )
 
@@ -283,7 +283,7 @@ class RandomPineConeFactory:
                 self._outer_kite_rotation,
                 self.origin,
             ),
-            off_line=OffsetFromLine(random.uniform(0.2, 0.8), -random.randint(3, 10)),
+            off_line=OffsetFromLine(random.uniform(0.2, 0.8), random.randint(3, 100)),
             size=self._limb_wdith,
         )
 
@@ -340,13 +340,13 @@ class RandomPineConeFactory:
 
         right_arm = Limb(
             start=rotate_about_point(
-                Vec2D(-self._left_arm_offset_from_center, self._arm_start_height),
+                Vec2D(self._left_arm_offset_from_center, self._arm_start_height),
                 self._outer_kite_rotation,
                 self.origin,
             ),
             end=rotate_about_point(
                 Vec2D(
-                    -(
+                    (
                         self._left_arm_offset_from_center
                         + self._left_arm_horizontal_distance
                     ),
@@ -402,7 +402,7 @@ class RandomPineConeFactory:
             int(self._outer_kite_width / 4 + random.randint(-20, 20)),
         )
 
-        self._outer_kite_line_width = min(1, int(5 / 300 * self._outer_kite_height))
+        self._outer_kite_line_width = max(1, int(5 / 300 * self._outer_kite_height))
 
         self._print_attribute_values(RANDOM_VALUES)
 
@@ -422,18 +422,18 @@ class RandomPineConeFactory:
         self._inner_kite_rotation = self._outer_kite_rotation + random.randint(-5, 5)
         self._inner_kite_diagonal_intersection_along_height = random.randint(4, 6) / 10
 
-        self._inner_kite_horizontal_offset = min(
+        self._inner_kite_horizontal_offset = max(
             1, int(5 / 300 * self._outer_kite_height)
         )
-        self._inner_kite_vertical_offset = min(1, int(5 / 200 * self._outer_kite_width))
+        self._inner_kite_vertical_offset = max(1, int(5 / 200 * self._outer_kite_width))
 
-        self._inner_kite_offset = random.randint(2, 6)
+        self._inner_kite_offset = random.randint(2, 4)
 
         self._inner_kite_height = random.randint(
             a=int(self._outer_kite_height / 10), b=int(self._outer_kite_height / 5)
         )
         self._inner_kite_width = random.randint(
-            a=int(0.66 * self._inner_kite_height), b=int(2.25 * self._inner_kite_height)
+            a=int(0.66 * self._inner_kite_height), b=int(2 * self._inner_kite_height)
         )
 
         self._print_attribute_values(RANDOM_VALUES)
@@ -536,7 +536,7 @@ class RandomPineConeFactory:
         )
 
         eye_size = random.randint(
-            a=5 * self._outer_kite_line_width, b=10 * self._outer_kite_line_width
+            a=2 * self._outer_kite_line_width, b=4 * self._outer_kite_line_width
         )
 
         eye_sizes = [float(eye_size), float(eye_size)]
