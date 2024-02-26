@@ -12,8 +12,10 @@ from pine_cone import PineCone, RandomPineConeFactory
 def main(turtle: Turtle):
     """Main drawing function."""
 
+    p1 = Vec2D(0, 0)
+
     random_pine_cone = RandomPineConeFactory(
-        origin=Vec2D(-50, -50), height_range=(300, 350), seed=None, verbose=True
+        origin=p1, height_range=(300, 350), seed=None, verbose=True
     ).create()
 
     random_pine_cone.draw(turtle)

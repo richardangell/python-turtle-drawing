@@ -221,6 +221,7 @@ class RandomPineConeFactory:
         self._set_arm_values()
         self._set_leg_values()
         self._set_eye_values()
+        self._set_mouth_values()
 
     def create(self) -> PineCone:
         """Return randomised PineCone object."""
@@ -425,6 +426,35 @@ class RandomPineConeFactory:
 
         self._print_attribute_values(RANDOM_VALUES)
 
+    def _set_mouth_values(self):
+        """Set random values for mouth."""
+
+        RANDOM_VALUES = [
+            "_mouth_offset_from_center",
+            "_mouth_height",
+            "_mouth_control_point_offset",
+            "_mouth_line_width",
+        ]
+
+        self._mouth_offset_from_center = random.randint(
+            a=self._eyes_offset_from_center,
+            b=int(0.35 * self._outer_kite_width / 2),
+        )
+
+        self._mouth_height = random.randint(
+            a=int(0.6 * self._outer_kite_height),
+            b=self._eyes_height,
+        )
+
+        self._mouth_control_point_offset = random.uniform(
+            a=0.5 * self._mouth_offset_from_center,
+            b=1.66 * self._mouth_offset_from_center,
+        )
+
+        self._mouth_line_width = self._outer_kite_line_width * random.uniform(1.5, 3)
+
+        self._print_attribute_values(RANDOM_VALUES)
+
     def _create_outer_kite(self) -> CurvedConvexKite:
         """Create CurvedConvexKite object for the PineCone."""
 
@@ -530,13 +560,19 @@ class RandomPineConeFactory:
 
         return CurvedMouth(
             start=rotate_about_point(
-                Vec2D(-20, 180), self._outer_kite_rotation, self.origin
+                Vec2D(-self._mouth_offset_from_center, self._mouth_height),
+                self._outer_kite_rotation,
+                self.origin,
             ),
             end=rotate_about_point(
-                Vec2D(20, 180), self._outer_kite_rotation, self.origin
+                Vec2D(self._mouth_offset_from_center, self._mouth_height),
+                self._outer_kite_rotation,
+                self.origin,
             ),
-            off_line=OffsetFromLine(0.8, -40),
-            size=12,
+            off_line=OffsetFromLine(
+                random.uniform(0.2, 0.8), -self._mouth_control_point_offset
+            ),
+            size=self._mouth_line_width,
         )
 
     def _create_arms(self) -> tuple[Limb, Limb]:
