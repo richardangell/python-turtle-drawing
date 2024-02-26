@@ -262,7 +262,7 @@ class RandomPineConeFactory:
             "_outer_kite_line_width",
         ]
 
-        self._outer_kite_rotation = random.randint(0, 30)
+        self._outer_kite_rotation = random.randint(45, 180)
         self._outer_kite_height = random.randint(*self.height_range)
         self._outer_kite_width = random.randint(
             a=int(self._outer_kite_height / 3), b=self._outer_kite_height
@@ -494,12 +494,14 @@ class RandomPineConeFactory:
 
         left_leg = Limb(
             start=rotate_about_point(
-                Vec2D(-self._legs_offset_from_center, self._leg_start_height),
+                self.origin
+                + Vec2D(-self._legs_offset_from_center, self._leg_start_height),
                 self._outer_kite_rotation,
                 self.origin,
             ),
             end=rotate_about_point(
-                Vec2D(
+                self.origin
+                + Vec2D(
                     -(
                         self._legs_offset_from_center
                         + self._left_leg_horizontal_distance
@@ -515,12 +517,14 @@ class RandomPineConeFactory:
 
         right_leg = Limb(
             start=rotate_about_point(
-                Vec2D(self._legs_offset_from_center, self._leg_start_height),
+                self.origin
+                + Vec2D(self._legs_offset_from_center, self._leg_start_height),
                 self._outer_kite_rotation,
                 self.origin,
             ),
             end=rotate_about_point(
-                Vec2D(
+                self.origin
+                + Vec2D(
                     self._legs_offset_from_center + self._right_leg_horizontal_distance,
                     self._leg_end_height,
                 ),
@@ -538,12 +542,12 @@ class RandomPineConeFactory:
 
         return Eyes(
             left_eye=rotate_about_point(
-                Vec2D(-self._eyes_offset_from_center, self._eyes_height),
+                self.origin + Vec2D(-self._eyes_offset_from_center, self._eyes_height),
                 self._outer_kite_rotation,
                 self.origin,
             ),
             right_eye=rotate_about_point(
-                Vec2D(self._eyes_offset_from_center, self._eyes_height),
+                self.origin + Vec2D(self._eyes_offset_from_center, self._eyes_height),
                 self._outer_kite_rotation,
                 self.origin,
             ),
@@ -560,12 +564,13 @@ class RandomPineConeFactory:
 
         return CurvedMouth(
             start=rotate_about_point(
-                Vec2D(-self._mouth_offset_from_center, self._mouth_height),
+                self.origin
+                + Vec2D(-self._mouth_offset_from_center, self._mouth_height),
                 self._outer_kite_rotation,
                 self.origin,
             ),
             end=rotate_about_point(
-                Vec2D(self._mouth_offset_from_center, self._mouth_height),
+                self.origin + Vec2D(self._mouth_offset_from_center, self._mouth_height),
                 self._outer_kite_rotation,
                 self.origin,
             ),
@@ -580,12 +585,14 @@ class RandomPineConeFactory:
 
         left_arm = Limb(
             start=rotate_about_point(
-                Vec2D(-self._right_arm_offset_from_center, self._arm_start_height),
+                self.origin
+                + Vec2D(-self._right_arm_offset_from_center, self._arm_start_height),
                 self._outer_kite_rotation,
                 self.origin,
             ),
             end=rotate_about_point(
-                Vec2D(
+                self.origin
+                + Vec2D(
                     -(
                         self._right_arm_offset_from_center
                         + self._right_arm_horizontal_distance
@@ -601,12 +608,14 @@ class RandomPineConeFactory:
 
         right_arm = Limb(
             start=rotate_about_point(
-                Vec2D(self._left_arm_offset_from_center, self._arm_start_height),
+                self.origin
+                + Vec2D(self._left_arm_offset_from_center, self._arm_start_height),
                 self._outer_kite_rotation,
                 self.origin,
             ),
             end=rotate_about_point(
-                Vec2D(
+                self.origin
+                + Vec2D(
                     (
                         self._left_arm_offset_from_center
                         + self._left_arm_horizontal_distance
