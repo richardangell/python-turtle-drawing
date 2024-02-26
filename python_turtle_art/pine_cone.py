@@ -8,7 +8,7 @@ from kite import CurvedConvexKite, CurvedConvexKiteFactory
 from body_part import BodyPart
 from body import Limb
 from line import OffsetFromLine
-from face import CurvedMouth, Eyes, Mouth
+from face import CurvedMouth, Eyes, Mouth, RoundMouth
 
 
 class PineCone:
@@ -221,7 +221,6 @@ class RandomPineConeFactory:
         self._set_arm_values()
         self._set_leg_values()
         self._set_eye_values()
-        self._set_mouth_values()
 
     def create(self) -> PineCone:
         """Return randomised PineCone object."""
@@ -426,7 +425,7 @@ class RandomPineConeFactory:
 
         self._print_attribute_values(RANDOM_VALUES)
 
-    def _set_mouth_values(self):
+    def _set_curved_mouth_values(self):
         """Set random values for mouth."""
 
         RANDOM_VALUES = [
@@ -452,6 +451,31 @@ class RandomPineConeFactory:
         )
 
         self._mouth_line_width = self._outer_kite_line_width * random.uniform(1.5, 3)
+
+        self._print_attribute_values(RANDOM_VALUES)
+
+    def _set_round_mouth_values(self):
+        """Set random values for round mouth."""
+
+        RANDOM_VALUES = [
+            "_mouth_offset_from_center",
+            "_mouth_height",
+            "_mouth_size",
+        ]
+
+        self._mouth_offset_from_center = random.randint(
+            a=0,
+            b=int(0.05 * self._outer_kite_width / 2),
+        )
+
+        self._mouth_size = random.randint(
+            a=int(0.05 * self._outer_kite_height), b=int(0.15 * self._outer_kite_height)
+        )
+
+        self._mouth_height = random.randint(
+            a=int(0.6 * self._outer_kite_height),
+            b=self._eyes_height,
+        )
 
         self._print_attribute_values(RANDOM_VALUES)
 
@@ -555,12 +579,10 @@ class RandomPineConeFactory:
             right_eye_size=int(self._eyes_sizes[1]),
         )
 
-    def _create_mouth(self) -> Mouth:
-        """Create Mouth object for the PineCone."""
+    def _create_curved_mouth(self) -> CurvedMouth:
+        """Create random curved mouth."""
 
-        # mouth = RoundMouth(
-        #    location=helpers.rotate_about_point(Vec2D(0, 180), rotation, s1), size=35
-        # )
+        self._set_curved_mouth_values()
 
         return CurvedMouth(
             start=rotate_about_point(
@@ -579,6 +601,32 @@ class RandomPineConeFactory:
             ),
             size=self._mouth_line_width,
         )
+
+    def _create_round_mouth(self) -> RoundMouth:
+        """Create random round mouth."""
+
+        self._set_round_mouth_values()
+
+        return RoundMouth(
+            location=rotate_about_point(
+                self.origin + Vec2D(self._mouth_offset_from_center, self._mouth_height),
+                self._outer_kite_rotation,
+                self.origin,
+            ),
+            size=self._mouth_size,
+        )
+
+    def _create_mouth(self) -> Mouth:
+        """Create Mouth object for the PineCone."""
+
+        self._mouth_type = random.choices([0, 1], weights=[0.5, 0.5], k=1)[0]
+
+        mouth_type_lookup = {
+            0: self._create_curved_mouth(),
+            1: self._create_round_mouth(),
+        }
+
+        return mouth_type_lookup[self._mouth_type]
 
     def _create_arms(self) -> tuple[Limb, Limb]:
         """Create left and right arm Limb objects for the PineCone."""

@@ -80,10 +80,6 @@ def draw_pine_cone(turtle: Turtle):
         right_eye_size=25,
     )
 
-    # mouth = RoundMouth(
-    #    location=helpers.rotate_about_point(Vec2D(0, 180), rotation, s1), size=35
-    # )
-
     mouth = CurvedMouth(
         start=helpers.rotate_about_point(Vec2D(-20, 180), rotation, s1),
         end=helpers.rotate_about_point(Vec2D(20, 180), rotation, s1),
