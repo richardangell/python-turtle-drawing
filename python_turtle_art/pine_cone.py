@@ -644,7 +644,7 @@ class RandomPineConeFactory:
     def _create_mouth(self) -> Mouth:
         """Create Mouth object for the PineCone."""
 
-        self._mouth_type = random.choices([0, 1, 2], weights=[0.33, 0.33, 9.33], k=1)[0]
+        self._mouth_type = random.choices([0, 1, 2], weights=[0.33, 0.33, 0.33], k=1)[0]
 
         mouth_type_lookup = {
             0: self._create_curved_mouth(),
