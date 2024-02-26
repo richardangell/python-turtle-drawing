@@ -293,7 +293,7 @@ class RandomPineConeFactory:
         ]
 
         self._inner_kite_rotation = self._outer_kite_rotation + random.randint(-5, 5)
-        self._inner_kite_diagonal_intersection_along_height = random.randint(4, 6) / 10
+        self._inner_kite_diagonal_intersection_along_height = random.uniform(0.4, 0.6)
 
         self._inner_kite_horizontal_offset = max(
             1, int(5 / 300 * self._outer_kite_height)
@@ -537,6 +537,7 @@ class RandomPineConeFactory:
             ),
             off_line=OffsetFromLine(random.uniform(0.2, 0.8), -random.randint(3, 100)),
             size=self._limb_wdith,
+            outline=False,
         )
 
         right_leg = Limb(
@@ -557,6 +558,7 @@ class RandomPineConeFactory:
             ),
             off_line=OffsetFromLine(random.uniform(0.2, 0.8), random.randint(3, 100)),
             size=self._limb_wdith,
+            outline=False,
         )
 
         return left_leg, right_leg
@@ -642,7 +644,7 @@ class RandomPineConeFactory:
     def _create_mouth(self) -> Mouth:
         """Create Mouth object for the PineCone."""
 
-        self._mouth_type = random.choices([0, 1, 2], weights=[0.33, 0.33, 0.33], k=1)[0]
+        self._mouth_type = random.choices([0, 1, 2], weights=[0.33, 0.33, 9.33], k=1)[0]
 
         mouth_type_lookup = {
             0: self._create_curved_mouth(),
@@ -676,6 +678,7 @@ class RandomPineConeFactory:
             ),
             off_line=OffsetFromLine(random.uniform(0.2, 0.8), -random.randint(3, 10)),
             size=self._limb_wdith,
+            outline=False,
         )
 
         right_arm = Limb(
@@ -699,6 +702,7 @@ class RandomPineConeFactory:
             ),
             off_line=OffsetFromLine(random.uniform(0.2, 0.8), random.randint(3, 10)),
             size=self._limb_wdith,
+            outline=False,
         )
 
         return left_arm, right_arm
