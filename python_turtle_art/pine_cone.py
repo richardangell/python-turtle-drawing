@@ -8,7 +8,7 @@ from kite import CurvedConvexKite, CurvedConvexKiteFactory
 from body_part import BodyPart
 from body import Limb
 from line import OffsetFromLine
-from face import CurvedMouth, Eyes, Mouth, RoundMouth
+from face import CurvedMouth, Eyes, Mouth, RoundMouth, CurvedTriangleMouth
 
 
 class PineCone:
@@ -261,7 +261,7 @@ class RandomPineConeFactory:
             "_outer_kite_line_width",
         ]
 
-        self._outer_kite_rotation = random.randint(45, 180)
+        self._outer_kite_rotation = random.randint(0, 30)
         self._outer_kite_height = random.randint(*self.height_range)
         self._outer_kite_width = random.randint(
             a=int(self._outer_kite_height / 3), b=self._outer_kite_height
@@ -616,14 +616,38 @@ class RandomPineConeFactory:
             size=self._mouth_size,
         )
 
+    def _create_triangle_mouth(self):
+        """Create random CurvedTriangleMouth object."""
+
+        self._set_curved_mouth_values()
+
+        return CurvedTriangleMouth(
+            start=rotate_about_point(
+                self.origin
+                + Vec2D(-self._mouth_offset_from_center, self._mouth_height),
+                self._outer_kite_rotation,
+                self.origin,
+            ),
+            end=rotate_about_point(
+                self.origin + Vec2D(self._mouth_offset_from_center, self._mouth_height),
+                self._outer_kite_rotation,
+                self.origin,
+            ),
+            off_line=OffsetFromLine(
+                random.uniform(0.2, 0.8), -self._mouth_control_point_offset
+            ),
+            size=self._mouth_line_width,
+        )
+
     def _create_mouth(self) -> Mouth:
         """Create Mouth object for the PineCone."""
 
-        self._mouth_type = random.choices([0, 1], weights=[0.5, 0.5], k=1)[0]
+        self._mouth_type = random.choices([0, 1, 2], weights=[0.33, 0.33, 0.33], k=1)[0]
 
         mouth_type_lookup = {
             0: self._create_curved_mouth(),
             1: self._create_round_mouth(),
+            2: self._create_triangle_mouth(),
         }
 
         return mouth_type_lookup[self._mouth_type]

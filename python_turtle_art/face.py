@@ -71,3 +71,53 @@ class CurvedMouth(Mouth):
             draw_points=False,
             size=self.size,
         )
+
+
+class CurvedTriangleMouth(Mouth):
+    def __init__(
+        self,
+        start: Vec2D,
+        end: Vec2D,
+        off_line: OffsetFromLine = OffsetFromLine(),
+        size: Optional[int] = None,
+        fill: bool = True,
+        colour: str = "white",
+    ):
+        self.start = start
+        self.end = end
+        self.off_line = off_line
+        self.size = size
+        self.fill = fill
+        self.colour = colour
+
+    def draw(self, turtle: Turtle):
+        if self.fill:
+            turtle.fillcolor(self.colour)
+            turtle.begin_fill()
+
+        jump_to(turtle, self.start)
+
+        draw_curved_line(
+            turtle=turtle,
+            start=self.start,
+            end=self.end,
+            off_line=self.off_line,
+            steps=10,
+            draw_points=False,
+            size=self.size,
+        )
+
+        jump_to(turtle, self.end)
+
+        draw_curved_line(
+            turtle=turtle,
+            start=self.end,
+            end=self.start,
+            off_line=self.off_line,
+            steps=2,
+            draw_points=False,
+            size=self.size,
+        )
+
+        if self.fill:
+            turtle.end_fill()
