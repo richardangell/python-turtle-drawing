@@ -1,5 +1,6 @@
 from turtle import Screen, Vec2D, Turtle
 import argparse
+import turtle as t
 
 from kite import CurvedConvexKite, CurvedConvexKiteFactory
 from line import OffsetFromLine
@@ -7,6 +8,8 @@ from face import Eyes, CurvedMouth
 from body import Limb
 import helpers
 from pine_cone import PineCone, RandomPineConeFactory
+
+SCREEN_SIZE = (None, None)
 
 
 def main(turtle: Turtle):
@@ -120,6 +123,8 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     turtle_ = Turtle()
+
+    t.screensize(*SCREEN_SIZE)
 
     if args.quick:
         helpers.turn_off_turtle_animation()
