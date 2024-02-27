@@ -35,6 +35,16 @@ def draw_background_characters(turtle: Turtle):
         (0, 10),
     ]
 
+    skip_characters_in_row: list[list[int]] = [
+        [],
+        [3, 4],
+        [2, 3, 4, 5],
+        [2, 3, 4],
+        [2, 3],
+        [],
+        [],
+    ]
+
     for row_number in reversed(range(n_rows)):
         y = -row_number * vertical_character_offset
 
@@ -55,15 +65,16 @@ def draw_background_characters(turtle: Turtle):
                 + rotation_range_sign * character_counter * rotation_range_increment,
             )
 
-            random_pine_cone = RandomPineConeFactory(
-                origin=p1,
-                height_range=(300, 350),
-                rotation_range=rotation_range,
-                seed=None,
-                verbose=False,
-            ).create()
+            if character_counter not in skip_characters_in_row[row_number]:
+                random_pine_cone = RandomPineConeFactory(
+                    origin=p1,
+                    height_range=(300, 350),
+                    rotation_range=rotation_range,
+                    seed=None,
+                    verbose=False,
+                ).create()
 
-            random_pine_cone.draw(turtle)
+                random_pine_cone.draw(turtle)
 
             character_counter += 1
 
