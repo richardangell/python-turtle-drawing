@@ -205,12 +205,14 @@ class RandomPineConeFactory:
         self,
         origin: Vec2D,
         height_range: tuple[int, int] = (50, 70),
+        rotation_range: tuple[int, int] = (0, 360),
         seed: Optional[int] = None,
         verbose: bool = False,
     ):
         """Set random values to use in the PineCone object."""
         self.origin = origin
         self.height_range = height_range
+        self.rotation_range = rotation_range
         self.seed = seed
         self.verbose = verbose
 
@@ -261,7 +263,9 @@ class RandomPineConeFactory:
             "_outer_kite_line_width",
         ]
 
-        self._outer_kite_rotation = random.randint(0, 30)
+        self._outer_kite_rotation = random.randint(
+            self.rotation_range[0], self.rotation_range[1]
+        )
         self._outer_kite_height = random.randint(*self.height_range)
         self._outer_kite_width = random.randint(
             a=int(self._outer_kite_height / 3), b=self._outer_kite_height
@@ -496,6 +500,8 @@ class RandomPineConeFactory:
             width=self._outer_kite_width,
             diagonal_intersection_along_height=self._outer_kite_diagonal_intersection_along_height,
             rotation=self._outer_kite_rotation,
+            rotation_point=self.origin
+            + Vec2D(int(self._outer_kite_width / 2), int(self._outer_kite_height / 2)),
         )
 
     def _create_inner_kite_factory(self) -> CurvedConvexKiteFactory:
@@ -512,7 +518,8 @@ class RandomPineConeFactory:
             width=self._inner_kite_width,
             diagonal_intersection_along_height=self._inner_kite_diagonal_intersection_along_height,
             rotation=self._inner_kite_rotation,
-            rotation_point=self.origin,
+            rotation_point=self.origin
+            + Vec2D(int(self._outer_kite_width / 2), int(self._outer_kite_height / 2)),
         )
 
     def _create_legs(self) -> tuple[Limb, Limb]:

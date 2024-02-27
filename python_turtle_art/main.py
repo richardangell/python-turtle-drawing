@@ -12,20 +12,40 @@ import helpers
 from pine_cone import PineCone, RandomPineConeFactory
 from write import save_turtle_screen
 
-SCREEN_SIZE = (2000, 2000)
+SCREEN_SIZE = (2000, 4000)
 
 
 def draw_background_characters(turtle: Turtle):
     """Main drawing function."""
 
-    for x in np.linspace(300, 2100, 7):
+    characters_in_row = 10
+    horizontal_character_offset = 300
+    # n_rows = 7
+    rotation_range_increment = 5
+    start_rotation_range = (0, 10)
+    character_counter = 0
+
+    for x in np.linspace(
+        0, characters_in_row * horizontal_character_offset, characters_in_row
+    ):
         p1 = Vec2D(x, -50)
 
+        rotation_range = (
+            start_rotation_range[0] + character_counter * rotation_range_increment,
+            start_rotation_range[1] + character_counter * rotation_range_increment,
+        )
+
         random_pine_cone = RandomPineConeFactory(
-            origin=p1, height_range=(300, 350), seed=None, verbose=False
+            origin=p1,
+            height_range=(300, 350),
+            rotation_range=rotation_range,
+            seed=None,
+            verbose=False,
         ).create()
 
         random_pine_cone.draw(turtle)
+
+        character_counter += 1
 
         helpers.update_screen()
 
@@ -33,7 +53,7 @@ def draw_background_characters(turtle: Turtle):
 def draw_main_character(turtle: Turtle):
     """Draw specific character."""
 
-    s1 = Vec2D(1000, -1000)
+    s1 = Vec2D(1000, -1600)
 
     rotation = 10
 
