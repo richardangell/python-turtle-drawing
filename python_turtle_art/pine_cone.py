@@ -6,7 +6,7 @@ from typing import Optional
 from helpers import convert_degrees_to_radians, rotate_about_point
 from kite import CurvedConvexKite, CurvedConvexKiteFactory
 from body_part import BodyPart
-from body import Limb
+from body import Limb, Arm
 from line import OffsetFromLine
 from face import CurvedMouth, Eyes, Mouth, RoundMouth, CurvedTriangleMouth
 
@@ -353,6 +353,8 @@ class RandomPineConeFactory:
             b=15,
         )
 
+        self._n_arm_wiggles = random.randint(1, 5)
+
         self._print_attribute_values(RANDOM_VALUES)
 
     def _set_leg_values(self):
@@ -657,7 +659,7 @@ class RandomPineConeFactory:
     def _create_arms(self) -> tuple[Limb, Limb]:
         """Create left and right arm Limb objects for the PineCone."""
 
-        left_arm = Limb(
+        left_arm = Arm(
             start=rotate_about_point(
                 self.origin
                 + Vec2D(-self._right_arm_offset_from_center, self._arm_start_height),
@@ -676,12 +678,13 @@ class RandomPineConeFactory:
                 self._outer_kite_rotation,
                 self.origin,
             ),
-            off_line=OffsetFromLine(random.uniform(0.2, 0.8), -random.randint(3, 10)),
+            off_line=OffsetFromLine(random.uniform(0.2, 0.8), -random.randint(3, 20)),
             size=self._limb_wdith,
             outline=False,
+            n_wiggles=self._n_arm_wiggles,
         )
 
-        right_arm = Limb(
+        right_arm = Arm(
             start=rotate_about_point(
                 self.origin
                 + Vec2D(self._left_arm_offset_from_center, self._arm_start_height),
@@ -700,9 +703,10 @@ class RandomPineConeFactory:
                 self._outer_kite_rotation,
                 self.origin,
             ),
-            off_line=OffsetFromLine(random.uniform(0.2, 0.8), random.randint(3, 10)),
+            off_line=OffsetFromLine(random.uniform(0.2, 0.8), random.randint(3, 20)),
             size=self._limb_wdith,
             outline=False,
+            n_wiggles=self._n_arm_wiggles,
         )
 
         return left_arm, right_arm
