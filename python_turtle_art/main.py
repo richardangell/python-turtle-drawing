@@ -35,7 +35,7 @@ def draw_background_characters(turtle: Turtle):
         (0, 10),
     ]
 
-    for row_number in range(n_rows):
+    for row_number in reversed(range(n_rows)):
         y = -row_number * vertical_character_offset
 
         character_counter = 0
