@@ -12,42 +12,62 @@ import helpers
 from pine_cone import PineCone, RandomPineConeFactory
 from write import save_turtle_screen
 
-SCREEN_SIZE = (2000, 4000)
+SCREEN_SIZE = (4000, 4000)
 
 
 def draw_background_characters(turtle: Turtle):
     """Main drawing function."""
 
     characters_in_row = 10
+    n_rows = 7
     horizontal_character_offset = 300
-    # n_rows = 7
+    vertical_character_offset = 500
+
+    rotation_range_signs = [1, 1, -1, -1, 1, 1, -1]
     rotation_range_increment = 5
-    start_rotation_range = (0, 10)
-    character_counter = 0
+    start_rotation_ranges = [
+        (0, 10),
+        (-45, -35),
+        (0, 10),
+        (35, 45),
+        (0, 10),
+        (-45, -35),
+        (0, 10),
+    ]
 
-    for x in np.linspace(
-        0, characters_in_row * horizontal_character_offset, characters_in_row
-    ):
-        p1 = Vec2D(x, -50)
+    for row_number in range(n_rows):
+        y = -row_number * vertical_character_offset
 
-        rotation_range = (
-            start_rotation_range[0] + character_counter * rotation_range_increment,
-            start_rotation_range[1] + character_counter * rotation_range_increment,
-        )
+        character_counter = 0
 
-        random_pine_cone = RandomPineConeFactory(
-            origin=p1,
-            height_range=(300, 350),
-            rotation_range=rotation_range,
-            seed=None,
-            verbose=False,
-        ).create()
+        start_rotation_range = start_rotation_ranges[row_number]
+        rotation_range_sign = rotation_range_signs[row_number]
 
-        random_pine_cone.draw(turtle)
+        for x in np.linspace(
+            0, characters_in_row * horizontal_character_offset, characters_in_row
+        ):
+            p1 = Vec2D(x, y)
 
-        character_counter += 1
+            rotation_range = (
+                start_rotation_range[0]
+                + rotation_range_sign * character_counter * rotation_range_increment,
+                start_rotation_range[1]
+                + rotation_range_sign * character_counter * rotation_range_increment,
+            )
 
-        helpers.update_screen()
+            random_pine_cone = RandomPineConeFactory(
+                origin=p1,
+                height_range=(300, 350),
+                rotation_range=rotation_range,
+                seed=None,
+                verbose=False,
+            ).create()
+
+            random_pine_cone.draw(turtle)
+
+            character_counter += 1
+
+            helpers.update_screen()
 
 
 def draw_main_character(turtle: Turtle):
@@ -169,8 +189,8 @@ if __name__ == "__main__":
     save_turtle_screen(
         canvas=screen.getcanvas(),  # type: ignore
         file="img.jpeg",
-        height=2000,
-        width=4000,
+        height=SCREEN_SIZE[0],
+        width=SCREEN_SIZE[1],
     )
 
     # screen.exitonclick()
