@@ -1,4 +1,4 @@
-import argparse
+from argparse import Namespace, ArgumentParser
 from turtle import Turtle, Screen, _Screen
 from datetime import datetime
 
@@ -17,8 +17,21 @@ def setup_turtle_and_screen(height: int, width: int) -> tuple[Turtle, _Screen]:
     return turtle_, screen
 
 
+class CommandLineArguments(Namespace):
+    """Class to hold command line arguments."""
+
+    quick: bool
+    no_turtle: bool
+    exit_on_click: bool
+    save_image: bool
+    screen_height: int
+    screen_width: int
+
+
 def run():
-    parser = argparse.ArgumentParser()
+    """Function run by the python_turtle_drawing command."""
+
+    parser = ArgumentParser()
     parser.add_argument(
         "-q", "--quick", action="store_true", help="render image quickly"
     )
@@ -35,7 +48,7 @@ def run():
     parser.add_argument(
         "--screen_width", action="store", type=int, default=4000, help="screen width"
     )
-    args = parser.parse_args()
+    args = parser.parse_args(namespace=CommandLineArguments)
 
     turtle_, screen = setup_turtle_and_screen(args.screen_height, args.screen_width)
 
