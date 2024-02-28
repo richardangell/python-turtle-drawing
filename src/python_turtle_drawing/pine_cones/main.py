@@ -1,3 +1,5 @@
+"""Script containing functions to draw pine cones image."""
+
 from turtle import Vec2D, Turtle
 from typing import Optional
 import random

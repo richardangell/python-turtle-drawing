@@ -89,7 +89,7 @@ def run():
 
         save_turtle_screen(
             canvas=screen.getcanvas(),  # type: ignore
-            file=f"img {timestamp}.jpeg",
+            file=f"img {timestamp}.png",
             height=args.screen_height,
             width=args.screen_width,
         )
