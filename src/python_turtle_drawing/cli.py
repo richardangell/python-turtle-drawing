@@ -4,7 +4,10 @@ from datetime import datetime
 
 from .pine_cones import helpers
 from .write import save_turtle_screen
-from .pine_cones.main import draw_image
+from .pine_cones.main import draw_image as pine_cones__draw_image
+
+
+MODULE_DRAW_FUNCTION_MAPPING = {"pine_cones": pine_cones__draw_image}
 
 
 def setup_turtle_and_screen(height: int, width: int) -> tuple[Turtle, _Screen]:
@@ -26,10 +29,11 @@ class CommandLineArguments(Namespace):
     save_image: bool
     screen_height: int
     screen_width: int
+    drawing: str
 
 
-def run():
-    """Function run by the python_turtle_drawing command."""
+def parse_arguments():
+    """Parse command line arguments."""
 
     parser = ArgumentParser()
     parser.add_argument(
@@ -48,7 +52,22 @@ def run():
     parser.add_argument(
         "--screen_width", action="store", type=int, default=4000, help="screen width"
     )
-    args = parser.parse_args(namespace=CommandLineArguments)
+    parser.add_argument(
+        "-d",
+        "--drawing",
+        action="store",
+        type=str,
+        default="pine_cones",
+        help="drawing to produce",
+    )
+
+    return parser.parse_args(namespace=CommandLineArguments)
+
+
+def run():
+    """Function run by the python_turtle_drawing command."""
+
+    args = parse_arguments()
 
     turtle_, screen = setup_turtle_and_screen(args.screen_height, args.screen_width)
 
@@ -58,7 +77,9 @@ def run():
     if args.quick:
         helpers.turn_off_turtle_animation()
 
-    draw_image(turtle=turtle_)
+    drawing_function = MODULE_DRAW_FUNCTION_MAPPING[args.drawing]
+
+    drawing_function(turtle=turtle_)
 
     if args.quick:
         helpers.update_screen()
