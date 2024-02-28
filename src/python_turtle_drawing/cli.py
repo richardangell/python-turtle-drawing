@@ -1,10 +1,20 @@
 import argparse
-from turtle import Turtle, Screen
-import turtle as t
+from turtle import Turtle, Screen, _Screen
+from datetime import datetime
 
 from .pine_cones import helpers
 from .write import save_turtle_screen
 from .pine_cones.main import draw_image
+
+
+def setup_turtle_and_screen(height: int, width: int) -> tuple[Turtle, _Screen]:
+    """Create Turtle and Screen objects."""
+
+    turtle_ = Turtle()
+    screen = Screen()
+    screen.screensize(height, width)
+
+    return turtle_, screen
 
 
 def run():
@@ -27,12 +37,10 @@ def run():
     )
     args = parser.parse_args()
 
-    turtle_ = Turtle()
+    turtle_, screen = setup_turtle_and_screen(args.screen_height, args.screen_width)
 
     if args.no_turtle:
         turtle_.hideturtle()
-
-    t.screensize(args.screen_height, args.screen_width)
 
     if args.quick:
         helpers.turn_off_turtle_animation()
@@ -42,12 +50,12 @@ def run():
     if args.quick:
         helpers.update_screen()
 
-    screen = Screen()
-
     if args.save_image:
+        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
         save_turtle_screen(
             canvas=screen.getcanvas(),  # type: ignore
-            file="img.jpeg",
+            file=f"img {timestamp}.jpeg",
             height=args.screen_height,
             width=args.screen_width,
         )
