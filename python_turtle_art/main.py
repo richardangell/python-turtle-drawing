@@ -1,6 +1,8 @@
 from turtle import Screen, Vec2D, Turtle
 import argparse
 import turtle as t
+from typing import Optional
+import random
 
 import numpy as np
 
@@ -15,8 +17,10 @@ from write import save_turtle_screen
 SCREEN_SIZE = (4000, 4000)
 
 
-def draw_background_characters(turtle: Turtle):
+def draw_background_characters(turtle: Turtle, initial_seed: Optional[int] = None):
     """Main drawing function."""
+
+    random.seed(initial_seed)
 
     characters_in_row = 10
     n_rows = 7
@@ -70,7 +74,7 @@ def draw_background_characters(turtle: Turtle):
                     origin=p1,
                     height_range=(300, 350),
                     rotation_range=rotation_range,
-                    seed=None,
+                    seed=random.randint(0, 100000000),
                     verbose=False,
                 ).create()
 
@@ -190,7 +194,7 @@ if __name__ == "__main__":
     turtle_.hideturtle()
 
     draw_main_character(turtle_)
-    draw_background_characters(turtle_)
+    draw_background_characters(turtle_, 0)
 
     if args.quick:
         helpers.update_screen()
@@ -204,4 +208,4 @@ if __name__ == "__main__":
         width=SCREEN_SIZE[1],
     )
 
-    # screen.exitonclick()
+    screen.exitonclick()
