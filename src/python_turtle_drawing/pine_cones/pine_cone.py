@@ -3,12 +3,12 @@ from math import cos, sin
 import random
 from typing import Optional
 
-from helpers import convert_degrees_to_radians, rotate_about_point
-from kite import CurvedConvexKite, CurvedConvexKiteFactory
-from body_part import BodyPart
-from body import Limb, Arm
-from line import OffsetFromLine
-from face import CurvedMouth, Eyes, Mouth, RoundMouth, CurvedTriangleMouth
+from .helpers import convert_degrees_to_radians, rotate_about_point
+from .kite import CurvedConvexKite, CurvedConvexKiteFactory
+from .body_part import BodyPart
+from .body import Limb, Arm
+from .line import OffsetFromLine
+from .face import CurvedMouth, Eyes, Mouth, RoundMouth, CurvedTriangleMouth
 
 
 class PineCone:

@@ -1,20 +1,15 @@
-from turtle import Screen, Vec2D, Turtle
-import argparse
-import turtle as t
+from turtle import Vec2D, Turtle
 from typing import Optional
 import random
 
 import numpy as np
 
-from kite import CurvedConvexKite, CurvedConvexKiteFactory
-from line import OffsetFromLine
-from face import Eyes, CurvedMouth
-from body import Limb
-import helpers
-from pine_cone import PineCone, RandomPineConeFactory
-from write import save_turtle_screen
-
-SCREEN_SIZE = (4000, 4000)
+from .kite import CurvedConvexKite, CurvedConvexKiteFactory
+from .line import OffsetFromLine
+from .face import Eyes, CurvedMouth
+from .body import Limb
+from . import helpers
+from .pine_cone import PineCone, RandomPineConeFactory
 
 
 def draw_background_characters(turtle: Turtle, initial_seed: Optional[int] = None):
@@ -177,35 +172,10 @@ def draw_main_character(turtle: Turtle):
     pine_cone.draw(turtle=turtle)
 
 
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "-q", "--quick", action="store_true", help="render image quickly"
-    )
-    args = parser.parse_args()
+def draw_image(turtle: Turtle):
+    """Draw pine cone image."""
 
-    turtle_ = Turtle()
+    SEED = 0
 
-    t.screensize(*SCREEN_SIZE)
-
-    if args.quick:
-        helpers.turn_off_turtle_animation()
-
-    turtle_.hideturtle()
-
-    draw_main_character(turtle_)
-    draw_background_characters(turtle_, 0)
-
-    if args.quick:
-        helpers.update_screen()
-
-    screen = Screen()
-
-    save_turtle_screen(
-        canvas=screen.getcanvas(),  # type: ignore
-        file="img.jpeg",
-        height=SCREEN_SIZE[0],
-        width=SCREEN_SIZE[1],
-    )
-
-    screen.exitonclick()
+    draw_main_character(turtle=turtle)
+    draw_background_characters(turtle=turtle, initial_seed=SEED)

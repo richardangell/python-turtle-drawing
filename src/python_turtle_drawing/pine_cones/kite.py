@@ -1,10 +1,10 @@
 from turtle import Turtle, Vec2D
-from helpers import jump_to, rotate_about_point
 from math import sqrt
 from typing import Optional, Union
 
-from shape import Shape
-from line import get_points_on_curve, OffsetFromLine
+from .shape import Shape
+from .line import get_points_on_curve, OffsetFromLine
+from .helpers import jump_to, rotate_about_point
 
 
 class ConvexKite(Shape):
