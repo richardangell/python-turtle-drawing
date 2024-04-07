@@ -6,7 +6,7 @@ import random
 
 import numpy as np
 
-from .kite import CurvedConvexKite, CurvedConvexKiteFactory
+from ..kite import CurvedConvexKite, CurvedConvexKiteFactory
 from .line import OffsetFromLine
 from .face import Eyes, CurvedMouth
 from .body import Limb
