@@ -4,7 +4,7 @@ from typing import Optional, Union
 
 from .shape import Shape
 from .line import get_points_on_curve, OffsetFromLine
-from .helpers import jump_to, rotate_about_point
+from ..helpers import jump_to, rotate_about_point
 
 
 class ConvexKite(Shape):
