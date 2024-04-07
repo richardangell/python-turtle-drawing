@@ -2,12 +2,13 @@ from turtle import Turtle, Vec2D
 from math import sqrt
 from typing import Optional, Union
 
-from .pine_cones.shape import Shape
 from .pine_cones.line import get_points_on_curve, OffsetFromLine
 from .helpers import jump_to, rotate_about_point
+from .polygon import ConvexPolygon
+from .fill import BaseFill
 
 
-class ConvexKite(Shape):
+class ConvexKite(ConvexPolygon):
     """Class for drawing a convex kite shape.
 
     Args:
@@ -44,42 +45,9 @@ class ConvexKite(Shape):
         self.diagonal_intersection_along_height = diagonal_intersection_along_height
 
         self.half_width = width / 2
-        self.points = self._calculate_points()
+        self.vertices = self.calculate_vertices()
 
-    def draw(
-        self,
-        turtle: Turtle,
-        fill: bool = False,
-        colour: str = "black",
-        size: Optional[int] = None,
-    ):
-        """Draw the diamond shape.
-
-        Args:
-            turtle (Turtle): turtle to draw with.
-            fill (bool): whether to fill the shape with colour.
-            colour (str): colour to use for the shape.
-
-        """
-        jump_to(turtle, self.origin)
-
-        original_colour = turtle.pencolor()
-        turtle.color(colour)
-        original_pensize = turtle.pensize()
-        turtle.pensize(size)
-
-        if fill:
-            turtle.begin_fill()
-
-        self._draw_points(turtle)
-
-        if fill:
-            turtle.end_fill()
-
-        turtle.color(original_colour)
-        turtle.pensize(original_pensize)
-
-    def _calculate_points(self):
+    def calculate_vertices(self) -> tuple[Vec2D, ...]:
         """Calculate the points of the kite."""
 
         left_point = self.origin + Vec2D(
@@ -133,12 +101,22 @@ class CurvedConvexKite(ConvexKite):
         self.diagonal_intersection_along_height = diagonal_intersection_along_height
 
         self.half_width = width / 2
-        self.points = self._calculate_points()
+        self.vertices = self.calculate_vertices()
 
-    def _calculate_points(self):
+    def draw(
+        self,
+        turtle: Turtle,
+        colour: str = "black",
+        size: Optional[int] = None,
+        fill: Optional[BaseFill] = None,
+    ):
+        jump_to(turtle, self.origin)
+        super().draw(turtle=turtle, colour=colour, size=size, fill=fill)
+
+    def calculate_vertices(self) -> tuple[Vec2D, ...]:
         """Calculate the points of the kite."""
 
-        kite_corner_points = super()._calculate_points()
+        kite_corner_points = super().calculate_vertices()
         self.kite_corner_points = kite_corner_points
 
         curved_edges = []

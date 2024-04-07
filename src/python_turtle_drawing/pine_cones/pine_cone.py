@@ -9,6 +9,7 @@ from .body_part import BodyPart
 from .body import Limb, Arm
 from .line import OffsetFromLine
 from .face import CurvedMouth, Eyes, Mouth, RoundMouth, CurvedTriangleMouth
+from ..fill import BaseFill, ColourFill
 
 
 class PineCone:
@@ -21,7 +22,7 @@ class PineCone:
         outer_kite_line_width: int = 5,
         horizontal_offset: int = 5,
         vertical_offset: int = 5,
-        inner_kite_fill: bool = True,
+        inner_kite_fill: BaseFill = ColourFill(fillcolour="white"),
         inner_kite_colour: str = "white",
         initial_body_parts: tuple[BodyPart, ...] = (),
         final_body_parts: tuple[BodyPart, ...] = (),
@@ -41,7 +42,7 @@ class PineCone:
 
         self._draw_initial_body_parts(turtle)
 
-        self.outer_kite.draw(turtle=turtle, fill=True, colour="black")
+        self.outer_kite.draw(turtle=turtle, fill=ColourFill(), colour="black")
 
         if self.inner_kite_factory.height is None:
             raise ValueError("inner_kite_factory.height not specified")
@@ -184,7 +185,7 @@ class PineCone:
                 )
 
         self.outer_kite.draw(
-            turtle=turtle, fill=False, colour="black", size=self.outer_kite_line_width
+            turtle=turtle, fill=None, colour="black", size=self.outer_kite_line_width
         )
 
         self._draw_final_body_parts(turtle)
