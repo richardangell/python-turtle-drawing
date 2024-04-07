@@ -1,7 +1,7 @@
 from python_turtle_drawing.pine_cones.main import draw_image
 from python_turtle_drawing.cli import setup_turtle_and_screen
 from python_turtle_drawing.write import get_canvas_image
-from python_turtle_drawing.pine_cones import helpers
+from python_turtle_drawing import helpers
 
 from pathlib import Path
 
