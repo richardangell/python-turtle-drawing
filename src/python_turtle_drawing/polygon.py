@@ -1,9 +1,10 @@
 from abc import abstractmethod
 from turtle import Turtle, Vec2D
-from typing import Optional, Union
+from typing import Optional, Self, Union
 
 from .helpers import jump_to
 from .fill import BaseFill
+from .helpers import rotate_about_point
 
 
 class Polygon:
@@ -45,17 +46,32 @@ class Polygon:
     def _draw_edges(self, turtle: Turtle) -> None:
         """Draw the edges of the polygon."""
 
-        if not hasattr(self, "_vertices"):
-            raise AttributeError("vertices have not been set before trying to draw.")
-
+        self._check_vertices_set()
         jump_to(turtle=turtle, position=self._vertices[-1])
 
         for point in self._vertices:
             turtle.goto(point)
 
-    def rotate(self, angle: Union[int, float]) -> None:
-        """Rotate polygon."""
-        raise NotImplementedError
+    def rotate(self, angle: Union[int, float], about_point: Vec2D) -> Self:
+        """Rotate polygon.
+
+        Args:
+            angle (Union[int, float]): angle to rotate the polygon.
+            about_point (Vec2D): point to rotate about.
+
+        """
+        self._check_vertices_set()
+
+        if (angle % 360) != 0:
+            self.vertices = tuple(
+                rotate_about_point(point, angle, about_point) for point in self.vertices
+            )
+
+        return self
+
+    def _check_vertices_set(self):
+        if not hasattr(self, "_vertices"):
+            raise AttributeError("vertices have not been set before trying to draw.")
 
 
 class ConvexPolygon(Polygon):

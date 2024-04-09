@@ -3,7 +3,7 @@ from math import sqrt
 from typing import Optional, Union
 
 from .pine_cones.line import get_points_on_curve, OffsetFromLine
-from .helpers import jump_to, rotate_about_point
+from .helpers import jump_to
 from .polygon import ConvexPolygon
 from .fill import BaseFill
 
@@ -15,9 +15,6 @@ class ConvexKite(ConvexPolygon):
         origin (Vec2D):
         height (Union[int, float]): height of the kite.
         width (Union[int, float]): width of the kite.
-        rotation (Union[int, float]): angle to rotate the kite.
-        rotation_point (Vec2D): optional point to rotate about, if not specified
-            origin is used.
         diagonal_intersection_along_height (float): proportion of the distance
             along the vertical bisector, the vertical bisector intersects with
             the horizontal bisector.
@@ -29,21 +26,13 @@ class ConvexKite(ConvexPolygon):
         origin: Vec2D,
         height: Union[int, float] = sqrt(20),
         width: Union[int, float] = sqrt(20),
-        rotation: Union[int, float] = 0,
-        rotation_point: Optional[Vec2D] = None,
         diagonal_intersection_along_height: float = 0.5,
     ):
         """Initialise the ConvexKite object."""
         self.origin = origin
         self.height = height
         self.width = width
-        self.rotation = rotation
-        if rotation_point is None:
-            self.rotation_point = origin
-        else:
-            self.rotation_point = rotation_point
         self.diagonal_intersection_along_height = diagonal_intersection_along_height
-
         self.half_width = width / 2
         self.vertices = self.calculate_vertices()
 
@@ -58,16 +47,7 @@ class ConvexKite(ConvexPolygon):
         )
         top_point = self.origin + Vec2D(0, self.height)
 
-        non_rotated_points = (self.origin, left_point, top_point, right_point)
-
-        if (self.rotation % 360) != 0:
-            return tuple(
-                rotate_about_point(point, self.rotation, self.origin)
-                for point in non_rotated_points
-            )
-
-        else:
-            return non_rotated_points
+        return (self.origin, left_point, top_point, right_point)
 
 
 class CurvedConvexKite(ConvexKite):
@@ -84,24 +64,25 @@ class CurvedConvexKite(ConvexKite):
         ),
         height: Union[int, float] = sqrt(20),
         width: Union[int, float] = sqrt(20),
-        rotation: Union[int, float] = 0,
-        rotation_point: Optional[Vec2D] = None,
         diagonal_intersection_along_height: float = 0.5,
     ):
-        """Initialise the ConvexKite object."""
+        """Initialise the CurvedConvexKite object.
+
+        Notes:
+            The verticies that are calculated during initialisation are only
+            the corner points i.e. the points that define the same non-curved
+            convex kite.
+
+        """
         self.origin = origin
         self.off_lines = off_lines
         self.height = height
         self.width = width
-        self.rotation = rotation
-        if rotation_point is None:
-            self.rotation_point = origin
-        else:
-            self.rotation_point = rotation_point
         self.diagonal_intersection_along_height = diagonal_intersection_along_height
-
         self.half_width = width / 2
-        self.vertices = self.calculate_vertices()
+        self.vertices = super().calculate_vertices()
+
+        self._curved_vertices_set = False
 
     def draw(
         self,
@@ -110,15 +91,25 @@ class CurvedConvexKite(ConvexKite):
         size: Optional[int] = None,
         fill: Optional[BaseFill] = None,
     ):
+        """
+        Draw the curved convex kite.
+
+        Notes:
+            Calculation of the complete set of vertices for the curved edges
+            is delayed until this method is called. This is to reduce
+            calculating these points multiple times if rotation is applied.
+
+        """
         jump_to(turtle, self.origin)
+        if not self._curved_vertices_set:
+            self.vertices = self._fill_in_curve_between_vertices()
+            self._curved_vertices_set = True
         super().draw(turtle=turtle, colour=colour, size=size, fill=fill)
 
-    def calculate_vertices(self) -> tuple[Vec2D, ...]:
-        """Calculate the points of the kite."""
+    def _fill_in_curve_between_vertices(self) -> tuple[Vec2D, ...]:
+        """Calculate all points of the kite."""
 
-        kite_corner_points = super().calculate_vertices()
-        self.kite_corner_points = kite_corner_points
-
+        kite_corner_points = self.vertices
         curved_edges = []
 
         for index in range(len(kite_corner_points)):
@@ -229,7 +220,5 @@ class CurvedConvexKiteFactory:
             off_lines=off_lines,
             height=height,
             width=width,
-            rotation=rotation,
-            rotation_point=rotation_point,
             diagonal_intersection_along_height=diagonal_intersection_along_height,
         )

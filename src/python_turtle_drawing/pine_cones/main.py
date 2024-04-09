@@ -100,7 +100,6 @@ def draw_main_character(turtle: Turtle):
         height=1200,
         width=800,
         diagonal_intersection_along_height=0.45,
-        rotation=rotation,
     )
 
     inner_kite_factor = CurvedConvexKiteFactory(
@@ -163,6 +162,7 @@ def draw_main_character(turtle: Turtle):
 
     pine_cone = PineCone(
         outer_kite=outer_kite,
+        outer_kite_rotation=rotation,
         inner_kite_factory=inner_kite_factor,
         outer_kite_line_width=20,
         horizontal_offset=20,
