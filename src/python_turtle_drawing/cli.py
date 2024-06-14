@@ -5,9 +5,13 @@ from datetime import datetime
 from .helpers import turn_off_turtle_animation, update_screen
 from .write import save_turtle_screen
 from .pine_cones.main import draw_image as pine_cones__draw_image
+from .stars.main import draw_image as stars__draw_image
 
 
-MODULE_DRAW_FUNCTION_MAPPING = {"pine_cones": pine_cones__draw_image}
+MODULE_DRAW_FUNCTION_MAPPING = {
+    "pine_cones": pine_cones__draw_image,
+    "stars": stars__draw_image,
+}
 
 
 def setup_turtle_and_screen(height: int, width: int) -> tuple[Turtle, _Screen]:
