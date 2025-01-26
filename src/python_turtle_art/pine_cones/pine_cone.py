@@ -23,7 +23,7 @@ class PineCone:
         outer_kite_line_width: int = 5,
         horizontal_offset: int = 5,
         vertical_offset: int = 5,
-        inner_kite_fill: BaseFill = ColourFill(fillcolour="white"),
+        inner_kite_fill: BaseFill | None = None,
         inner_kite_colour: str = "white",
         initial_body_parts: tuple[BodyPart, ...] = (),
         final_body_parts: tuple[BodyPart, ...] = (),
@@ -34,7 +34,11 @@ class PineCone:
         self.outer_kite_line_width = outer_kite_line_width
         self.horizontal_offset = horizontal_offset
         self.vertical_offset = vertical_offset
-        self.inner_kite_fill = inner_kite_fill
+        self.inner_kite_fill: BaseFill = (
+            ColourFill(fillcolour="white")
+            if inner_kite_fill is None
+            else inner_kite_fill
+        )
         self.inner_kite_colour = inner_kite_colour
         self.initial_body_parts = initial_body_parts
         self.final_body_parts = final_body_parts

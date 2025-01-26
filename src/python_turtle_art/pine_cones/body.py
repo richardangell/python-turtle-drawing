@@ -17,13 +17,13 @@ class Arm(Limb):
         start: Vec2D,
         end: Vec2D,
         size: int,
-        off_line: OffsetFromLine = OffsetFromLine(),
+        off_line: OffsetFromLine | None = None,
         outline: bool = True,
         n_wiggles: int = 1,
     ):
         self.start = start
         self.end = end
-        self.off_line = off_line
+        self.off_line = OffsetFromLine() if off_line is None else off_line
         self.size = size
         self.outline = outline
         self.n_wiggles = n_wiggles

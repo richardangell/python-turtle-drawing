@@ -70,12 +70,12 @@ class CurvedMouth(Mouth):
         start: Vec2D,
         end: Vec2D,
         size: int,
-        off_line: OffsetFromLine = OffsetFromLine(),
+        off_line: OffsetFromLine | None = None,
         outline: bool = True,
     ):
         self.start = start
         self.end = end
-        self.off_line = off_line
+        self.off_line = OffsetFromLine() if off_line is None else off_line
         self.size = size
         self.outline = outline
 
@@ -116,13 +116,13 @@ class CurvedTriangleMouth(Mouth):
         start: Vec2D,
         end: Vec2D,
         size: int,
-        off_line: OffsetFromLine = OffsetFromLine(),
+        off_line: OffsetFromLine | None = None,
         fill: bool = True,
         colour: str = "white",
     ):
         self.start = start
         self.end = end
-        self.off_line = off_line
+        self.off_line = OffsetFromLine() if off_line is None else off_line
         self.size = size
         self.fill = fill
         self.colour = colour
