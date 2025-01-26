@@ -1,7 +1,7 @@
-from turtle import Turtle, Vec2D
 import turtle as t
+from math import cos, pi, sin
+from turtle import Turtle, Vec2D
 from typing import Union
-from math import pi, cos, sin
 
 
 def jump_to(turtle: Turtle, position: Vec2D) -> None:

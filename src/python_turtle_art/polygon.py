@@ -2,9 +2,8 @@ from abc import abstractmethod
 from turtle import Turtle, Vec2D
 from typing import Optional, Self, Union
 
-from .helpers import jump_to
 from .fill import BaseFill
-from .helpers import rotate_about_point
+from .helpers import jump_to, rotate_about_point
 
 
 class Polygon:

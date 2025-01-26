@@ -1,16 +1,16 @@
 """Script containing functions to draw pine cones image."""
 
-from turtle import Vec2D, Turtle
-from typing import Optional
 import random
+from turtle import Turtle, Vec2D
+from typing import Optional
 
 import numpy as np
 
-from ..kite import CurvedConvexKite, CurvedConvexKiteFactory
-from .line import OffsetFromLine
-from .face import Eyes, CurvedMouth
-from .body import Limb
 from ..helpers import rotate_about_point, update_screen
+from ..kite import CurvedConvexKite, CurvedConvexKiteFactory
+from .body import Limb
+from .face import CurvedMouth, Eyes
+from .line import OffsetFromLine
 from .pine_cone import PineCone, RandomPineConeFactory
 
 
@@ -177,7 +177,7 @@ def draw_main_character(turtle: Turtle):
 def draw_image(turtle: Turtle):
     """Draw pine cone image."""
 
-    SEED = 0
+    seed = 0
 
     draw_main_character(turtle=turtle)
-    draw_background_characters(turtle=turtle, initial_seed=SEED)
+    draw_background_characters(turtle=turtle, initial_seed=seed)

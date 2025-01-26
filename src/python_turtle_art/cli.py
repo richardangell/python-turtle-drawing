@@ -1,12 +1,11 @@
-from argparse import Namespace, ArgumentParser
-from turtle import Turtle, Screen, _Screen
+from argparse import ArgumentParser, Namespace
 from datetime import datetime
+from turtle import Screen, Turtle, _Screen
 
 from .helpers import turn_off_turtle_animation, update_screen
-from .write import save_turtle_screen
 from .pine_cones.main import draw_image as pine_cones__draw_image
 from .stars.main import draw_image as stars__draw_image
-
+from .write import save_turtle_screen
 
 MODULE_DRAW_FUNCTION_MAPPING = {
     "pine_cones": pine_cones__draw_image,

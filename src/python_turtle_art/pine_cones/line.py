@@ -1,9 +1,9 @@
-from turtle import Vec2D, Turtle
-import numpy as np
+from dataclasses import dataclass
 from math import sqrt
+from turtle import Turtle, Vec2D
 from typing import Optional
 
-from dataclasses import dataclass
+import numpy as np
 
 
 @dataclass

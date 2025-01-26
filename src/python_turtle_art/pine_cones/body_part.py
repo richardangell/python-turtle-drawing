@@ -1,5 +1,5 @@
-from turtle import Turtle
 from abc import ABC, abstractmethod
+from turtle import Turtle
 
 
 class BodyPart(ABC):

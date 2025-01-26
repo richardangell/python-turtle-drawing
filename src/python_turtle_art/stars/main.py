@@ -1,6 +1,7 @@
-from turtle import Vec2D, Turtle
-from ..kite import ConvexKite
+from turtle import Turtle, Vec2D
+
 from ..fill import ColourFill
+from ..kite import ConvexKite
 
 
 def draw_image(turtle: Turtle):

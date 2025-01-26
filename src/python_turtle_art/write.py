@@ -1,7 +1,8 @@
-from PIL import Image, ImageGrab
 from io import BytesIO
 from turtle import ScrolledCanvas
 from typing import Optional
+
+from PIL import Image, ImageGrab
 
 
 def save_turtle_screen(
