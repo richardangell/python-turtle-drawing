@@ -203,9 +203,8 @@ class CurvedConvexKiteFactory:
             else:
                 rotation = self.rotation
 
-        if rotation_point is None:
-            if self.rotation_point is not None:
-                rotation_point = self.rotation_point
+        if rotation_point is None and self.rotation_point is not None:
+            rotation_point = self.rotation_point
 
         if diagonal_intersection_along_height is None:
             if self.diagonal_intersection_along_height is None:

@@ -49,13 +49,13 @@ def draw_background_characters(turtle: Turtle, initial_seed: Optional[int] = Non
     for row_number in reversed(range(n_rows)):
         y = -row_number * vertical_character_offset
 
-        character_counter = 0
-
         start_rotation_range = start_rotation_ranges[row_number]
         rotation_range_sign = rotation_range_signs[row_number]
 
-        for x in np.linspace(
-            0, characters_in_row * horizontal_character_offset, characters_in_row
+        for character_counter, x in enumerate(
+            np.linspace(
+                0, characters_in_row * horizontal_character_offset, characters_in_row
+            )
         ):
             p1 = Vec2D(x, y)
 
@@ -76,8 +76,6 @@ def draw_background_characters(turtle: Turtle, initial_seed: Optional[int] = Non
                 ).create()
 
                 random_pine_cone.draw(turtle)
-
-            character_counter += 1
 
             update_screen()
 
