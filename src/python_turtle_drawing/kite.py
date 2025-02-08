@@ -2,21 +2,19 @@ from turtle import Turtle, Vec2D
 from math import sqrt
 from typing import Optional, Union
 
-from .shape import Shape
-from .line import get_points_on_curve, OffsetFromLine
-from .helpers import jump_to, rotate_about_point
+from .pine_cones.line import get_points_on_curve, OffsetFromLine
+from .helpers import jump_to
+from .polygon import ConvexPolygon
+from .fill import BaseFill
 
 
-class ConvexKite(Shape):
+class ConvexKite(ConvexPolygon):
     """Class for drawing a convex kite shape.
 
     Args:
         origin (Vec2D):
         height (Union[int, float]): height of the kite.
         width (Union[int, float]): width of the kite.
-        rotation (Union[int, float]): angle to rotate the kite.
-        rotation_point (Vec2D): optional point to rotate about, if not specified
-            origin is used.
         diagonal_intersection_along_height (float): proportion of the distance
             along the vertical bisector, the vertical bisector intersects with
             the horizontal bisector.
@@ -28,58 +26,17 @@ class ConvexKite(Shape):
         origin: Vec2D,
         height: Union[int, float] = sqrt(20),
         width: Union[int, float] = sqrt(20),
-        rotation: Union[int, float] = 0,
-        rotation_point: Optional[Vec2D] = None,
         diagonal_intersection_along_height: float = 0.5,
     ):
         """Initialise the ConvexKite object."""
         self.origin = origin
         self.height = height
         self.width = width
-        self.rotation = rotation
-        if rotation_point is None:
-            self.rotation_point = origin
-        else:
-            self.rotation_point = rotation_point
         self.diagonal_intersection_along_height = diagonal_intersection_along_height
-
         self.half_width = width / 2
-        self.points = self._calculate_points()
+        self.vertices = self.calculate_vertices()
 
-    def draw(
-        self,
-        turtle: Turtle,
-        fill: bool = False,
-        colour: str = "black",
-        size: Optional[int] = None,
-    ):
-        """Draw the diamond shape.
-
-        Args:
-            turtle (Turtle): turtle to draw with.
-            fill (bool): whether to fill the shape with colour.
-            colour (str): colour to use for the shape.
-
-        """
-        jump_to(turtle, self.origin)
-
-        original_colour = turtle.pencolor()
-        turtle.color(colour)
-        original_pensize = turtle.pensize()
-        turtle.pensize(size)
-
-        if fill:
-            turtle.begin_fill()
-
-        self._draw_points(turtle)
-
-        if fill:
-            turtle.end_fill()
-
-        turtle.color(original_colour)
-        turtle.pensize(original_pensize)
-
-    def _calculate_points(self):
+    def calculate_vertices(self) -> tuple[Vec2D, ...]:
         """Calculate the points of the kite."""
 
         left_point = self.origin + Vec2D(
@@ -90,16 +47,7 @@ class ConvexKite(Shape):
         )
         top_point = self.origin + Vec2D(0, self.height)
 
-        non_rotated_points = (self.origin, left_point, top_point, right_point)
-
-        if (self.rotation % 360) != 0:
-            return tuple(
-                rotate_about_point(point, self.rotation, self.origin)
-                for point in non_rotated_points
-            )
-
-        else:
-            return non_rotated_points
+        return (self.origin, left_point, top_point, right_point)
 
 
 class CurvedConvexKite(ConvexKite):
@@ -116,31 +64,52 @@ class CurvedConvexKite(ConvexKite):
         ),
         height: Union[int, float] = sqrt(20),
         width: Union[int, float] = sqrt(20),
-        rotation: Union[int, float] = 0,
-        rotation_point: Optional[Vec2D] = None,
         diagonal_intersection_along_height: float = 0.5,
     ):
-        """Initialise the ConvexKite object."""
+        """Initialise the CurvedConvexKite object.
+
+        Notes:
+            The verticies that are calculated during initialisation are only
+            the corner points i.e. the points that define the same non-curved
+            convex kite.
+
+        """
         self.origin = origin
         self.off_lines = off_lines
         self.height = height
         self.width = width
-        self.rotation = rotation
-        if rotation_point is None:
-            self.rotation_point = origin
-        else:
-            self.rotation_point = rotation_point
         self.diagonal_intersection_along_height = diagonal_intersection_along_height
-
         self.half_width = width / 2
-        self.points = self._calculate_points()
+        self.vertices = super().calculate_vertices()
 
-    def _calculate_points(self):
-        """Calculate the points of the kite."""
+        self._curved_vertices_set = False
 
-        kite_corner_points = super()._calculate_points()
-        self.kite_corner_points = kite_corner_points
+    def draw(
+        self,
+        turtle: Turtle,
+        colour: str = "black",
+        size: Optional[int] = None,
+        fill: Optional[BaseFill] = None,
+    ):
+        """
+        Draw the curved convex kite.
 
+        Notes:
+            Calculation of the complete set of vertices for the curved edges
+            is delayed until this method is called. This is to reduce
+            calculating these points multiple times if rotation is applied.
+
+        """
+        jump_to(turtle, self.origin)
+        if not self._curved_vertices_set:
+            self.vertices = self._fill_in_curve_between_vertices()
+            self._curved_vertices_set = True
+        super().draw(turtle=turtle, colour=colour, size=size, fill=fill)
+
+    def _fill_in_curve_between_vertices(self) -> tuple[Vec2D, ...]:
+        """Calculate all points of the kite."""
+
+        kite_corner_points = self.vertices
         curved_edges = []
 
         for index in range(len(kite_corner_points)):
@@ -251,7 +220,5 @@ class CurvedConvexKiteFactory:
             off_lines=off_lines,
             height=height,
             width=width,
-            rotation=rotation,
-            rotation_point=rotation_point,
             diagonal_intersection_along_height=diagonal_intersection_along_height,
         )

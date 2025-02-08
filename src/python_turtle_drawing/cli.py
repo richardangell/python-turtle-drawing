@@ -2,7 +2,7 @@ from argparse import Namespace, ArgumentParser
 from turtle import Turtle, Screen, _Screen
 from datetime import datetime
 
-from .pine_cones import helpers
+from .helpers import turn_off_turtle_animation, update_screen
 from .write import save_turtle_screen
 from .pine_cones.main import draw_image as pine_cones__draw_image
 
@@ -75,14 +75,14 @@ def run():
         turtle_.hideturtle()
 
     if args.quick:
-        helpers.turn_off_turtle_animation()
+        turn_off_turtle_animation()
 
     drawing_function = MODULE_DRAW_FUNCTION_MAPPING[args.drawing]
 
     drawing_function(turtle=turtle_)
 
     if args.quick:
-        helpers.update_screen()
+        update_screen()
 
     if args.save_image:
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
