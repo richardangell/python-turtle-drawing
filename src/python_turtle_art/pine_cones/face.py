@@ -69,7 +69,7 @@ class CurvedMouth(Mouth):
         self,
         start: Vec2D,
         end: Vec2D,
-        size: int,
+        size: int | float,
         off_line: OffsetFromLine | None = None,
         outline: bool = True,
     ):

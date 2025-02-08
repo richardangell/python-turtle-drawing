@@ -22,12 +22,9 @@ class Polygon:
 
     @vertices.setter
     def vertices(self, vertices: tuple[Vec2D, ...]) -> None:
-        if isinstance(vertices, tuple) and all(isinstance(v, Vec2D) for v in vertices):
-            if len(vertices) < 2:
-                raise ValueError("vertices must have more than one point.")
-            self._vertices = vertices
-        else:
-            raise TypeError("vertices must be a tuple of Vec2D.")
+        if len(vertices) < 2:
+            raise ValueError("vertices must have more than one point.")
+        self._vertices = vertices
 
     def draw(self, turtle: Turtle, colour: str = "black", size: Optional[int] = None):
         """Set pensize and colour then draw polygon edges."""
