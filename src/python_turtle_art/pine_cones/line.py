@@ -1,7 +1,6 @@
 from dataclasses import dataclass
 from math import sqrt
 from turtle import Turtle, Vec2D
-from typing import Optional
 
 import numpy as np
 
@@ -19,7 +18,7 @@ class OffsetFromLine:
     """
 
     proportion_lenth: float = 0.5
-    offset: int = 10
+    offset: int | float = 10
 
     def to_point(self, p0: Vec2D, p1: Vec2D) -> Vec2D:
         """Get point that is offset distance from p1 in direction that is
@@ -34,7 +33,9 @@ class OffsetFromLine:
         )
 
 
-def point_perpendicular_distance_from_line(p0: Vec2D, p1: Vec2D, n: int) -> Vec2D:
+def point_perpendicular_distance_from_line(
+    p0: Vec2D, p1: Vec2D, n: int | float
+) -> Vec2D:
     """Find point which is perpendicular distance n from p1 in line p0, p1."""
 
     dx, dy = p0 - p1
@@ -84,7 +85,7 @@ def draw_curved_line(
     off_line: OffsetFromLine | None = None,
     steps: int = 10,
     draw_points: bool = False,
-    size: Optional[int] = None,
+    size: int | float | None = None,
 ) -> None:
     """Draw a curved line.
 
@@ -105,7 +106,7 @@ def draw_curved_line(
     off_line_point = off_line_.to_point(start, end)
 
     original_pensize = turtle.pensize()
-    turtle.pensize(size)
+    turtle.pensize(size)  # type: ignore
 
     if draw_points:
         turtle.penup()
