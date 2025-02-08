@@ -1,11 +1,11 @@
-from python_turtle_drawing.pine_cones.main import draw_image
-from python_turtle_drawing.cli import setup_turtle_and_screen
-from python_turtle_drawing.write import get_canvas_image
-from python_turtle_drawing import helpers
-
 from pathlib import Path
 
 from PIL import Image, ImageChops
+
+from python_turtle_art import helpers
+from python_turtle_art.cli import setup_turtle_and_screen
+from python_turtle_art.pine_cones.main import draw_image
+from python_turtle_art.write import get_canvas_image
 
 
 def test_image_produced():
@@ -26,6 +26,6 @@ def test_image_produced():
 
     difference = ImageChops.difference(actual_image, expected_image)
 
-    assert (
-        not difference.getbbox()
-    ), "pine_cones.main.draw_image does not produce the expected image"
+    assert not difference.getbbox(), (
+        "pine_cones.main.draw_image does not produce the expected image"
+    )

@@ -1,15 +1,15 @@
-from turtle import Turtle, Vec2D
-from math import cos, sin
 import random
+from math import cos, sin
+from turtle import Turtle, Vec2D
 from typing import Optional, Union
 
+from ..fill import BaseFill, ColourFill
 from ..helpers import convert_degrees_to_radians, rotate_about_point
 from ..kite import CurvedConvexKite, CurvedConvexKiteFactory
+from .body import Arm, Limb
 from .body_part import BodyPart
-from .body import Limb, Arm
+from .face import CurvedMouth, CurvedTriangleMouth, Eyes, Mouth, RoundMouth
 from .line import OffsetFromLine
-from .face import CurvedMouth, Eyes, Mouth, RoundMouth, CurvedTriangleMouth
-from ..fill import BaseFill, ColourFill
 
 
 class PineCone:
@@ -23,7 +23,7 @@ class PineCone:
         outer_kite_line_width: int = 5,
         horizontal_offset: int = 5,
         vertical_offset: int = 5,
-        inner_kite_fill: BaseFill = ColourFill(fillcolour="white"),
+        inner_kite_fill: BaseFill | None = None,
         inner_kite_colour: str = "white",
         initial_body_parts: tuple[BodyPart, ...] = (),
         final_body_parts: tuple[BodyPart, ...] = (),
@@ -34,7 +34,11 @@ class PineCone:
         self.outer_kite_line_width = outer_kite_line_width
         self.horizontal_offset = horizontal_offset
         self.vertical_offset = vertical_offset
-        self.inner_kite_fill = inner_kite_fill
+        self.inner_kite_fill: BaseFill = (
+            ColourFill(fillcolour="white")
+            if inner_kite_fill is None
+            else inner_kite_fill
+        )
         self.inner_kite_colour = inner_kite_colour
         self.initial_body_parts = initial_body_parts
         self.final_body_parts = final_body_parts
@@ -279,7 +283,7 @@ class RandomPineConeFactory:
     def _set_outer_kite_values(self):
         """Set random values for the outer kite."""
 
-        RANDOM_VALUES = [
+        random_values = [
             "_outer_kite_rotation",
             "_outer_kite_height",
             "_outer_kite_width",
@@ -306,12 +310,12 @@ class RandomPineConeFactory:
 
         self._outer_kite_line_width = max(1, int(5 / 300 * self._outer_kite_height))
 
-        self._print_attribute_values(RANDOM_VALUES)
+        self._print_attribute_values(random_values)
 
     def _set_inner_kite_values(self):
         """Set random values for the inner kites."""
 
-        RANDOM_VALUES = [
+        random_values = [
             "_inner_kite_rotation",
             "_inner_kite_diagonal_intersection_along_height",
             "_inner_kite_horizontal_offset",
@@ -338,12 +342,12 @@ class RandomPineConeFactory:
             a=int(0.66 * self._inner_kite_height), b=int(2 * self._inner_kite_height)
         )
 
-        self._print_attribute_values(RANDOM_VALUES)
+        self._print_attribute_values(random_values)
 
     def _set_arm_values(self):
         """Set random values for arms."""
 
-        RANDOM_VALUES = [
+        random_values = [
             "_limb_wdith",
             "_right_arm_offset_from_center",
             "_right_arm_horizontal_distance",
@@ -384,12 +388,12 @@ class RandomPineConeFactory:
 
         self._n_arm_wiggles = random.randint(1, 5)
 
-        self._print_attribute_values(RANDOM_VALUES)
+        self._print_attribute_values(random_values)
 
     def _set_leg_values(self):
         """Set random values for legs."""
 
-        RANDOM_VALUES = [
+        random_values = [
             "_legs_offset_from_center",
             "_right_leg_horizontal_distance",
             "_left_leg_horizontal_distance",
@@ -419,12 +423,12 @@ class RandomPineConeFactory:
             b=int(0.5 * self._outer_kite_height),
         )
 
-        self._print_attribute_values(RANDOM_VALUES)
+        self._print_attribute_values(random_values)
 
     def _set_eye_values(self):
         """Set random values for eyes."""
 
-        RANDOM_VALUES = [
+        random_values = [
             "_eyes_height",
             "_eyes_offset_from_center",
             "_eyes_sizes",
@@ -454,12 +458,12 @@ class RandomPineConeFactory:
 
         self._eyes_sizes = tuple(eye_sizes)
 
-        self._print_attribute_values(RANDOM_VALUES)
+        self._print_attribute_values(random_values)
 
     def _set_curved_mouth_values(self):
         """Set random values for mouth."""
 
-        RANDOM_VALUES = [
+        random_values = [
             "_mouth_offset_from_center",
             "_mouth_height",
             "_mouth_control_point_offset",
@@ -483,12 +487,12 @@ class RandomPineConeFactory:
 
         self._mouth_line_width = self._outer_kite_line_width * random.uniform(1.5, 3)
 
-        self._print_attribute_values(RANDOM_VALUES)
+        self._print_attribute_values(random_values)
 
     def _set_round_mouth_values(self):
         """Set random values for round mouth."""
 
-        RANDOM_VALUES = [
+        random_values = [
             "_mouth_offset_from_center",
             "_mouth_height",
             "_mouth_size",
@@ -508,7 +512,7 @@ class RandomPineConeFactory:
             b=self._eyes_height,
         )
 
-        self._print_attribute_values(RANDOM_VALUES)
+        self._print_attribute_values(random_values)
 
     def _create_outer_kite(self) -> CurvedConvexKite:
         """Create CurvedConvexKite object for the PineCone."""

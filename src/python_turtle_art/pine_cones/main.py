@@ -1,16 +1,16 @@
 """Script containing functions to draw pine cones image."""
 
-from turtle import Vec2D, Turtle
-from typing import Optional
 import random
+from turtle import Turtle, Vec2D
+from typing import Optional
 
 import numpy as np
 
-from ..kite import CurvedConvexKite, CurvedConvexKiteFactory
-from .line import OffsetFromLine
-from .face import Eyes, CurvedMouth
-from .body import Limb
 from ..helpers import rotate_about_point, update_screen
+from ..kite import CurvedConvexKite, CurvedConvexKiteFactory
+from .body import Limb
+from .face import CurvedMouth, Eyes
+from .line import OffsetFromLine
 from .pine_cone import PineCone, RandomPineConeFactory
 
 
@@ -49,13 +49,13 @@ def draw_background_characters(turtle: Turtle, initial_seed: Optional[int] = Non
     for row_number in reversed(range(n_rows)):
         y = -row_number * vertical_character_offset
 
-        character_counter = 0
-
         start_rotation_range = start_rotation_ranges[row_number]
         rotation_range_sign = rotation_range_signs[row_number]
 
-        for x in np.linspace(
-            0, characters_in_row * horizontal_character_offset, characters_in_row
+        for character_counter, x in enumerate(
+            np.linspace(
+                0, characters_in_row * horizontal_character_offset, characters_in_row
+            )
         ):
             p1 = Vec2D(x, y)
 
@@ -76,8 +76,6 @@ def draw_background_characters(turtle: Turtle, initial_seed: Optional[int] = Non
                 ).create()
 
                 random_pine_cone.draw(turtle)
-
-            character_counter += 1
 
             update_screen()
 
@@ -177,7 +175,7 @@ def draw_main_character(turtle: Turtle):
 def draw_image(turtle: Turtle):
     """Draw pine cone image."""
 
-    SEED = 0
+    seed = 0
 
     draw_main_character(turtle=turtle)
-    draw_background_characters(turtle=turtle, initial_seed=SEED)
+    draw_background_characters(turtle=turtle, initial_seed=seed)

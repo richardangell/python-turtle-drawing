@@ -1,11 +1,11 @@
-from turtle import Turtle, Vec2D
 from math import sqrt
+from turtle import Turtle, Vec2D
 from typing import Optional, Union
 
-from .pine_cones.line import get_points_on_curve, OffsetFromLine
-from .helpers import jump_to
-from .polygon import ConvexPolygon
 from .fill import BaseFill
+from .helpers import jump_to
+from .pine_cones.line import OffsetFromLine, get_points_on_curve
+from .polygon import ConvexPolygon
 
 
 class ConvexKite(ConvexPolygon):
@@ -203,9 +203,8 @@ class CurvedConvexKiteFactory:
             else:
                 rotation = self.rotation
 
-        if rotation_point is None:
-            if self.rotation_point is not None:
-                rotation_point = self.rotation_point
+        if rotation_point is None and self.rotation_point is not None:
+            rotation_point = self.rotation_point
 
         if diagonal_intersection_along_height is None:
             if self.diagonal_intersection_along_height is None:

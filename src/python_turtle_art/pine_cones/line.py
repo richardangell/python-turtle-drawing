@@ -1,9 +1,9 @@
-from turtle import Vec2D, Turtle
-import numpy as np
+from dataclasses import dataclass
 from math import sqrt
+from turtle import Turtle, Vec2D
 from typing import Optional
 
-from dataclasses import dataclass
+import numpy as np
 
 
 @dataclass
@@ -81,7 +81,7 @@ def draw_curved_line(
     turtle: Turtle,
     start: Vec2D,
     end: Vec2D,
-    off_line: OffsetFromLine = OffsetFromLine(),
+    off_line: OffsetFromLine | None = None,
     steps: int = 10,
     draw_points: bool = False,
     size: Optional[int] = None,
@@ -100,7 +100,9 @@ def draw_curved_line(
             line width is used.
 
     """
-    off_line_point = off_line.to_point(start, end)
+    off_line_ = OffsetFromLine() if off_line is None else off_line
+
+    off_line_point = off_line_.to_point(start, end)
 
     original_pensize = turtle.pensize()
     turtle.pensize(size)
