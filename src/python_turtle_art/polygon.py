@@ -7,9 +7,15 @@ from .helpers import jump_to, rotate_about_point
 
 
 class Polygon:
-    """Class for drawing an arbitrary polygon."""
+    """Class for drawing an arbitrary polygon.
 
-    _vertices: tuple[Vec2D, ...]
+    Args:
+        vertices (tuple[Vec2D, ...]): Points of the polygon.
+
+    """
+
+    def __init__(self, vertices: tuple[Vec2D, ...]):
+        self.vertices = vertices
 
     @abstractmethod
     def calculate_vertices(self) -> tuple[Vec2D, ...]:
@@ -22,8 +28,8 @@ class Polygon:
 
     @vertices.setter
     def vertices(self, vertices: tuple[Vec2D, ...]) -> None:
-        if len(vertices) < 2:
-            raise ValueError("vertices must have more than one point.")
+        if len(vertices) < 3:
+            raise ValueError("vertices must contain at least 3 points.")
         self._vertices = vertices
 
     def draw(self, turtle: Turtle, colour: str = "black", size: Optional[int] = None):
@@ -34,19 +40,14 @@ class Polygon:
 
         turtle.color(colour)
         turtle.pensize(size)
-        self._draw_edges(turtle)
 
-        turtle.color(original_colour)
-        turtle.pensize(original_pensize)
-
-    def _draw_edges(self, turtle: Turtle) -> None:
-        """Draw the edges of the polygon."""
-
-        self._check_vertices_set()
         jump_to(turtle=turtle, position=self._vertices[-1])
 
         for point in self._vertices:
             turtle.goto(point)
+
+        turtle.color(original_colour)
+        turtle.pensize(original_pensize)
 
     def rotate(self, angle: Union[int, float], about_point: Vec2D) -> Self:
         """Rotate polygon.
@@ -56,18 +57,12 @@ class Polygon:
             about_point (Vec2D): point to rotate about.
 
         """
-        self._check_vertices_set()
-
         if (angle % 360) != 0:
             self.vertices = tuple(
                 rotate_about_point(point, angle, about_point) for point in self.vertices
             )
 
         return self
-
-    def _check_vertices_set(self):
-        if not hasattr(self, "_vertices"):
-            raise AttributeError("vertices have not been set before trying to draw.")
 
 
 class ConvexPolygon(Polygon):
