@@ -25,5 +25,5 @@ class ConvexPolygon:
         if len(vertices) < 3:
             raise ValueError("vertices must contain at least 3 points.")
         if not is_convex(vertices):
-            raise ValueError("Supplied vertices are not convex.")
+            raise ValueError("Polygon defined by supplied vertices are not convex.")
         self._vertices = vertices
