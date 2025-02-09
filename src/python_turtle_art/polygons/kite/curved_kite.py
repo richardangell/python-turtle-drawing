@@ -4,97 +4,10 @@ from math import sqrt
 from turtle import Turtle, Vec2D
 from typing import Optional, Union
 
-from ..fill import BaseFill
-from ..helpers.turtle import jump_to
-from ..line import OffsetFromLine, get_points_on_curve
-from .polygon import Polygon
-
-
-class Kite(Polygon):
-    """Class for drawing a kite shape.
-
-    Args:
-        vertices (tuple[Vec2D, ...]): Exactly 4 points of the kite.
-
-    """
-
-    def __init__(
-        self,
-        vertices: tuple[Vec2D, ...],
-    ):
-        """Define the kite by it's vertices."""
-        self.vertices = vertices
-
-        if len(vertices) != 4:
-            raise ValueError("vertices must contain exactly 4 points.")
-
-        self.corner_vertices_indices = (0, 1, 2, 3)
-
-    @classmethod
-    def from_origin_and_dimensions(
-        cls,
-        origin: Vec2D,
-        height: int | float = sqrt(20),
-        width: int | float = sqrt(20),
-        diagonal_intersection_along_height: float = 0.5,
-    ) -> Kite:
-        """Define a convex kite from origin point and dimensions.
-
-        Args:
-            origin (Vec2D): bottom point of the kite.
-            height (Union[int, float]): height of the kite.
-            width (Union[int, float]): width of the kite.
-            diagonal_intersection_along_height (float): proportion of the distance
-                along the vertical bisector that the vertical bisector intersects
-                with the horizontal bisector.
-
-        """
-        vertices = cls.calculate_kite_corner_vertices(
-            origin=origin,
-            height=height,
-            width=width,
-            diagonal_intersection_along_height=diagonal_intersection_along_height,
-        )
-
-        return Kite(vertices=vertices)
-
-    @staticmethod
-    def calculate_kite_corner_vertices(
-        origin: Vec2D,
-        height: int | float = sqrt(20),
-        width: int | float = sqrt(20),
-        diagonal_intersection_along_height: float = 0.5,
-    ) -> tuple[Vec2D, ...]:
-        """Calculate the 4 corner certices from the supplied dimensions."""
-        half_width = width / 2
-
-        left_point = origin + Vec2D(
-            x=-half_width, y=diagonal_intersection_along_height * height
-        )
-        right_point = origin + Vec2D(
-            x=half_width, y=diagonal_intersection_along_height * height
-        )
-        top_point = origin + Vec2D(0, height)
-
-        return (origin, left_point, top_point, right_point)
-
-    def get_height(self) -> float:
-        """Calculate the height of the kite."""
-        bottom_vertex_index = self.corner_vertices_indices[0]
-        top_vertex_index = self.corner_vertices_indices[2]
-
-        delta = self.vertices[top_vertex_index] - self.vertices[bottom_vertex_index]
-
-        return sqrt(delta * delta)
-
-    def get_width(self) -> float:
-        """Calculate the width of the kite."""
-        left_vertex_index = self.corner_vertices_indices[1]
-        right_vertex_index = self.corner_vertices_indices[3]
-
-        delta = self.vertices[right_vertex_index] - self.vertices[left_vertex_index]
-
-        return sqrt(delta * delta)
+from ...fill import BaseFill
+from ...helpers.turtle import jump_to
+from ...line import OffsetFromLine, get_points_on_curve
+from .kite import Kite
 
 
 class CurvedKite(Kite):

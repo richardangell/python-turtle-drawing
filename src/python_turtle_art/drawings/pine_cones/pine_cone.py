@@ -7,7 +7,7 @@ from ...fill import BaseFill, ColourFill
 from ...helpers.angles import convert_degrees_to_radians
 from ...helpers.rotation import rotate_about_point
 from ...line import OffsetFromLine
-from ...polygons.kite import CurvedKite, CurvedKiteFactory
+from ...polygons.kite.curved_kite import CurvedKite, CurvedKiteFactory
 from .body import Arm, Limb
 from .body_part import BodyPart
 from .face import CurvedMouth, CurvedTriangleMouth, Eyes, Mouth, RoundMouth

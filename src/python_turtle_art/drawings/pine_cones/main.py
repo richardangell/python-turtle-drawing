@@ -9,7 +9,7 @@ import numpy as np
 from ...helpers.rotation import rotate_about_point
 from ...helpers.turtle import update_screen
 from ...line import OffsetFromLine
-from ...polygons.kite import CurvedKite, CurvedKiteFactory
+from ...polygons.kite.curved_kite import CurvedKite, CurvedKiteFactory
 from .body import Limb
 from .face import CurvedMouth, Eyes
 from .pine_cone import PineCone, RandomPineConeFactory
