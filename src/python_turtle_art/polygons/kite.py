@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from math import sqrt
 from turtle import Turtle, Vec2D
 from typing import Optional, Union
@@ -12,42 +14,81 @@ class ConvexKite(ConvexPolygon):
     """Class for drawing a convex kite shape.
 
     Args:
-        origin (Vec2D):
-        height (Union[int, float]): height of the kite.
-        width (Union[int, float]): width of the kite.
-        diagonal_intersection_along_height (float): proportion of the distance
-            along the vertical bisector, the vertical bisector intersects with
-            the horizontal bisector.
+        vertices (tuple[Vec2D, ...]): Points of the polygon. At least 4 must be
+            supplied.
 
     """
 
     def __init__(
         self,
-        origin: Vec2D,
-        height: Union[int, float] = sqrt(20),
-        width: Union[int, float] = sqrt(20),
-        diagonal_intersection_along_height: float = 0.5,
+        vertices: tuple[Vec2D, ...],
     ):
         """Initialise the ConvexKite object."""
-        self.origin = origin
-        self.height = height
-        self.width = width
-        self.diagonal_intersection_along_height = diagonal_intersection_along_height
-        self.half_width = width / 2
-        self.vertices = self.calculate_vertices()
+        self.vertices = vertices
+        self.corner_vertices_indices = (0, 1, 2, 3)
 
-    def calculate_vertices(self) -> tuple[Vec2D, ...]:
-        """Calculate the points of the kite."""
+    @classmethod
+    def from_origin_and_dimensions(
+        cls,
+        origin: Vec2D,
+        height: int | float = sqrt(20),
+        width: int | float = sqrt(20),
+        diagonal_intersection_along_height: float = 0.5,
+    ) -> ConvexKite:
+        """Create convex kite from origin point and dimensions.
 
-        left_point = self.origin + Vec2D(
-            -self.half_width, self.diagonal_intersection_along_height * self.height
+        Args:
+            origin (Vec2D): bottom point of the kite.
+            height (Union[int, float]): height of the kite.
+            width (Union[int, float]): width of the kite.
+            diagonal_intersection_along_height (float): proportion of the distance
+                along the vertical bisector that the vertical bisector intersects
+                with the horizontal bisector.
+
+        """
+        vertices = cls.calculate_kite_corner_vertices(
+            origin=origin,
+            height=height,
+            width=width,
+            diagonal_intersection_along_height=diagonal_intersection_along_height,
         )
-        right_point = self.origin + Vec2D(
-            self.half_width, self.diagonal_intersection_along_height * self.height
-        )
-        top_point = self.origin + Vec2D(0, self.height)
 
-        return (self.origin, left_point, top_point, right_point)
+        return ConvexKite(vertices=vertices)
+
+    @staticmethod
+    def calculate_kite_corner_vertices(
+        origin: Vec2D,
+        height: int | float = sqrt(20),
+        width: int | float = sqrt(20),
+        diagonal_intersection_along_height: float = 0.5,
+    ) -> tuple[Vec2D, ...]:
+        half_width = width / 2
+
+        left_point = origin + Vec2D(
+            x=-half_width, y=diagonal_intersection_along_height * height
+        )
+        right_point = origin + Vec2D(
+            x=half_width, y=diagonal_intersection_along_height * height
+        )
+        top_point = origin + Vec2D(0, height)
+
+        return (origin, left_point, top_point, right_point)
+
+    def get_height(self) -> float:
+        bottom_vertex_index = self.corner_vertices_indices[0]
+        top_vertex_index = self.corner_vertices_indices[2]
+
+        delta = self.vertices[top_vertex_index] - self.vertices[bottom_vertex_index]
+
+        return sqrt(delta * delta)
+
+    def get_width(self) -> float:
+        left_vertex_index = self.corner_vertices_indices[1]
+        right_vertex_index = self.corner_vertices_indices[3]
+
+        delta = self.vertices[right_vertex_index] - self.vertices[left_vertex_index]
+
+        return sqrt(delta * delta)
 
 
 class CurvedConvexKite(ConvexKite):
@@ -55,18 +96,29 @@ class CurvedConvexKite(ConvexKite):
 
     def __init__(
         self,
+        vertices: tuple[Vec2D, ...],
+        corner_vertices_indices=tuple[int, ...],
+    ):
+        """Initialise the CurvedConvexKite object."""
+        self.vertices = vertices
+        self.corner_vertices_indices = corner_vertices_indices
+
+    @classmethod
+    def from_origin_and_dimensions(
+        cls,
         origin: Vec2D,
+        height: Union[int, float] = sqrt(20),
+        width: Union[int, float] = sqrt(20),
+        diagonal_intersection_along_height: float = 0.5,
         off_lines: tuple[OffsetFromLine, ...] = (
             OffsetFromLine(),
             OffsetFromLine(),
             OffsetFromLine(),
             OffsetFromLine(),
         ),
-        height: Union[int, float] = sqrt(20),
-        width: Union[int, float] = sqrt(20),
-        diagonal_intersection_along_height: float = 0.5,
-    ):
-        """Initialise the CurvedConvexKite object.
+        steps_in_curves: int = 20,
+    ) -> CurvedConvexKite:
+        """Initialise the CurvedConvexKite from origin point and dimensions.
 
         Notes:
             The verticies that are calculated during initialisation are only
@@ -74,15 +126,44 @@ class CurvedConvexKite(ConvexKite):
             convex kite.
 
         """
-        self.origin = origin
-        self.off_lines = off_lines
-        self.height = height
-        self.width = width
-        self.diagonal_intersection_along_height = diagonal_intersection_along_height
-        self.half_width = width / 2
-        self.vertices = super().calculate_vertices()
 
-        self._curved_vertices_set = False
+        if len(off_lines) != 4:
+            raise ValueError("off_lines must contain 4 elements.")
+
+        kite_corner_points = ConvexKite.calculate_kite_corner_vertices(
+            origin=origin,
+            height=height,
+            width=width,
+            diagonal_intersection_along_height=diagonal_intersection_along_height,
+        )
+        curved_edges = []
+
+        for index in range(len(kite_corner_points)):
+            end_index = index + 1
+            if end_index == 4:
+                end_index = 0
+
+            control_point = off_lines[index].to_point(
+                kite_corner_points[index], kite_corner_points[end_index]
+            )
+
+            curve_points = get_points_on_curve(
+                start=kite_corner_points[index],
+                end=kite_corner_points[end_index],
+                off_line_point=control_point,
+                steps=steps_in_curves,
+            )
+
+            curved_edges.extend(curve_points)
+
+        curved_convex_kite = CurvedConvexKite(
+            vertices=tuple(curved_edges),
+            corner_vertices_indices=tuple(
+                x for x in range(0, len(curved_edges), steps_in_curves)
+            ),
+        )
+
+        return curved_convex_kite
 
     def draw(
         self,
@@ -100,37 +181,8 @@ class CurvedConvexKite(ConvexKite):
             calculating these points multiple times if rotation is applied.
 
         """
-        jump_to(turtle, self.origin)
-        if not self._curved_vertices_set:
-            self.vertices = self._fill_in_curve_between_vertices()
-            self._curved_vertices_set = True
+        jump_to(turtle, self.vertices[0])
         super().draw(turtle=turtle, colour=colour, size=size, fill=fill)
-
-    def _fill_in_curve_between_vertices(self) -> tuple[Vec2D, ...]:
-        """Calculate all points of the kite."""
-
-        kite_corner_points = self.vertices
-        curved_edges = []
-
-        for index in range(len(kite_corner_points)):
-            end_index = index + 1
-            if end_index == 4:
-                end_index = 0
-
-            control_point = self.off_lines[index].to_point(
-                kite_corner_points[index], kite_corner_points[end_index]
-            )
-
-            curve_points = get_points_on_curve(
-                start=kite_corner_points[index],
-                end=kite_corner_points[end_index],
-                off_line_point=control_point,
-                steps=20,
-            )
-
-            curved_edges.extend(curve_points)
-
-        return tuple(curved_edges)
 
 
 class CurvedConvexKiteFactory:
@@ -214,10 +266,10 @@ class CurvedConvexKiteFactory:
                     self.diagonal_intersection_along_height
                 )
 
-        return CurvedConvexKite(
+        return CurvedConvexKite.from_origin_and_dimensions(
             origin=origin,
-            off_lines=off_lines,
             height=height,
             width=width,
             diagonal_intersection_along_height=diagonal_intersection_along_height,
+            off_lines=off_lines,
         )

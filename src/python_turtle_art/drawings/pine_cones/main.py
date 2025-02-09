@@ -88,7 +88,7 @@ def draw_main_character(turtle: Turtle):
 
     rotation = 10
 
-    outer_kite = CurvedConvexKite(
+    outer_kite = CurvedConvexKite.from_origin_and_dimensions(
         origin=s1,
         off_lines=(
             OffsetFromLine(offset=50),

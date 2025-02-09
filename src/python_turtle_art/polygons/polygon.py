@@ -1,4 +1,3 @@
-from abc import abstractmethod
 from turtle import Turtle, Vec2D
 from typing import Optional, Self, Union
 
@@ -10,17 +9,13 @@ class Polygon:
     """Class for drawing an arbitrary polygon.
 
     Args:
-        vertices (tuple[Vec2D, ...]): Points of the polygon.
+        vertices (tuple[Vec2D, ...]): Points of the polygon. At least 3 must be
+            supplied.
 
     """
 
     def __init__(self, vertices: tuple[Vec2D, ...]):
         self.vertices = vertices
-
-    @abstractmethod
-    def calculate_vertices(self) -> tuple[Vec2D, ...]:
-        """Calculate vertices for the polygon."""
-        raise NotImplementedError
 
     @property
     def vertices(self) -> tuple[Vec2D, ...]:
