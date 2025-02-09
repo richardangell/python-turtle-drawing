@@ -26,7 +26,7 @@ def test_image_produced():
 
     """
 
-    expected_image_file = Path("tests/pine_cones.png")
+    expected_image_file = Path("tests/drawings/pine_cones.png")
     expected_image = Image.open(expected_image_file)
 
     height, width = 4000, 4000
