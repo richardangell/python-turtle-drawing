@@ -102,19 +102,17 @@ class CurvedKiteFactory:
     The arguments of CurvedKite.from_origin_and_dimensions can be speficied either in
     the initialisation of this class or later when the get_kite method is called.
 
-    The rotation and rotation_point arguments are not used directly by this class.
-
     """
 
     def __init__(
         self,
+        rotation: Union[int, float],
         origin: Optional[Vec2D] = None,
         height: Optional[Union[int, float]] = None,
         width: Optional[Union[int, float]] = None,
         diagonal_intersection_along_height: Optional[float] = None,
         off_lines: Optional[tuple[OffsetFromLine, ...]] = None,
         # TODO: consider if rotation arguments could be moved somewhere else
-        rotation: Optional[Union[int, float]] = None,
         rotation_point: Optional[Vec2D] = None,
     ):
         """Initialise the ConvexKite object."""
@@ -134,7 +132,7 @@ class CurvedKiteFactory:
         diagonal_intersection_along_height: Optional[float] = None,
         off_lines: Optional[tuple[OffsetFromLine, ...]] = None,
     ) -> CurvedKite:
-        """Return CurvedKite object.
+        """Return CurvedKite object and rotate about origin.
 
         If any of the arguments were not specified during initialisation of the
         CurvedKiteFactory object, they can be specified when get_kite is called. If
@@ -181,4 +179,4 @@ class CurvedKiteFactory:
             width=width,
             diagonal_intersection_along_height=diagonal_intersection_along_height,
             off_lines=off_lines,
-        )
+        ).rotate(angle=self.rotation, about_point=origin)
