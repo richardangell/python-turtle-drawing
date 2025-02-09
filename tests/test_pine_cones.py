@@ -6,7 +6,7 @@ from PIL import Image, ImageChops
 
 from python_turtle_art import helpers
 from python_turtle_art.cli import setup_turtle_and_screen
-from python_turtle_art.pine_cones.main import draw_image
+from python_turtle_art.drawings import draw_image_pine_cones
 from python_turtle_art.write import get_canvas_image
 
 
@@ -34,7 +34,7 @@ def test_image_produced():
     turtle_.hideturtle()
 
     helpers.turn_off_turtle_animation()
-    draw_image(turtle_)
+    draw_image_pine_cones(turtle_)
     helpers.update_screen()
 
     actual_image = get_canvas_image(screen.getcanvas(), height, width)

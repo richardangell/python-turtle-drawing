@@ -1,7 +1,7 @@
 from abc import abstractmethod
 from turtle import Turtle, Vec2D
 
-from ..helpers import jump_to
+from ...helpers import jump_to
 from .body_part import BodyPart
 from .line import OffsetFromLine, draw_curved_line
 
