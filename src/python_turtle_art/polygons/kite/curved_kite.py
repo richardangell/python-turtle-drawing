@@ -142,12 +142,6 @@ class CurvedKiteFactory:
             else:
                 origin = self.origin
 
-        if off_lines is None:
-            if self.off_lines is None:
-                raise ValueError("off_lines not specified")
-            else:
-                off_lines = self.off_lines
-
         if height is None:
             if self.height is None:
                 raise ValueError("height not specified")
@@ -160,6 +154,20 @@ class CurvedKiteFactory:
             else:
                 width = self.width
 
+        if diagonal_intersection_along_height is None:
+            if self.diagonal_intersection_along_height is None:
+                raise ValueError("diagonal_intersection_along_height not specified")
+            else:
+                diagonal_intersection_along_height = (
+                    self.diagonal_intersection_along_height
+                )
+
+        if off_lines is None:
+            if self.off_lines is None:
+                raise ValueError("off_lines not specified")
+            else:
+                off_lines = self.off_lines
+
         if rotation is None:
             if self.rotation is None:
                 raise ValueError("rotation not specified")
@@ -168,14 +176,6 @@ class CurvedKiteFactory:
 
         if rotation_point is None and self.rotation_point is not None:
             rotation_point = self.rotation_point
-
-        if diagonal_intersection_along_height is None:
-            if self.diagonal_intersection_along_height is None:
-                raise ValueError("diagonal_intersection_along_height not specified")
-            else:
-                diagonal_intersection_along_height = (
-                    self.diagonal_intersection_along_height
-                )
 
         return CurvedKite.from_origin_and_dimensions(
             origin=origin,
