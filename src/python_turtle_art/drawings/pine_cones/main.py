@@ -7,7 +7,7 @@ from typing import Optional
 import numpy as np
 
 from ...helpers import rotate_about_point, update_screen
-from ...kite import CurvedConvexKite, CurvedConvexKiteFactory
+from ...polygons.kite import CurvedConvexKite, CurvedConvexKiteFactory
 from .body import Limb
 from .face import CurvedMouth, Eyes
 from .line import OffsetFromLine

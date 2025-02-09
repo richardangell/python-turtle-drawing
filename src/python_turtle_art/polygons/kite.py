@@ -2,10 +2,10 @@ from math import sqrt
 from turtle import Turtle, Vec2D
 from typing import Optional, Union
 
-from .drawings.pine_cones.line import OffsetFromLine, get_points_on_curve
-from .fill import BaseFill
-from .helpers import jump_to
-from .polygon import ConvexPolygon
+from ..drawings.pine_cones.line import OffsetFromLine, get_points_on_curve
+from ..fill import BaseFill
+from ..helpers import jump_to
+from .convex_polygon import ConvexPolygon
 
 
 class ConvexKite(ConvexPolygon):

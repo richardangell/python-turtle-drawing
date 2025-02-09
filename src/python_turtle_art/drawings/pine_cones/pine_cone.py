@@ -5,7 +5,7 @@ from typing import Optional, Union
 
 from ...fill import BaseFill, ColourFill
 from ...helpers import convert_degrees_to_radians, rotate_about_point
-from ...kite import CurvedConvexKite, CurvedConvexKiteFactory
+from ...polygons.kite import CurvedConvexKite, CurvedConvexKiteFactory
 from .body import Arm, Limb
 from .body_part import BodyPart
 from .face import CurvedMouth, CurvedTriangleMouth, Eyes, Mouth, RoundMouth

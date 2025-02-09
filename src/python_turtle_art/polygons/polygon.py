@@ -2,8 +2,7 @@ from abc import abstractmethod
 from turtle import Turtle, Vec2D
 from typing import Optional, Self, Union
 
-from .fill import BaseFill
-from .helpers import jump_to, rotate_about_point
+from ..helpers import jump_to, rotate_about_point
 
 
 class Polygon:
@@ -28,6 +27,7 @@ class Polygon:
 
     @vertices.setter
     def vertices(self, vertices: tuple[Vec2D, ...]) -> None:
+        """Set vertices attribute and check there are at least 3 points."""
         if len(vertices) < 3:
             raise ValueError("vertices must contain at least 3 points.")
         self._vertices = vertices
@@ -63,24 +63,3 @@ class Polygon:
             )
 
         return self
-
-
-class ConvexPolygon(Polygon):
-    """Class for drawing a convex polygon."""
-
-    def draw(
-        self,
-        turtle: Turtle,
-        colour: str = "black",
-        size: Optional[int] = None,
-        fill: Optional[BaseFill] = None,
-    ):
-        """Draw polygon with optional filling."""
-
-        if fill is not None:
-            fill.pre_draw(turtle)
-
-        super().draw(turtle=turtle, colour=colour, size=size)
-
-        if fill is not None:
-            fill.post_draw(turtle)
