@@ -112,7 +112,6 @@ def draw_main_character(turtle: Turtle):
         width=240,
         diagonal_intersection_along_height=0.45,
         rotation=rotation + 2,
-        rotation_point=s1,
     )
 
     left_leg = Limb(

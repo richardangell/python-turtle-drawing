@@ -529,8 +529,6 @@ class RandomPineConeFactory:
             width=self._inner_kite_width,
             diagonal_intersection_along_height=self._inner_kite_diagonal_intersection_along_height,
             rotation=self._inner_kite_rotation,
-            rotation_point=self.origin
-            + Vec2D(int(self._outer_kite_width / 2), int(self._outer_kite_height / 2)),
         )
 
     def _create_legs(self) -> tuple[Limb, Limb]:
