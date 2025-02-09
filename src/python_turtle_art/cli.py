@@ -3,7 +3,7 @@ from datetime import datetime
 from turtle import Screen, Turtle, _Screen
 
 from .drawings import draw_image_pine_cones
-from .helpers import turn_off_turtle_animation, update_screen
+from .helpers.turtle import turn_off_turtle_animation, update_screen
 from .write import save_turtle_screen
 
 MODULE_DRAW_FUNCTION_MAPPING = {

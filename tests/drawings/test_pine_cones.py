@@ -4,9 +4,9 @@ from pathlib import Path
 import pytest
 from PIL import Image, ImageChops
 
-from python_turtle_art import helpers
 from python_turtle_art.cli import setup_turtle_and_screen
 from python_turtle_art.drawings import draw_image_pine_cones
+from python_turtle_art.helpers.turtle import turn_off_turtle_animation, update_screen
 from python_turtle_art.write import get_canvas_image
 
 
@@ -26,6 +26,8 @@ def test_image_produced():
 
     """
 
+    # Arrange
+
     expected_image_file = Path("tests/drawings/pine_cones.png")
     expected_image = Image.open(expected_image_file)
 
@@ -33,9 +35,13 @@ def test_image_produced():
     turtle_, screen = setup_turtle_and_screen(height, width)
     turtle_.hideturtle()
 
-    helpers.turn_off_turtle_animation()
+    # Act
+
+    turn_off_turtle_animation()
     draw_image_pine_cones(turtle_)
-    helpers.update_screen()
+    update_screen()
+
+    # Assert
 
     actual_image = get_canvas_image(screen.getcanvas(), height, width)
 

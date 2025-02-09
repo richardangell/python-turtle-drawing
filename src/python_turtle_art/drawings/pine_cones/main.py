@@ -6,7 +6,8 @@ from typing import Optional
 
 import numpy as np
 
-from ...helpers import rotate_about_point, update_screen
+from ...helpers.rotation import rotate_about_point
+from ...helpers.turtle import update_screen
 from ...polygons.kite import CurvedConvexKite, CurvedConvexKiteFactory
 from .body import Limb
 from .face import CurvedMouth, Eyes

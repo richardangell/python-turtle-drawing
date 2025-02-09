@@ -4,7 +4,8 @@ from turtle import Turtle, Vec2D
 from typing import Optional, Union
 
 from ...fill import BaseFill, ColourFill
-from ...helpers import convert_degrees_to_radians, rotate_about_point
+from ...helpers.angles import convert_degrees_to_radians
+from ...helpers.rotation import rotate_about_point
 from ...polygons.kite import CurvedConvexKite, CurvedConvexKiteFactory
 from .body import Arm, Limb
 from .body_part import BodyPart
