@@ -99,9 +99,10 @@ class CurvedKite(Kite):
 class CurvedKiteFactory:
     """Factory that allows delaying the creation of CurvedKite objects.
 
-    Some arguments required in CurvedKite.from_origin_and_dimensions can be speficied
-    in the initialisation of this class and the remaining arguments can be specified
-    later when the get_kite method is called.
+    The arguments of CurvedKite.from_origin_and_dimensions can be speficied either in
+    the initialisation of this class or later when the get_kite method is called.
+
+    The rotation and rotation_point arguments are not used directly by this class.
 
     """
 
@@ -112,6 +113,7 @@ class CurvedKiteFactory:
         width: Optional[Union[int, float]] = None,
         diagonal_intersection_along_height: Optional[float] = None,
         off_lines: Optional[tuple[OffsetFromLine, ...]] = None,
+        # TODO: consider if rotation arguments could be moved somewhere else
         rotation: Optional[Union[int, float]] = None,
         rotation_point: Optional[Vec2D] = None,
     ):
@@ -131,10 +133,15 @@ class CurvedKiteFactory:
         width: Optional[Union[int, float]] = None,
         diagonal_intersection_along_height: Optional[float] = None,
         off_lines: Optional[tuple[OffsetFromLine, ...]] = None,
-        rotation: Optional[Union[int, float]] = None,
-        rotation_point: Optional[Vec2D] = None,
     ) -> CurvedKite:
-        """Return CurvedKite object."""
+        """Return CurvedKite object.
+
+        If any of the arguments were not specified during initialisation of the
+        CurvedKiteFactory object, they can be specified when get_kite is called. If
+        however an argument is not specified during initialisation and also not
+        specified when get_kite is called an exception will be raised.
+
+        """
 
         if origin is None:
             if self.origin is None:
@@ -167,15 +174,6 @@ class CurvedKiteFactory:
                 raise ValueError("off_lines not specified")
             else:
                 off_lines = self.off_lines
-
-        if rotation is None:
-            if self.rotation is None:
-                raise ValueError("rotation not specified")
-            else:
-                rotation = self.rotation
-
-        if rotation_point is None and self.rotation_point is not None:
-            rotation_point = self.rotation_point
 
         return CurvedKite.from_origin_and_dimensions(
             origin=origin,
