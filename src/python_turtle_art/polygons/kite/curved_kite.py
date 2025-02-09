@@ -97,7 +97,7 @@ class CurvedKite(Kite):
 
 
 class CurvedKiteFactory:
-    """Factory that allows delaying the creation of CurvedKite objects.
+    """Factory allowing delay of CurvedKite creation with from_origin_and_dimensions.
 
     The arguments of CurvedKite.from_origin_and_dimensions can be speficied either in
     the initialisation of this class or later when the get_kite method is called.
