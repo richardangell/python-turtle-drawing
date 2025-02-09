@@ -14,8 +14,7 @@ class ConvexKite(ConvexPolygon):
     """Class for drawing a convex kite shape.
 
     Args:
-        vertices (tuple[Vec2D, ...]): Points of the polygon. At least 4 must be
-            supplied.
+        vertices (tuple[Vec2D, ...]): Exactly 4 points of the kite.
 
     """
 
@@ -23,8 +22,12 @@ class ConvexKite(ConvexPolygon):
         self,
         vertices: tuple[Vec2D, ...],
     ):
-        """Initialise the ConvexKite object."""
+        """Define the convex kite by it's vertices."""
         self.vertices = vertices
+
+        if len(vertices) != 4:
+            raise ValueError("vertices must contain exactly 4 points.")
+
         self.corner_vertices_indices = (0, 1, 2, 3)
 
     @classmethod
@@ -35,7 +38,7 @@ class ConvexKite(ConvexPolygon):
         width: int | float = sqrt(20),
         diagonal_intersection_along_height: float = 0.5,
     ) -> ConvexKite:
-        """Create convex kite from origin point and dimensions.
+        """Define a convex kite from origin point and dimensions.
 
         Args:
             origin (Vec2D): bottom point of the kite.
@@ -62,6 +65,7 @@ class ConvexKite(ConvexPolygon):
         width: int | float = sqrt(20),
         diagonal_intersection_along_height: float = 0.5,
     ) -> tuple[Vec2D, ...]:
+        """Calculate the 4 corner certices from the supplied dimensions."""
         half_width = width / 2
 
         left_point = origin + Vec2D(
@@ -75,6 +79,7 @@ class ConvexKite(ConvexPolygon):
         return (origin, left_point, top_point, right_point)
 
     def get_height(self) -> float:
+        """Calculate the height of the kite."""
         bottom_vertex_index = self.corner_vertices_indices[0]
         top_vertex_index = self.corner_vertices_indices[2]
 
@@ -83,6 +88,7 @@ class ConvexKite(ConvexPolygon):
         return sqrt(delta * delta)
 
     def get_width(self) -> float:
+        """Calculate the width of the kite."""
         left_vertex_index = self.corner_vertices_indices[1]
         right_vertex_index = self.corner_vertices_indices[3]
 
@@ -99,16 +105,23 @@ class CurvedConvexKite(ConvexKite):
         vertices: tuple[Vec2D, ...],
         corner_vertices_indices=tuple[int, ...],
     ):
-        """Initialise the CurvedConvexKite object."""
+        """Define the curved convex kite by it's vertices."""
         self.vertices = vertices
+
+        if len(vertices) <= 4:
+            raise ValueError("vertices must contain more than 4 points.")
+
+        if len(corner_vertices_indices) != 4:
+            raise ValueError("corner_vertices_indices must contain exactly 4 points.")
+
         self.corner_vertices_indices = corner_vertices_indices
 
     @classmethod
     def from_origin_and_dimensions(
         cls,
         origin: Vec2D,
-        height: Union[int, float] = sqrt(20),
-        width: Union[int, float] = sqrt(20),
+        height: int | float = sqrt(20),
+        width: int | float = sqrt(20),
         diagonal_intersection_along_height: float = 0.5,
         off_lines: tuple[OffsetFromLine, ...] = (
             OffsetFromLine(),
@@ -118,14 +131,7 @@ class CurvedConvexKite(ConvexKite):
         ),
         steps_in_curves: int = 20,
     ) -> CurvedConvexKite:
-        """Initialise the CurvedConvexKite from origin point and dimensions.
-
-        Notes:
-            The verticies that are calculated during initialisation are only
-            the corner points i.e. the points that define the same non-curved
-            convex kite.
-
-        """
+        """Define a CurvedConvexKite from origin point and dimensions."""
 
         if len(off_lines) != 4:
             raise ValueError("off_lines must contain 4 elements.")
@@ -172,15 +178,7 @@ class CurvedConvexKite(ConvexKite):
         size: Optional[int] = None,
         fill: Optional[BaseFill] = None,
     ):
-        """
-        Draw the curved convex kite.
-
-        Notes:
-            Calculation of the complete set of vertices for the curved edges
-            is delayed until this method is called. This is to reduce
-            calculating these points multiple times if rotation is applied.
-
-        """
+        """Jump to first vertex then draw the curved convex kite."""
         jump_to(turtle, self.vertices[0])
         super().draw(turtle=turtle, colour=colour, size=size, fill=fill)
 
