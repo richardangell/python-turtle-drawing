@@ -1,26 +1,29 @@
-from turtle import Turtle
-from typing import Optional
+from turtle import Vec2D
 
-from ..fill import BaseFill
-from .polygon import Polygon
+from .polygon import is_convex
 
 
-class ConvexPolygon(Polygon):
-    """Class for drawing a convex polygon."""
+class ConvexPolygon:
+    """Mixin for a convex polygon.
 
-    def draw(
-        self,
-        turtle: Turtle,
-        colour: str = "black",
-        size: Optional[int] = None,
-        fill: Optional[BaseFill] = None,
-    ):
-        """Draw polygon with optional filling."""
+    Defines a setter for the vertices property which enforces the convex property.
 
-        if fill is not None:
-            fill.pre_draw(turtle)
+    """
 
-        super().draw(turtle=turtle, colour=colour, size=size)
+    @property
+    def vertices(self) -> tuple[Vec2D, ...]:
+        return self._vertices
 
-        if fill is not None:
-            fill.post_draw(turtle)
+    @vertices.setter
+    def vertices(self, vertices: tuple[Vec2D, ...]) -> None:
+        """Perform checks on vertices and set attributes.
+
+        Check at least 3 vertices are passed and the vertices form a convex polygon are
+        provided.
+
+        """
+        if len(vertices) < 3:
+            raise ValueError("vertices must contain at least 3 points.")
+        if not is_convex(vertices):
+            raise ValueError("Supplied vertices are not convex.")
+        self._vertices = vertices
