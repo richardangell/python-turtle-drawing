@@ -99,40 +99,40 @@ class CurvedKite(Kite):
 class CurvedKiteFactory:
     """Factory that allows delaying the creation of CurvedKite objects.
 
-    Some arguments required in CurvedKite.__init__ can be speficied in
-    the initialisation of this class, the remaining arguments can be specified
-    later when get_kite is called.
+    Some arguments required in CurvedKite.from_origin_and_dimensions can be speficied
+    in the initialisation of this class and the remaining arguments can be specified
+    later when the get_kite method is called.
 
     """
 
     def __init__(
         self,
         origin: Optional[Vec2D] = None,
-        off_lines: Optional[tuple[OffsetFromLine, ...]] = None,
         height: Optional[Union[int, float]] = None,
         width: Optional[Union[int, float]] = None,
+        diagonal_intersection_along_height: Optional[float] = None,
+        off_lines: Optional[tuple[OffsetFromLine, ...]] = None,
         rotation: Optional[Union[int, float]] = None,
         rotation_point: Optional[Vec2D] = None,
-        diagonal_intersection_along_height: Optional[float] = None,
     ):
         """Initialise the ConvexKite object."""
         self.origin = origin
-        self.off_lines = off_lines
         self.height = height
         self.width = width
+        self.diagonal_intersection_along_height = diagonal_intersection_along_height
+        self.off_lines = off_lines
         self.rotation = rotation
         self.rotation_point = rotation_point
-        self.diagonal_intersection_along_height = diagonal_intersection_along_height
 
     def get_kite(
         self,
         origin: Optional[Vec2D] = None,
-        off_lines: Optional[tuple[OffsetFromLine, ...]] = None,
         height: Optional[Union[int, float]] = None,
         width: Optional[Union[int, float]] = None,
+        diagonal_intersection_along_height: Optional[float] = None,
+        off_lines: Optional[tuple[OffsetFromLine, ...]] = None,
         rotation: Optional[Union[int, float]] = None,
         rotation_point: Optional[Vec2D] = None,
-        diagonal_intersection_along_height: Optional[float] = None,
     ) -> CurvedKite:
         """Return CurvedKite object."""
 
