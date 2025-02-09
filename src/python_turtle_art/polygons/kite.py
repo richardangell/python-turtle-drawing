@@ -7,11 +7,11 @@ from typing import Optional, Union
 from ..fill import BaseFill
 from ..helpers.turtle import jump_to
 from ..line import OffsetFromLine, get_points_on_curve
-from .convex_polygon import ConvexPolygon
+from .polygon import Polygon
 
 
-class ConvexKite(ConvexPolygon):
-    """Class for drawing a convex kite shape.
+class Kite(Polygon):
+    """Class for drawing a kite shape.
 
     Args:
         vertices (tuple[Vec2D, ...]): Exactly 4 points of the kite.
@@ -22,7 +22,7 @@ class ConvexKite(ConvexPolygon):
         self,
         vertices: tuple[Vec2D, ...],
     ):
-        """Define the convex kite by it's vertices."""
+        """Define the kite by it's vertices."""
         self.vertices = vertices
 
         if len(vertices) != 4:
@@ -37,7 +37,7 @@ class ConvexKite(ConvexPolygon):
         height: int | float = sqrt(20),
         width: int | float = sqrt(20),
         diagonal_intersection_along_height: float = 0.5,
-    ) -> ConvexKite:
+    ) -> Kite:
         """Define a convex kite from origin point and dimensions.
 
         Args:
@@ -56,7 +56,7 @@ class ConvexKite(ConvexPolygon):
             diagonal_intersection_along_height=diagonal_intersection_along_height,
         )
 
-        return ConvexKite(vertices=vertices)
+        return Kite(vertices=vertices)
 
     @staticmethod
     def calculate_kite_corner_vertices(
@@ -97,7 +97,7 @@ class ConvexKite(ConvexPolygon):
         return sqrt(delta * delta)
 
 
-class CurvedConvexKite(ConvexKite):
+class CurvedKite(Kite):
     """Class for drawing a convex kite with curved edges."""
 
     def __init__(
@@ -130,13 +130,13 @@ class CurvedConvexKite(ConvexKite):
             OffsetFromLine(),
         ),
         steps_in_curves: int = 20,
-    ) -> CurvedConvexKite:
-        """Define a CurvedConvexKite from origin point and dimensions."""
+    ) -> CurvedKite:
+        """Define a CurvedKite from origin point and dimensions."""
 
         if len(off_lines) != 4:
             raise ValueError("off_lines must contain 4 elements.")
 
-        kite_corner_points = ConvexKite.calculate_kite_corner_vertices(
+        kite_corner_points = Kite.calculate_kite_corner_vertices(
             origin=origin,
             height=height,
             width=width,
@@ -162,7 +162,7 @@ class CurvedConvexKite(ConvexKite):
 
             curved_edges.extend(curve_points)
 
-        curved_convex_kite = CurvedConvexKite(
+        curved_convex_kite = CurvedKite(
             vertices=tuple(curved_edges),
             corner_vertices_indices=tuple(
                 x for x in range(0, len(curved_edges), steps_in_curves)
@@ -183,10 +183,10 @@ class CurvedConvexKite(ConvexKite):
         super().draw(turtle=turtle, colour=colour, size=size, fill=fill)
 
 
-class CurvedConvexKiteFactory:
-    """Factor that allows delaying the creation of CurvedConvexKite objects.
+class CurvedKiteFactory:
+    """Factory that allows delaying the creation of CurvedKite objects.
 
-    Some arguments required in CurvedConvexKite.__init__ can be speficied in
+    Some arguments required in CurvedKite.__init__ can be speficied in
     the initialisation of this class, the remaining arguments can be specified
     later when get_kite is called.
 
@@ -220,8 +220,8 @@ class CurvedConvexKiteFactory:
         rotation: Optional[Union[int, float]] = None,
         rotation_point: Optional[Vec2D] = None,
         diagonal_intersection_along_height: Optional[float] = None,
-    ) -> CurvedConvexKite:
-        """Return CurvedConvexKite object."""
+    ) -> CurvedKite:
+        """Return CurvedKite object."""
 
         if origin is None:
             if self.origin is None:
@@ -264,7 +264,7 @@ class CurvedConvexKiteFactory:
                     self.diagonal_intersection_along_height
                 )
 
-        return CurvedConvexKite.from_origin_and_dimensions(
+        return CurvedKite.from_origin_and_dimensions(
             origin=origin,
             height=height,
             width=width,

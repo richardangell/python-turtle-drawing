@@ -9,7 +9,7 @@ import numpy as np
 from ...helpers.rotation import rotate_about_point
 from ...helpers.turtle import update_screen
 from ...line import OffsetFromLine
-from ...polygons.kite import CurvedConvexKite, CurvedConvexKiteFactory
+from ...polygons.kite import CurvedKite, CurvedKiteFactory
 from .body import Limb
 from .face import CurvedMouth, Eyes
 from .pine_cone import PineCone, RandomPineConeFactory
@@ -88,7 +88,7 @@ def draw_main_character(turtle: Turtle):
 
     rotation = 10
 
-    outer_kite = CurvedConvexKite.from_origin_and_dimensions(
+    outer_kite = CurvedKite.from_origin_and_dimensions(
         origin=s1,
         off_lines=(
             OffsetFromLine(offset=50),
@@ -101,7 +101,7 @@ def draw_main_character(turtle: Turtle):
         diagonal_intersection_along_height=0.45,
     )
 
-    inner_kite_factor = CurvedConvexKiteFactory(
+    inner_kite_factor = CurvedKiteFactory(
         off_lines=(
             OffsetFromLine(offset=12),
             OffsetFromLine(offset=-12),

@@ -7,7 +7,7 @@ from ...fill import BaseFill, ColourFill
 from ...helpers.angles import convert_degrees_to_radians
 from ...helpers.rotation import rotate_about_point
 from ...line import OffsetFromLine
-from ...polygons.kite import CurvedConvexKite, CurvedConvexKiteFactory
+from ...polygons.kite import CurvedKite, CurvedKiteFactory
 from .body import Arm, Limb
 from .body_part import BodyPart
 from .face import CurvedMouth, CurvedTriangleMouth, Eyes, Mouth, RoundMouth
@@ -18,9 +18,9 @@ class PineCone:
 
     def __init__(
         self,
-        outer_kite: CurvedConvexKite,
+        outer_kite: CurvedKite,
         outer_kite_rotation: Union[int, float],
-        inner_kite_factory: CurvedConvexKiteFactory,
+        inner_kite_factory: CurvedKiteFactory,
         outer_kite_line_width: int = 5,
         horizontal_offset: int = 5,
         vertical_offset: int = 5,
@@ -515,10 +515,10 @@ class RandomPineConeFactory:
 
         self._print_attribute_values(random_values)
 
-    def _create_outer_kite(self) -> CurvedConvexKite:
-        """Create CurvedConvexKite object for the PineCone."""
+    def _create_outer_kite(self) -> CurvedKite:
+        """Create CurvedKite object for the PineCone."""
 
-        return CurvedConvexKite.from_origin_and_dimensions(
+        return CurvedKite.from_origin_and_dimensions(
             origin=self.origin,
             off_lines=(
                 OffsetFromLine(offset=self._outer_kite_offsets[0]),
@@ -531,10 +531,10 @@ class RandomPineConeFactory:
             diagonal_intersection_along_height=self._outer_kite_diagonal_intersection_along_height,
         )
 
-    def _create_inner_kite_factory(self) -> CurvedConvexKiteFactory:
-        """Create CurvedConvexKiteFactory object for the PineCone."""
+    def _create_inner_kite_factory(self) -> CurvedKiteFactory:
+        """Create CurvedKiteFactory object for the PineCone."""
 
-        return CurvedConvexKiteFactory(
+        return CurvedKiteFactory(
             off_lines=(
                 OffsetFromLine(offset=self._inner_kite_offset),
                 OffsetFromLine(offset=-self._inner_kite_offset),
