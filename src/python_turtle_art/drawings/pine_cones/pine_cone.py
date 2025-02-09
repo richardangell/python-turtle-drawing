@@ -6,11 +6,11 @@ from typing import Optional, Union
 from ...fill import BaseFill, ColourFill
 from ...helpers.angles import convert_degrees_to_radians
 from ...helpers.rotation import rotate_about_point
+from ...line import OffsetFromLine
 from ...polygons.kite import CurvedConvexKite, CurvedConvexKiteFactory
 from .body import Arm, Limb
 from .body_part import BodyPart
 from .face import CurvedMouth, CurvedTriangleMouth, Eyes, Mouth, RoundMouth
-from .line import OffsetFromLine
 
 
 class PineCone:

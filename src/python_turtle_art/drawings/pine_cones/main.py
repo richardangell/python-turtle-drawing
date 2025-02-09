@@ -8,10 +8,10 @@ import numpy as np
 
 from ...helpers.rotation import rotate_about_point
 from ...helpers.turtle import update_screen
+from ...line import OffsetFromLine
 from ...polygons.kite import CurvedConvexKite, CurvedConvexKiteFactory
 from .body import Limb
 from .face import CurvedMouth, Eyes
-from .line import OffsetFromLine
 from .pine_cone import PineCone, RandomPineConeFactory
 
 

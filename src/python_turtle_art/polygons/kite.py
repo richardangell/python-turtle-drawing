@@ -4,9 +4,9 @@ from math import sqrt
 from turtle import Turtle, Vec2D
 from typing import Optional, Union
 
-from ..drawings.pine_cones.line import OffsetFromLine, get_points_on_curve
 from ..fill import BaseFill
 from ..helpers.turtle import jump_to
+from ..line import OffsetFromLine, get_points_on_curve
 from .convex_polygon import ConvexPolygon
 
 
