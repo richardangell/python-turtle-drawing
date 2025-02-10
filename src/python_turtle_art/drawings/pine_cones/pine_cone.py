@@ -6,6 +6,7 @@ from typing import Optional, Union
 from ...fill import BaseFill, ColourFill
 from ...helpers.angles import convert_degrees_to_radians
 from ...helpers.rotation import rotate_about_point
+from ...helpers.turtle import jump_to
 from ...line import OffsetFromLine
 from ...polygons.kite.curved_kite import CurvedKite, CurvedKiteFactory
 from .body import Arm, Limb
@@ -49,6 +50,7 @@ class PineCone:
 
         self._draw_initial_body_parts(turtle)
 
+        jump_to(turtle, self.outer_kite.vertices[0])
         self.outer_kite.rotate(
             self.outer_kite_rotation, self.outer_kite.vertices[0]
         ).draw(turtle=turtle, fill=ColourFill(), colour="black")
@@ -114,7 +116,9 @@ class PineCone:
                 * unit_vector_vertical_move
             )
 
-            self.inner_kite_factory.get_kite(origin=center_origin).draw(
+            inner_kite = self.inner_kite_factory.get_kite(origin=center_origin)
+            jump_to(turtle, inner_kite.vertices[0])
+            inner_kite.draw(
                 turtle=turtle, fill=self.inner_kite_fill, colour=self.inner_kite_colour
             )
 
@@ -145,7 +149,9 @@ class PineCone:
                     * unit_vector_horizontal_move
                 )
 
-                self.inner_kite_factory.get_kite(origin=offset_origin).draw(
+                inner_kite = self.inner_kite_factory.get_kite(origin=offset_origin)
+                jump_to(turtle, inner_kite.vertices[0])
+                inner_kite.draw(
                     turtle=turtle,
                     fill=self.inner_kite_fill,
                     colour=self.inner_kite_colour,
@@ -160,7 +166,11 @@ class PineCone:
                     * unit_vector_horizontal_move
                 )
 
-                self.inner_kite_factory.get_kite(origin=offset_origin_half_row_up).draw(
+                inner_kite = self.inner_kite_factory.get_kite(
+                    origin=offset_origin_half_row_up
+                )
+                jump_to(turtle, inner_kite.vertices[0])
+                inner_kite.draw(
                     turtle=turtle,
                     fill=self.inner_kite_fill,
                     colour=self.inner_kite_colour,
@@ -175,7 +185,9 @@ class PineCone:
                     * unit_vector_horizontal_move
                 )
 
-                self.inner_kite_factory.get_kite(origin=offset_origin).draw(
+                inner_kite = self.inner_kite_factory.get_kite(origin=offset_origin)
+                jump_to(turtle, inner_kite.vertices[0])
+                inner_kite.draw(
                     turtle=turtle,
                     fill=self.inner_kite_fill,
                     colour=self.inner_kite_colour,
@@ -190,12 +202,17 @@ class PineCone:
                     * unit_vector_horizontal_move
                 )
 
-                self.inner_kite_factory.get_kite(origin=offset_origin_half_row_up).draw(
+                inner_kite = self.inner_kite_factory.get_kite(
+                    origin=offset_origin_half_row_up
+                )
+                jump_to(turtle, inner_kite.vertices[0])
+                inner_kite.draw(
                     turtle=turtle,
                     fill=self.inner_kite_fill,
                     colour=self.inner_kite_colour,
                 )
 
+        jump_to(turtle, self.outer_kite.vertices[0])
         self.outer_kite.draw(
             turtle=turtle, fill=None, colour="black", size=self.outer_kite_line_width
         )

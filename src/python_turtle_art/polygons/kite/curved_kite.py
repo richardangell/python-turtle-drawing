@@ -1,11 +1,9 @@
 from __future__ import annotations
 
 from math import sqrt
-from turtle import Turtle, Vec2D
+from turtle import Vec2D
 from typing import Optional, Union
 
-from ...fill import BaseFill
-from ...helpers.turtle import jump_to
 from ...line import OffsetFromLine, get_points_on_curve
 from .kite import Kite
 
@@ -83,17 +81,6 @@ class CurvedKite(Kite):
         )
 
         return curved_convex_kite
-
-    def draw(
-        self,
-        turtle: Turtle,
-        colour: str = "black",
-        size: Optional[int] = None,
-        fill: Optional[BaseFill] = None,
-    ):
-        """Jump to first vertex then draw the curved convex kite."""
-        jump_to(turtle, self.vertices[0])
-        super().draw(turtle=turtle, colour=colour, size=size, fill=fill)
 
 
 class CurvedKiteFactory:
