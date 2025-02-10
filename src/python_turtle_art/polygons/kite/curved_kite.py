@@ -71,12 +71,12 @@ class CurvedKite(Kite):
                 steps=steps_in_curves,
             )
 
-            curved_edges.extend(curve_points)
+            curved_edges.extend(curve_points[:-1])
 
         curved_convex_kite = CurvedKite(
             vertices=tuple(curved_edges),
             corner_vertices_indices=tuple(
-                x for x in range(0, len(curved_edges), steps_in_curves)
+                x for x in range(0, len(curved_edges), steps_in_curves - 1)
             ),
         )
 

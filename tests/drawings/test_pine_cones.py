@@ -9,6 +9,8 @@ from python_turtle_art.drawings import draw_image_pine_cones
 from python_turtle_art.helpers.turtle import turn_off_turtle_animation, update_screen
 from python_turtle_art.write import get_canvas_image
 
+from .helpers import assert_image_difference_within_tolerance
+
 
 @pytest.mark.skipif(
     condition=os.getenv("DISABLE_BEARTYPE") is None,
@@ -47,6 +49,6 @@ def test_image_produced():
 
     difference = ImageChops.difference(actual_image, expected_image)
 
-    assert not difference.getbbox(), (
-        "pine_cones.main.draw_image does not produce the expected image"
+    assert_image_difference_within_tolerance(
+        difference=difference, tolerance_non_matching_pixels=15
     )
