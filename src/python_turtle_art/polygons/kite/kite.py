@@ -21,10 +21,18 @@ class Kite(Polygon):
         """Define the kite by it's vertices."""
         self.vertices = vertices
 
+        self.corner_vertices_indices = (0, 1, 2, 3)
+
+    @property
+    def vertices(self) -> tuple[Vec2D, ...]:
+        return self._vertices
+
+    @vertices.setter
+    def vertices(self, vertices: tuple[Vec2D, ...]) -> None:
+        """Set vertices attribute and check there are at least 3 points."""
         if len(vertices) != 4:
             raise ValueError("vertices must contain exactly 4 points.")
-
-        self.corner_vertices_indices = (0, 1, 2, 3)
+        self._vertices = vertices
 
     @classmethod
     def from_origin_and_dimensions(

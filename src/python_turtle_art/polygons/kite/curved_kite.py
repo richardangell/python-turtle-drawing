@@ -19,13 +19,21 @@ class CurvedKite(Kite):
         """Define the curved convex kite by it's vertices."""
         self.vertices = vertices
 
-        if len(vertices) <= 4:
-            raise ValueError("vertices must contain more than 4 points.")
-
         if len(corner_vertices_indices) != 4:
             raise ValueError("corner_vertices_indices must contain exactly 4 points.")
 
         self.corner_vertices_indices = corner_vertices_indices
+
+    @property
+    def vertices(self) -> tuple[Vec2D, ...]:
+        return self._vertices
+
+    @vertices.setter
+    def vertices(self, vertices: tuple[Vec2D, ...]) -> None:
+        """Set vertices attribute and check there are at least 3 points."""
+        if len(vertices) <= 4:
+            raise ValueError("vertices must contain more than 4 points.")
+        self._vertices = vertices
 
     @classmethod
     def from_origin_and_dimensions(
