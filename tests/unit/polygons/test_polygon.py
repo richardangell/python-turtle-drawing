@@ -1,9 +1,10 @@
 from math import sqrt
-from turtle import Vec2D
 
 import pytest
 
 from python_turtle_art.polygons.polygon import Polygon
+
+from ...helpers import coords_iterable_to_vertices
 
 
 class TestIsConvex:
@@ -43,9 +44,7 @@ class TestIsConvex:
     def test_convex_polygon(self, coordinates, vertices_manipulation):
         """Test convex polygons correctly identified."""
 
-        vertices = tuple(
-            Vec2D(coords[0], coords[1]) for coords in vertices_manipulation(coordinates)
-        )
+        vertices = coords_iterable_to_vertices(vertices_manipulation(coordinates))
 
         polygon = Polygon(vertices=vertices)
 
@@ -86,9 +85,7 @@ class TestIsConvex:
             coordinates[1],
         ] + coordinates[3:]
 
-        vertices = tuple(
-            Vec2D(coords[0], coords[1]) for coords in out_of_order_coordinates
-        )
+        vertices = coords_iterable_to_vertices(out_of_order_coordinates)
 
         polygon = Polygon(vertices=vertices)
 
@@ -135,9 +132,7 @@ class TestIsConvex:
     def test_non_convex_polygon(self, coordinates, vertices_manipulation):
         """Test non convex polygons are correctly identified."""
 
-        vertices = tuple(
-            Vec2D(coords[0], coords[1]) for coords in vertices_manipulation(coordinates)
-        )
+        vertices = coords_iterable_to_vertices(vertices_manipulation(coordinates))
 
         polygon = Polygon(vertices=vertices)
 
