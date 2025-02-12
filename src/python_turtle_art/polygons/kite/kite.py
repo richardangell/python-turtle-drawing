@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from math import sqrt
 from turtle import Vec2D
+from typing import Any
 
 from ..polygon import Polygon
 
@@ -93,7 +94,7 @@ class Kite(Polygon):
         return (origin, left_point, top_point, right_point)
 
     def get_height(self) -> float:
-        """Calculate the height of the kite."""
+        """Calculate the length of the vertical bisector of the kite."""
         bottom_vertex_index = self.corner_vertices_indices[0]
         top_vertex_index = self.corner_vertices_indices[2]
 
@@ -102,10 +103,21 @@ class Kite(Polygon):
         return sqrt(delta * delta)
 
     def get_width(self) -> float:
-        """Calculate the width of the kite."""
+        """Calculate the horizontal bisector of the kite."""
         left_vertex_index = self.corner_vertices_indices[1]
         right_vertex_index = self.corner_vertices_indices[3]
 
         delta = self.vertices[right_vertex_index] - self.vertices[left_vertex_index]
 
         return sqrt(delta * delta)
+
+    def __eq__(self, other: Any) -> bool:
+        if isinstance(other, Kite):
+            return (self.vertices == other.vertices) and (
+                self.corner_vertices_indices == self.corner_vertices_indices
+            )
+        else:
+            return False
+
+    def __repr__(self) -> str:
+        return f"Kite{self.vertices}"
