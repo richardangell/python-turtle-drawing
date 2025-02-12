@@ -14,7 +14,7 @@ class CurvedKite(Kite):
     def __init__(
         self,
         vertices: tuple[Vec2D, ...],
-        corner_vertices_indices=tuple[int, ...],
+        corner_vertices_indices: tuple[int, ...],
     ):
         """Define the curved convex kite by it's vertices."""
         self.vertices = vertices
