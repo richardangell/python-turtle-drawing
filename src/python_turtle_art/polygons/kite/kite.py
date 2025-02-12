@@ -28,7 +28,7 @@ class Kite(Polygon):
 
     @vertices.setter
     def vertices(self, vertices: tuple[Vec2D, ...]) -> None:
-        """Set vertices attribute and check there are at least 3 points."""
+        """Set vertices attribute and check there are exactly 4 points."""
         if len(vertices) != 4:
             raise ValueError("vertices must contain exactly 4 points.")
         self._vertices = vertices
