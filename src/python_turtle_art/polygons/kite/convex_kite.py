@@ -3,7 +3,7 @@ from __future__ import annotations
 from math import sqrt
 from turtle import Vec2D
 
-from ..convex_polygon import ConvexMixin
+from ..convex_mixin import ConvexMixin
 from .kite import Kite
 
 

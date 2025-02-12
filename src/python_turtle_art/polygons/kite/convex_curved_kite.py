@@ -4,7 +4,7 @@ from math import sqrt
 from turtle import Vec2D
 
 from ...line import OffsetFromLine
-from ..convex_polygon import ConvexMixin
+from ..convex_mixin import ConvexMixin
 from .curved_kite import CurvedKite
 
 
