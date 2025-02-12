@@ -48,6 +48,33 @@ class CurvedKite(Kite):
     ) -> CurvedKite:
         """Define a CurvedKite from origin point and dimensions."""
 
+        vertices, corner_vertices_indices = CurvedKite.get_curved_kite_vertices(
+            origin=origin,
+            height=height,
+            width=width,
+            diagonal_intersection_along_height=diagonal_intersection_along_height,
+            off_lines=off_lines,
+            steps_in_curves=steps_in_curves,
+        )
+
+        return CurvedKite(
+            vertices=vertices, corner_vertices_indices=corner_vertices_indices
+        )
+
+    @staticmethod
+    def get_curved_kite_vertices(
+        origin: Vec2D,
+        height: int | float = sqrt(20),
+        width: int | float = sqrt(20),
+        diagonal_intersection_along_height: float = 0.5,
+        off_lines: tuple[OffsetFromLine, ...] = (
+            OffsetFromLine(),
+            OffsetFromLine(),
+            OffsetFromLine(),
+            OffsetFromLine(),
+        ),
+        steps_in_curves: int = 20,
+    ) -> tuple[tuple[Vec2D, ...], tuple[int, ...]]:
         if len(off_lines) != 4:
             raise ValueError("off_lines must contain 4 elements.")
 
@@ -57,7 +84,7 @@ class CurvedKite(Kite):
             width=width,
             diagonal_intersection_along_height=diagonal_intersection_along_height,
         )
-        curved_edges = []
+        curved_edges: list[Vec2D] = []
 
         for index in range(len(kite_corner_points)):
             end_index = index + 1
@@ -77,14 +104,13 @@ class CurvedKite(Kite):
 
             curved_edges.extend(curve_points[:-1])
 
-        curved_convex_kite = CurvedKite(
-            vertices=tuple(curved_edges),
-            corner_vertices_indices=tuple(
-                x for x in range(0, len(curved_edges), steps_in_curves - 1)
-            ),
+        vertices = tuple(curved_edges)
+
+        corner_vertices_indices = tuple(
+            x for x in range(0, len(curved_edges), steps_in_curves - 1)
         )
 
-        return curved_convex_kite
+        return vertices, corner_vertices_indices
 
 
 class CurvedKiteFactory:
