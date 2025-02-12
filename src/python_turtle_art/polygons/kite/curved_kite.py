@@ -84,7 +84,9 @@ class CurvedKite(Kite):
             width=width,
             diagonal_intersection_along_height=diagonal_intersection_along_height,
         )
-        curved_edges: list[Vec2D] = []
+
+        curved_edges: list[Vec2D]
+        curved_edges = []
 
         for index in range(len(kite_corner_points)):
             end_index = index + 1
