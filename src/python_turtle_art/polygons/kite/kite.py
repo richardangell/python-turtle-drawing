@@ -20,7 +20,6 @@ class Kite(Polygon):
     ):
         """Define the kite by it's vertices."""
         self.vertices = vertices
-
         self.corner_vertices_indices = (0, 1, 2, 3)
 
     @property
@@ -33,6 +32,17 @@ class Kite(Polygon):
         if len(vertices) != 4:
             raise ValueError("vertices must contain exactly 4 points.")
         self._vertices = vertices
+
+    @property
+    def corner_vertices_indices(self) -> tuple[int, ...]:
+        return self._corner_vertices_indices
+
+    @corner_vertices_indices.setter
+    def corner_vertices_indices(self, corner_vertices_indices: tuple[int, ...]) -> None:
+        """Set corner_vertices_indices attribute and check there are 4 provided."""
+        if len(corner_vertices_indices) != 4:
+            raise ValueError("corner_vertices_indices must contain exactly 4 points.")
+        self._corner_vertices_indices = corner_vertices_indices
 
     @classmethod
     def from_origin_and_dimensions(

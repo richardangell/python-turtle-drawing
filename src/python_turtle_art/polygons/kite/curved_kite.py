@@ -18,10 +18,6 @@ class CurvedKite(Kite):
     ):
         """Define the curved convex kite by it's vertices."""
         self.vertices = vertices
-
-        if len(corner_vertices_indices) != 4:
-            raise ValueError("corner_vertices_indices must contain exactly 4 points.")
-
         self.corner_vertices_indices = corner_vertices_indices
 
     @property
