@@ -3,7 +3,7 @@ from turtle import Vec2D
 from .polygon import is_convex
 
 
-class ConvexPolygon:
+class ConvexMixin:
     """Mixin for a convex polygon.
 
     Defines a setter for the vertices property which enforces the convex property.

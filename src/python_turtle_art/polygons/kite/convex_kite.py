@@ -3,11 +3,11 @@ from __future__ import annotations
 from math import sqrt
 from turtle import Vec2D
 
-from ..convex_polygon import ConvexPolygon
+from ..convex_polygon import ConvexMixin
 from .kite import Kite
 
 
-class ConvexKite(ConvexPolygon, Kite):
+class ConvexKite(ConvexMixin, Kite):
     """Class representing a convex kite shape."""
 
     @classmethod

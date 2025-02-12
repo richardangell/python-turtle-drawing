@@ -4,11 +4,11 @@ from math import sqrt
 from turtle import Vec2D
 
 from ...line import OffsetFromLine
-from ..convex_polygon import ConvexPolygon
+from ..convex_polygon import ConvexMixin
 from .curved_kite import CurvedKite
 
 
-class ConvexCurvedKite(ConvexPolygon, CurvedKite):
+class ConvexCurvedKite(ConvexMixin, CurvedKite):
     """Class representing a convex kite shape."""
 
     @classmethod
