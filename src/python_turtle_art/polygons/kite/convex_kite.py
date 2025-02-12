@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from math import sqrt
 from turtle import Vec2D
 
@@ -15,7 +17,7 @@ class ConvexKite(ConvexPolygon, Kite):
         height: int | float = sqrt(20),
         width: int | float = sqrt(20),
         diagonal_intersection_along_height: float = 0.5,
-    ) -> Kite:
+    ) -> ConvexKite:
         """Define a convex kite from origin point and dimensions.
 
         Args:
