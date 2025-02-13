@@ -8,7 +8,7 @@ from ...helpers.angles import convert_degrees_to_radians
 from ...helpers.rotation import rotate_about_point
 from ...helpers.turtle import jump_to
 from ...line import OffsetFromLine
-from ...polygons.kite.curved_kite import CurvedKite
+from ...polygons.kites.curved_kite import CurvedKite
 from .body import Arm, Limb
 from .body_part import BodyPart
 from .cuvred_kite_factory import CurvedKiteFactory

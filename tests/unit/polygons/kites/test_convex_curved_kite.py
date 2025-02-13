@@ -3,10 +3,10 @@ from turtle import Vec2D
 import pytest
 
 from python_turtle_art.line import OffsetFromLine
-from python_turtle_art.polygons.kite.convex_curved_kite import (
+from python_turtle_art.polygons.kites.convex_curved_kite import (
     ConvexCurvedKite,
 )
-from python_turtle_art.polygons.kite.curved_kite import CurvedKite
+from python_turtle_art.polygons.kites.curved_kite import CurvedKite
 
 from ....helpers import coords_iterable_to_vertices
 

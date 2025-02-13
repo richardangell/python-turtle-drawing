@@ -2,8 +2,8 @@ from turtle import Vec2D
 
 import pytest
 
-from python_turtle_art.polygons.kite.convex_kite import ConvexKite
-from python_turtle_art.polygons.kite.kite import Kite
+from python_turtle_art.polygons.kites.convex_kite import ConvexKite
+from python_turtle_art.polygons.kites.kite import Kite
 
 from ....helpers import coords_iterable_to_vertices
 

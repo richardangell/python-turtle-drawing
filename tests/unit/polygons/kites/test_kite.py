@@ -3,7 +3,7 @@ from turtle import Vec2D
 
 import pytest
 
-from python_turtle_art.polygons.kite.kite import Kite
+from python_turtle_art.polygons.kites.kite import Kite
 from python_turtle_art.polygons.polygon import Polygon
 
 from ....helpers import coords_iterable_to_vertices
