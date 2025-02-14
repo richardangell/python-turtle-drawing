@@ -1,7 +1,8 @@
 from turtle import Turtle, Vec2D
 
 from ...helpers.turtle import jump_to
-from ...line import OffsetFromLine, draw_curved_line
+from ...lines.line import draw_curved_line
+from ...lines.offset_from_line import OffsetFromLine
 from .face import CurvedMouth
 
 

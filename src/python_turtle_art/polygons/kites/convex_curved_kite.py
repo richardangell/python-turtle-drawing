@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from turtle import Vec2D
 
-from ...line import OffsetFromLine
+from ...lines.offset_from_line import OffsetFromLine
 from ..convex_mixin import ConvexMixin
 from .curved_kite import CurvedKite
 

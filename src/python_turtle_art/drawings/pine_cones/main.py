@@ -8,7 +8,7 @@ import numpy as np
 
 from ...helpers.rotation import rotate_about_point
 from ...helpers.turtle import update_screen
-from ...line import OffsetFromLine
+from ...lines.offset_from_line import OffsetFromLine
 from ...polygons.kites.curved_kite import CurvedKite
 from .body import Limb
 from .cuvred_kite_factory import CurvedKiteFactory
