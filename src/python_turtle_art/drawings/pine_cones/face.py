@@ -146,10 +146,6 @@ class CurvedTriangleMouth(Mouth):
         ).draw(turtle=turtle, colour="white", size=self.size + 2)
         turtle.pencolor(original_colour)
 
-        if self.fill:
-            turtle.fillcolor(self.colour)
-            turtle.begin_fill()
-
         jump_to(turtle, self.start)
 
         QuadraticBezierCurve.from_start_and_end(
@@ -159,7 +155,7 @@ class CurvedTriangleMouth(Mouth):
             steps=10,
         ).draw(
             turtle=turtle,
-            fill=ColourFill("white"),
+            fill=ColourFill(self.colour) if self.fill else None,
             colour=original_colour,
             size=self.size,
         )
@@ -171,6 +167,3 @@ class CurvedTriangleMouth(Mouth):
             off_line=self.off_line,
             steps=2,
         ).draw(turtle=turtle, colour=original_colour, size=self.size)
-
-        if self.fill:
-            turtle.end_fill()
