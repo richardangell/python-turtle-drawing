@@ -1,9 +1,10 @@
 from abc import abstractmethod
 from turtle import Turtle, Vec2D
 
+from ...fill import ColourFill
 from ...helpers.turtle import jump_to
 from ...lines.offset_from_line import OffsetFromLine
-from ...lines.quadratic_bezier_curve import draw_curved_line
+from ...lines.quadratic_bezier_curve import QuadraticBezierCurve
 from .body_part import BodyPart
 
 
@@ -87,28 +88,22 @@ class CurvedMouth(Mouth):
             jump_to(turtle, self.start)
 
             turtle.pencolor("white")
-            draw_curved_line(
-                turtle=turtle,
+            QuadraticBezierCurve.from_start_and_end(
                 start=self.start,
                 end=self.end,
                 off_line=self.off_line,
                 steps=10,
-                draw_points=False,
-                size=self.size + 2,
-            )
+            ).draw(turtle=turtle, colour="white", size=self.size + 2)  # type: ignore
 
         jump_to(turtle, self.start)
 
         turtle.pencolor(original_colour)
-        draw_curved_line(
-            turtle=turtle,
+        QuadraticBezierCurve.from_start_and_end(
             start=self.start,
             end=self.end,
             off_line=self.off_line,
             steps=10,
-            draw_points=False,
-            size=self.size,
-        )
+        ).draw(turtle=turtle, colour=original_colour, size=self.size)  # type: ignore
 
 
 class CurvedTriangleMouth(Mouth):
@@ -134,28 +129,21 @@ class CurvedTriangleMouth(Mouth):
 
         jump_to(turtle, self.start)
 
-        draw_curved_line(
-            turtle=turtle,
+        QuadraticBezierCurve.from_start_and_end(
             start=self.start,
             end=self.end,
             off_line=self.off_line,
             steps=10,
-            draw_points=False,
-            size=self.size + 2,
-        )
+        ).draw(turtle=turtle, colour="white", size=self.size + 2)
 
         jump_to(turtle, self.end)
 
-        draw_curved_line(
-            turtle=turtle,
+        QuadraticBezierCurve.from_start_and_end(
             start=self.end,
             end=self.start,
             off_line=self.off_line,
             steps=2,
-            draw_points=False,
-            size=self.size + 2,
-        )
-
+        ).draw(turtle=turtle, colour="white", size=self.size + 2)
         turtle.pencolor(original_colour)
 
         if self.fill:
@@ -164,27 +152,25 @@ class CurvedTriangleMouth(Mouth):
 
         jump_to(turtle, self.start)
 
-        draw_curved_line(
-            turtle=turtle,
+        QuadraticBezierCurve.from_start_and_end(
             start=self.start,
             end=self.end,
             off_line=self.off_line,
             steps=10,
-            draw_points=False,
+        ).draw(
+            turtle=turtle,
+            fill=ColourFill("white"),
+            colour=original_colour,
             size=self.size,
         )
-
         jump_to(turtle, self.end)
 
-        draw_curved_line(
-            turtle=turtle,
+        QuadraticBezierCurve.from_start_and_end(
             start=self.end,
             end=self.start,
             off_line=self.off_line,
             steps=2,
-            draw_points=False,
-            size=self.size,
-        )
+        ).draw(turtle=turtle, colour=original_colour, size=self.size)
 
         if self.fill:
             turtle.end_fill()
