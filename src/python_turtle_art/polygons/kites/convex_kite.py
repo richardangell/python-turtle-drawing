@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-from math import sqrt
 from turtle import Vec2D
 
 from ..convex_mixin import ConvexMixin
@@ -14,8 +13,8 @@ class ConvexKite(ConvexMixin, Kite):
     def from_origin_and_dimensions(
         cls,
         origin: Vec2D,
-        height: int | float = sqrt(20),
-        width: int | float = sqrt(20),
+        height: int | float = 20,
+        width: int | float = 20,
         diagonal_intersection_along_height: float = 0.5,
     ) -> ConvexKite:
         """Define a convex kite from origin point and dimensions.

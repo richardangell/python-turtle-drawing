@@ -49,8 +49,8 @@ class Kite(Polygon):
     def from_origin_and_dimensions(
         cls,
         origin: Vec2D,
-        height: int | float = sqrt(20),
-        width: int | float = sqrt(20),
+        height: int | float = 20,
+        width: int | float = 20,
         diagonal_intersection_along_height: float = 0.5,
     ) -> Kite:
         """Define a convex kite from origin point and dimensions.
@@ -76,8 +76,8 @@ class Kite(Polygon):
     @staticmethod
     def calculate_kite_corner_vertices(
         origin: Vec2D,
-        height: int | float = sqrt(20),
-        width: int | float = sqrt(20),
+        height: int | float = 20,
+        width: int | float = 20,
         diagonal_intersection_along_height: float = 0.5,
     ) -> tuple[Vec2D, ...]:
         """Calculate the 4 corner certices from the supplied dimensions."""
