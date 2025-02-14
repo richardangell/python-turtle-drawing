@@ -1,3 +1,4 @@
+from math import sqrt
 from operator import gt, lt
 from turtle import Vec2D
 
@@ -373,3 +374,135 @@ class TestVerticesDefiningCurvedKite:
             assert actual_vertices[vertex_index] == pytest.approx(
                 Vec2D(sum_prior_and_next[0] / 2, sum_prior_and_next[1] / 2)
             )
+
+
+class TestGetHeight:
+    """Tests for the CurvedKite.get_height method."""
+
+    @pytest.mark.parametrize(
+        ["coordinates", "corner_indices", "expected"],
+        [
+            (((0, 0), (-5, 5), (0, 10), (2.5, 7.5), (5, 5)), (0, 1, 2, 4), 10),
+            (((-2, -2), (-4, 0), (-3, 4), (-2, 9), (3, 3)), (0, 1, 3, 4), 11),
+            (((0, 0), (-2, 3), (-5, 5), (1, 10), (5, 5)), (0, 2, 3, 4), sqrt(101)),
+        ],
+    )
+    def test_expected_height(self, coordinates, corner_indices, expected):
+        vertices = coords_iterable_to_vertices(coordinates)
+
+        kite = CurvedKite(vertices=vertices, corner_vertices_indices=corner_indices)
+
+        assert kite.get_height() == expected
+
+    @pytest.mark.parametrize("diagonal_intersection_along_height", [-0.9, 0.9, 2.2])
+    @pytest.mark.parametrize("height", [9, 3.1])
+    def test_height_matches_height_from_initialisation(
+        self, height, diagonal_intersection_along_height
+    ):
+        kite = CurvedKite.from_origin_and_dimensions(
+            origin=Vec2D(3, 4),
+            height=height,
+            width=5,
+            diagonal_intersection_along_height=diagonal_intersection_along_height,
+            off_lines=(
+                OffsetFromLine(),
+                OffsetFromLine(),
+                OffsetFromLine(),
+                OffsetFromLine(),
+            ),
+            steps_in_curves=5,
+        )
+
+        assert kite.get_height() == pytest.approx(height)
+
+    @pytest.mark.parametrize("about_point", [Vec2D(-3, -4), Vec2D(0, 0)])
+    @pytest.mark.parametrize("angle", [13, 345])
+    def test_height_unchanged_under_rotation(self, angle, about_point):
+        height = 8
+
+        kite = CurvedKite.from_origin_and_dimensions(
+            origin=Vec2D(4, 5),
+            height=height,
+            width=5,
+            diagonal_intersection_along_height=0.5,
+            off_lines=(
+                OffsetFromLine(),
+                OffsetFromLine(),
+                OffsetFromLine(),
+                OffsetFromLine(),
+            ),
+            steps_in_curves=5,
+        ).rotate(angle=angle, about_point=about_point)
+
+        assert kite.get_height() == pytest.approx(height)
+
+
+class TestGetWidth:
+    """Tests for the CurvedKite.get_width method."""
+
+    @pytest.mark.parametrize(
+        ["coordinates", "corner_indices", "expected"],
+        [
+            (
+                ((0, 0), (-3, -3), (-5, 5), (-3, 7), (0, 10), (3, 7), (5, 5), (3, 4)),
+                (0, 2, 4, 6),
+                10,
+            ),
+            (
+                ((-2, -2), (-4, 0), (-2, 9), (0, 7), (2, 4), (3, 3)),
+                (0, 1, 2, 5),
+                sqrt(49 + 9),
+            ),
+        ],
+    )
+    def test_expected_width(self, coordinates, corner_indices, expected):
+        vertices = coords_iterable_to_vertices(coordinates)
+
+        kite = CurvedKite(
+            vertices=vertices,
+            corner_vertices_indices=corner_indices,
+        )
+
+        assert kite.get_width() == expected
+
+    @pytest.mark.parametrize("diagonal_intersection_along_height", [-0.2, 0.7, 1.1])
+    @pytest.mark.parametrize("width", [10, 5.5])
+    def test_width_matches_height_from_initialisation(
+        self, width, diagonal_intersection_along_height
+    ):
+        kite = CurvedKite.from_origin_and_dimensions(
+            origin=Vec2D(2, 5),
+            height=3,
+            width=width,
+            diagonal_intersection_along_height=diagonal_intersection_along_height,
+            off_lines=(
+                OffsetFromLine(),
+                OffsetFromLine(),
+                OffsetFromLine(),
+                OffsetFromLine(),
+            ),
+            steps_in_curves=5,
+        )
+
+        assert kite.get_width() == width
+
+    @pytest.mark.parametrize("about_point", [Vec2D(0, 0), Vec2D(-1, -3)])
+    @pytest.mark.parametrize("angle", [90, 130])
+    def test_width_unchanged_under_rotation(self, angle, about_point):
+        width = 5
+
+        kite = CurvedKite.from_origin_and_dimensions(
+            origin=Vec2D(-1, -5),
+            height=10,
+            width=width,
+            diagonal_intersection_along_height=0.5,
+            off_lines=(
+                OffsetFromLine(),
+                OffsetFromLine(),
+                OffsetFromLine(),
+                OffsetFromLine(),
+            ),
+            steps_in_curves=5,
+        ).rotate(angle=angle, about_point=about_point)
+
+        assert kite.get_width() == pytest.approx(width)
