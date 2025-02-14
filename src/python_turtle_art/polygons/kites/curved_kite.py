@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from turtle import Vec2D
 
-from ...lines.line import get_points_on_curve
+from ...lines.curve import get_points_on_curve
 from ...lines.offset_from_line import OffsetFromLine
 from .kite import Kite
 
