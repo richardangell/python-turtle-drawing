@@ -1,9 +1,9 @@
 from abc import abstractmethod
 from turtle import Turtle, Vec2D
 
-from ..helpers import jump_to
+from ...helpers.turtle import jump_to
+from ...line import OffsetFromLine, draw_curved_line
 from .body_part import BodyPart
-from .line import OffsetFromLine, draw_curved_line
 
 
 class Eyes(BodyPart):

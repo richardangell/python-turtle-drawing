@@ -3,13 +3,16 @@ from math import cos, sin
 from turtle import Turtle, Vec2D
 from typing import Optional, Union
 
-from ..fill import BaseFill, ColourFill
-from ..helpers import convert_degrees_to_radians, rotate_about_point
-from ..kite import CurvedConvexKite, CurvedConvexKiteFactory
+from ...fill import BaseFill, ColourFill
+from ...helpers.angles import convert_degrees_to_radians
+from ...helpers.rotation import rotate_about_point
+from ...helpers.turtle import jump_to
+from ...line import OffsetFromLine
+from ...polygons.kites.curved_kite import CurvedKite
 from .body import Arm, Limb
 from .body_part import BodyPart
+from .cuvred_kite_factory import CurvedKiteFactory
 from .face import CurvedMouth, CurvedTriangleMouth, Eyes, Mouth, RoundMouth
-from .line import OffsetFromLine
 
 
 class PineCone:
@@ -17,9 +20,9 @@ class PineCone:
 
     def __init__(
         self,
-        outer_kite: CurvedConvexKite,
+        outer_kite: CurvedKite,
         outer_kite_rotation: Union[int, float],
-        inner_kite_factory: CurvedConvexKiteFactory,
+        inner_kite_factory: CurvedKiteFactory,
         outer_kite_line_width: int = 5,
         horizontal_offset: int = 5,
         vertical_offset: int = 5,
@@ -48,9 +51,10 @@ class PineCone:
 
         self._draw_initial_body_parts(turtle)
 
-        self.outer_kite.rotate(self.outer_kite_rotation, self.outer_kite.origin).draw(
-            turtle=turtle, fill=ColourFill(), colour="black"
-        )
+        jump_to(turtle, self.outer_kite.vertices[0])
+        self.outer_kite.rotate(
+            self.outer_kite_rotation, self.outer_kite.vertices[0]
+        ).draw(turtle=turtle, fill=ColourFill(), colour="black")
 
         if self.inner_kite_factory.height is None:
             raise ValueError("inner_kite_factory.height not specified")
@@ -77,45 +81,45 @@ class PineCone:
         # number of inner kites to be drawn either side of the vertical bisector
         n_side_inner_kites = (
             int(
-                (self.outer_kite.half_width - inner_kite_factory_half_width)
+                (self.outer_kite.get_width() / 2 - inner_kite_factory_half_width)
                 // self.inner_kite_factory.width
             )
             + 1
         )
 
         n_rows_inner_kites = (
-            int(self.outer_kite.height // inner_kite_factory_height) + 1
+            int(self.outer_kite.get_height() // inner_kite_factory_height) + 1
         )
 
         inner_angle = convert_degrees_to_radians(self.outer_kite_rotation)
 
-        vertical_y_component = self.outer_kite.height * cos(inner_angle)
-        vertical_x_component = self.outer_kite.height * sin(inner_angle)
+        vertical_y_component = self.outer_kite.get_height() * cos(inner_angle)
+        vertical_x_component = self.outer_kite.get_height() * sin(inner_angle)
 
-        horizontal_x_component = self.outer_kite.width * cos(inner_angle)
-        horizontal_y_component = -self.outer_kite.width * sin(inner_angle)
+        horizontal_x_component = self.outer_kite.get_width() * cos(inner_angle)
+        horizontal_y_component = -self.outer_kite.get_width() * sin(inner_angle)
 
         unit_vector_vertical_move = Vec2D(
-            x=vertical_x_component / self.outer_kite.height,
-            y=vertical_y_component / self.outer_kite.height,
+            x=vertical_x_component / self.outer_kite.get_height(),
+            y=vertical_y_component / self.outer_kite.get_height(),
         )
 
         unit_vector_horizontal_move = Vec2D(
-            x=horizontal_x_component / self.outer_kite.width,
-            y=horizontal_y_component / self.outer_kite.width,
+            x=horizontal_x_component / self.outer_kite.get_width(),
+            y=horizontal_y_component / self.outer_kite.get_width(),
         )
 
         for row_number in range(n_rows_inner_kites):
             center_origin = (
-                self.outer_kite.origin
+                self.outer_kite.vertices[0]
                 + row_number
                 * (self.inner_kite_factory.height + 2 * self.vertical_offset)
                 * unit_vector_vertical_move
             )
 
-            self.inner_kite_factory.get_kite(origin=center_origin).rotate(
-                angle=self.inner_kite_factory.rotation, about_point=center_origin
-            ).draw(
+            inner_kite = self.inner_kite_factory.get_kite(origin=center_origin)
+            jump_to(turtle, inner_kite.vertices[0])
+            inner_kite.draw(
                 turtle=turtle, fill=self.inner_kite_fill, colour=self.inner_kite_colour
             )
 
@@ -146,9 +150,9 @@ class PineCone:
                     * unit_vector_horizontal_move
                 )
 
-                self.inner_kite_factory.get_kite(origin=offset_origin).rotate(
-                    angle=self.inner_kite_factory.rotation, about_point=offset_origin
-                ).draw(
+                inner_kite = self.inner_kite_factory.get_kite(origin=offset_origin)
+                jump_to(turtle, inner_kite.vertices[0])
+                inner_kite.draw(
                     turtle=turtle,
                     fill=self.inner_kite_fill,
                     colour=self.inner_kite_colour,
@@ -163,12 +167,11 @@ class PineCone:
                     * unit_vector_horizontal_move
                 )
 
-                self.inner_kite_factory.get_kite(
+                inner_kite = self.inner_kite_factory.get_kite(
                     origin=offset_origin_half_row_up
-                ).rotate(
-                    angle=self.inner_kite_factory.rotation,
-                    about_point=offset_origin_half_row_up,
-                ).draw(
+                )
+                jump_to(turtle, inner_kite.vertices[0])
+                inner_kite.draw(
                     turtle=turtle,
                     fill=self.inner_kite_fill,
                     colour=self.inner_kite_colour,
@@ -183,9 +186,9 @@ class PineCone:
                     * unit_vector_horizontal_move
                 )
 
-                self.inner_kite_factory.get_kite(origin=offset_origin).rotate(
-                    angle=self.inner_kite_factory.rotation, about_point=offset_origin
-                ).draw(
+                inner_kite = self.inner_kite_factory.get_kite(origin=offset_origin)
+                jump_to(turtle, inner_kite.vertices[0])
+                inner_kite.draw(
                     turtle=turtle,
                     fill=self.inner_kite_fill,
                     colour=self.inner_kite_colour,
@@ -200,17 +203,17 @@ class PineCone:
                     * unit_vector_horizontal_move
                 )
 
-                self.inner_kite_factory.get_kite(
+                inner_kite = self.inner_kite_factory.get_kite(
                     origin=offset_origin_half_row_up
-                ).rotate(
-                    angle=self.inner_kite_factory.rotation,
-                    about_point=offset_origin_half_row_up,
-                ).draw(
+                )
+                jump_to(turtle, inner_kite.vertices[0])
+                inner_kite.draw(
                     turtle=turtle,
                     fill=self.inner_kite_fill,
                     colour=self.inner_kite_colour,
                 )
 
+        jump_to(turtle, self.outer_kite.vertices[0])
         self.outer_kite.draw(
             turtle=turtle, fill=None, colour="black", size=self.outer_kite_line_width
         )
@@ -514,10 +517,10 @@ class RandomPineConeFactory:
 
         self._print_attribute_values(random_values)
 
-    def _create_outer_kite(self) -> CurvedConvexKite:
-        """Create CurvedConvexKite object for the PineCone."""
+    def _create_outer_kite(self) -> CurvedKite:
+        """Create CurvedKite object for the PineCone."""
 
-        return CurvedConvexKite(
+        return CurvedKite.from_origin_and_dimensions(
             origin=self.origin,
             off_lines=(
                 OffsetFromLine(offset=self._outer_kite_offsets[0]),
@@ -530,10 +533,10 @@ class RandomPineConeFactory:
             diagonal_intersection_along_height=self._outer_kite_diagonal_intersection_along_height,
         )
 
-    def _create_inner_kite_factory(self) -> CurvedConvexKiteFactory:
-        """Create CurvedConvexKiteFactory object for the PineCone."""
+    def _create_inner_kite_factory(self) -> CurvedKiteFactory:
+        """Create CurvedKiteFactory object for the PineCone."""
 
-        return CurvedConvexKiteFactory(
+        return CurvedKiteFactory(
             off_lines=(
                 OffsetFromLine(offset=self._inner_kite_offset),
                 OffsetFromLine(offset=-self._inner_kite_offset),
@@ -544,8 +547,6 @@ class RandomPineConeFactory:
             width=self._inner_kite_width,
             diagonal_intersection_along_height=self._inner_kite_diagonal_intersection_along_height,
             rotation=self._inner_kite_rotation,
-            rotation_point=self.origin
-            + Vec2D(int(self._outer_kite_width / 2), int(self._outer_kite_height / 2)),
         )
 
     def _create_legs(self) -> tuple[Limb, Limb]:

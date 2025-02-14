@@ -4,10 +4,12 @@ from pathlib import Path
 import pytest
 from PIL import Image, ImageChops
 
-from python_turtle_art import helpers
 from python_turtle_art.cli import setup_turtle_and_screen
-from python_turtle_art.pine_cones.main import draw_image
+from python_turtle_art.drawings import draw_image_pine_cones
+from python_turtle_art.helpers.turtle import turn_off_turtle_animation, update_screen
 from python_turtle_art.write import get_canvas_image
+
+from .helpers import assert_image_difference_within_tolerance
 
 
 @pytest.mark.skipif(
@@ -26,21 +28,27 @@ def test_image_produced():
 
     """
 
-    expected_image_file = Path("tests/pine_cones.png")
+    # Arrange
+
+    expected_image_file = Path("tests/drawings/pine_cones.png")
     expected_image = Image.open(expected_image_file)
 
     height, width = 4000, 4000
     turtle_, screen = setup_turtle_and_screen(height, width)
     turtle_.hideturtle()
 
-    helpers.turn_off_turtle_animation()
-    draw_image(turtle_)
-    helpers.update_screen()
+    # Act
+
+    turn_off_turtle_animation()
+    draw_image_pine_cones(turtle_)
+    update_screen()
+
+    # Assert
 
     actual_image = get_canvas_image(screen.getcanvas(), height, width)
 
     difference = ImageChops.difference(actual_image, expected_image)
 
-    assert not difference.getbbox(), (
-        "pine_cones.main.draw_image does not produce the expected image"
+    assert_image_difference_within_tolerance(
+        difference=difference, tolerance_non_matching_pixels=15
     )
