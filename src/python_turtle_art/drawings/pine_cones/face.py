@@ -2,8 +2,8 @@ from abc import abstractmethod
 from turtle import Turtle, Vec2D
 
 from ...helpers.turtle import jump_to
-from ...lines.curve import draw_curved_line
 from ...lines.offset_from_line import OffsetFromLine
+from ...lines.quadratic_bezier_curve import draw_curved_line
 from .body_part import BodyPart
 
 

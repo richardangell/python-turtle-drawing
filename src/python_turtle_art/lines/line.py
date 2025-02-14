@@ -6,7 +6,7 @@ from ..vertex_collection import VertexCollection
 class Line(VertexCollection):
     """Class for drawing a line between arbitrary number of points."""
 
-    _jump_to_vertex_index: int = -1
+    _jump_to_vertex_index: int = 0
 
     def __init__(self, vertices: tuple[Vec2D, ...]):
         self.vertices = vertices

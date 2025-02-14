@@ -2,8 +2,8 @@ from __future__ import annotations
 
 from turtle import Vec2D
 
-from ...lines.curve import get_points_on_curve
 from ...lines.offset_from_line import OffsetFromLine
+from ...lines.quadratic_bezier_curve import get_points_on_curve
 from .kite import Kite
 
 
