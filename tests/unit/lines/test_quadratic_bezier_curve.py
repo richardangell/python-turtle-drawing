@@ -128,3 +128,19 @@ def test_control_point_further_away_pulls_points_further_from_start_end(
     ]
 
     assert actual == expected_counts_in_quadrants
+
+
+def test_control_point_with_zero_offset_produces_points_on_straight_line():
+    start = Vec2D(0, 0)
+    end = Vec2D(10, 10)
+
+    off_line = OffsetFromLine(0.5, 0)
+
+    curve = QuadraticBezierCurve.from_start_and_end(
+        start=start, end=end, off_line=off_line, steps=20
+    )
+
+    for vertex in curve.vertices[1:-1]:
+        assert 0 < vertex[0] < 10
+        assert 0 < vertex[1] < 10
+        assert vertex[0] == vertex[1]
