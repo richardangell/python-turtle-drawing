@@ -52,9 +52,11 @@ class QuadraticBezierCurve(Line):
         if start == end:
             raise ValueError("Can only create curve between two different points.")
 
-        off_line_ = OffsetFromLine() if off_line is None else off_line
-
-        off_line_point = off_line_.to_point(start, end)
+        if off_line is not None:
+            off_line_point = off_line.to_point(start, end)
+        else:
+            diff = end - start
+            off_line_point = Vec2D(start[0] + diff[0] / 2, start[1] + diff[1] / 2)
 
         vertices = get_points_on_quadratic_bezier_curve(
             start, end, off_line_point, steps

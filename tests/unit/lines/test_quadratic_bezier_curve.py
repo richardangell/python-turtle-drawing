@@ -144,3 +144,15 @@ def test_control_point_with_zero_offset_produces_points_on_straight_line():
         assert 0 < vertex[0] < 10
         assert 0 < vertex[1] < 10
         assert vertex[0] == vertex[1]
+
+
+def test_default_control_point_produces_points_on_straight_line():
+    start = Vec2D(0, 0)
+    end = Vec2D(10, 10)
+
+    curve = QuadraticBezierCurve.from_start_and_end(start=start, end=end, steps=20)
+
+    for vertex in curve.vertices[1:-1]:
+        assert 0 < vertex[0] < 10
+        assert 0 < vertex[1] < 10
+        assert vertex[0] == vertex[1]
