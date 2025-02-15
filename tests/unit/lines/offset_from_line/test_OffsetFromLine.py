@@ -60,3 +60,25 @@ def test_to_point_by_constructing_rectangle(proportion_lenth, offset, p0, p1):
     actual = offset_from_line.to_point(p0_, p1_)
 
     assert actual == pytest.approx(expected)
+
+
+@pytest.mark.parametrize(
+    ["proportion_lenth", "p0", "p1"],
+    [
+        (0.5, (0, 0), (10, 0)),
+        (0.2, (0, -2), (10, 3)),
+        (1.3, (4, 3), (-10, 3)),
+    ],
+)
+def test_zero_offset_returns_point_along_line(proportion_lenth, p0, p1):
+    offset = OffsetFromLine(proportion_lenth=proportion_lenth, offset=0)
+
+    p0 = Vec2D(0, 0)
+    p1 = Vec2D(10, 0)
+
+    actual = offset.to_point(p0, p1)
+
+    diff_p1_p0 = p1 - p0
+    expected = p0 + proportion_lenth * diff_p1_p0
+
+    assert actual == expected
