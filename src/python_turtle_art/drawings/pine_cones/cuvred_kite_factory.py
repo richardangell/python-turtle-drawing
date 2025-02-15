@@ -1,7 +1,7 @@
 from turtle import Vec2D
 from typing import Optional, Union
 
-from ...line import OffsetFromLine
+from ...lines.offset_from_line import OffsetFromLine
 from ...polygons.kites.curved_kite import CurvedKite
 
 

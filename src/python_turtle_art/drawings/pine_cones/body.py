@@ -1,7 +1,8 @@
 from turtle import Turtle, Vec2D
 
 from ...helpers.turtle import jump_to
-from ...line import OffsetFromLine, draw_curved_line
+from ...lines.offset_from_line import OffsetFromLine
+from ...lines.quadratic_bezier_curve import QuadraticBezierCurve
 from .face import CurvedMouth
 
 
@@ -41,14 +42,14 @@ class Arm(Limb):
                 offset=multiplier * self.off_line.offset,
             )
 
-            draw_curved_line(
-                turtle=turtle,
+            QuadraticBezierCurve.from_start_and_end(
                 start=self.start + n * wiggle_step_size,
                 end=self.start + (n + 1) * wiggle_step_size,
                 off_line=wiggle_offset,
                 steps=10,
-                draw_points=False,
-                size=self.size,
+            ).draw(
+                turtle=turtle,
+                size=self.size,  # type: ignore
             )
 
             multiplier *= -1

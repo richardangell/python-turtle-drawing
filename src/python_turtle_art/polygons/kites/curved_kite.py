@@ -2,7 +2,8 @@ from __future__ import annotations
 
 from turtle import Vec2D
 
-from ...line import OffsetFromLine, get_points_on_curve
+from ...lines.offset_from_line import OffsetFromLine
+from ...lines.quadratic_bezier_curve import get_points_on_quadratic_bezier_curve
 from .kite import Kite
 
 
@@ -95,7 +96,7 @@ class CurvedKite(Kite):
                 kite_corner_points[index], kite_corner_points[end_index]
             )
 
-            curve_points = get_points_on_curve(
+            curve_points = get_points_on_quadratic_bezier_curve(
                 start=kite_corner_points[index],
                 end=kite_corner_points[end_index],
                 off_line_point=control_point,

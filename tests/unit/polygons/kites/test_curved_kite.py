@@ -4,7 +4,7 @@ from turtle import Vec2D
 
 import pytest
 
-from python_turtle_art.line import OffsetFromLine
+from python_turtle_art.lines.offset_from_line import OffsetFromLine
 from python_turtle_art.polygons.kites.curved_kite import CurvedKite
 from python_turtle_art.polygons.kites.kite import Kite
 

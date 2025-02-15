@@ -1,6 +1,6 @@
 from turtle import Vec2D
 
-from .polygon import is_convex
+from .is_convex import is_convex
 
 
 class ConvexMixin:

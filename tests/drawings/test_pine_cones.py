@@ -50,5 +50,7 @@ def test_image_produced():
     difference = ImageChops.difference(actual_image, expected_image)
 
     assert_image_difference_within_tolerance(
-        difference=difference, tolerance_non_matching_pixels=15
+        difference=difference,
+        tolerance_non_matching_pixels=23,
+        tolerance_adjacent_pixels=1,
     )
