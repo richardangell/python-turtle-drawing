@@ -28,11 +28,20 @@ def get_adjacent_values(
 
 
 def assert_image_difference_within_tolerance(
-    difference: Image, tolerance_non_matching_pixels: int
+    difference: Image,
+    tolerance_non_matching_pixels: int,
+    tolerance_adjacent_pixels: int,
 ):
     """Assert that number of different pixels is less than a certain amount.
 
     Also tests that none of the differing pixels are adjacent.
+
+    Args:
+        difference (Image): Image of difference between expected and actual images.
+        tolerance_non_matching_pixels (int): Maximum number of matching pixels that are
+            allowed to differ (i.e. be non-zero) in difference.
+        tolerance_adjacent_pixels (int): Maximum number of adjacent pixels allowed to
+            each non-matching pixels.
 
     """
 
@@ -43,7 +52,7 @@ def assert_image_difference_within_tolerance(
 
     count_non_matching_pixels = (non_matching_pixels).sum()
 
-    assert count_non_matching_pixels < tolerance_non_matching_pixels, (
+    assert count_non_matching_pixels <= tolerance_non_matching_pixels, (
         "Number of non-matching pixels outside tolerance."
     )
 
@@ -52,6 +61,11 @@ def assert_image_difference_within_tolerance(
             arr=difference_arr, index_y=y, index_x=x
         )
 
-        assert sum(values_adjacent_to_non_matching_pixel) == 0, (
-            f"Non-matching pixel {i} is adjacent to another non-matching pixel."
+        count_adjacent_non_matching_pixels = len(
+            [x for x in values_adjacent_to_non_matching_pixel if x > 0]
+        )
+
+        assert count_adjacent_non_matching_pixels <= tolerance_adjacent_pixels, (
+            f"Non-matching pixel {i} is adjacent to "
+            f"{count_adjacent_non_matching_pixels} non-matching pixels."
         )

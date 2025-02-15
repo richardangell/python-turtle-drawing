@@ -5,6 +5,7 @@ from ...fill import ColourFill
 from ...helpers.turtle import jump_to
 from ...lines.offset_from_line import OffsetFromLine
 from ...lines.quadratic_bezier_curve import QuadraticBezierCurve
+from ...polygons.polygon import Polygon
 from .body_part import BodyPart
 
 
@@ -135,21 +136,18 @@ class CurvedTriangleMouth(Mouth):
         ).draw(turtle=turtle, colour="white", size=self.size + 2)
         turtle.pencolor(original_colour)
 
-        QuadraticBezierCurve.from_start_and_end(
+        curve = QuadraticBezierCurve.from_start_and_end(
             start=self.start,
             end=self.end,
             off_line=self.off_line,
             steps=10,
-        ).draw(
+        )
+
+        mouth_polygon = Polygon(vertices=curve.vertices)
+
+        mouth_polygon.draw(
             turtle=turtle,
             fill=ColourFill(self.colour) if self.fill else None,
             colour=original_colour,
             size=self.size,
         )
-
-        QuadraticBezierCurve.from_start_and_end(
-            start=self.end,
-            end=self.start,
-            off_line=self.off_line,
-            steps=2,
-        ).draw(turtle=turtle, colour=original_colour, size=self.size)
