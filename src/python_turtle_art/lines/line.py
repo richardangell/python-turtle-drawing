@@ -1,6 +1,6 @@
 from turtle import Vec2D
 
-from ..vertex_collection import DrawMixin, RotateMixin
+from ..vertices.vertices import DrawMixin, RotateMixin
 
 
 class Line(DrawMixin, RotateMixin):

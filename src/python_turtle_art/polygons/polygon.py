@@ -1,7 +1,7 @@
 from turtle import Turtle, Vec2D
 
 from ..fill import BaseFill
-from ..vertex_collection import DrawMixin, RotateMixin
+from ..vertices.vertices import DrawMixin, RotateMixin
 
 
 class Polygon(DrawMixin, RotateMixin):

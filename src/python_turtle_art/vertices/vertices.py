@@ -1,8 +1,10 @@
+"""Mixins providing functionality for collections of vertices."""
+
 from turtle import Turtle, Vec2D
 from typing import Optional, Self, Union
 
-from .helpers.rotation import rotate_about_point
-from .helpers.turtle import jump_to
+from ..helpers.rotation import rotate_about_point
+from ..helpers.turtle import jump_to
 
 
 class VerticesMixin:
