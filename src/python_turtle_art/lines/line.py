@@ -1,9 +1,9 @@
 from turtle import Vec2D
 
-from ..vertex_collection import VertexCollection
+from ..vertex_collection import DrawMixin, RotateMixin
 
 
-class Line(VertexCollection):
+class Line(DrawMixin, RotateMixin):
     """Class for drawing a line between arbitrary number of points."""
 
     _jump_to_vertex_index: int = 0

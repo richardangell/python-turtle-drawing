@@ -6,21 +6,8 @@ from .helpers.rotation import rotate_about_point
 from .helpers.turtle import jump_to
 
 
-class VertexCollection:
-    """Base class for a collection of vertices.
-
-    Implements draw and rotate methods.
-
-    Args:
-        vertices (tuple[Vec2D, ...]): Vertices in the collection.
-
-    """
-
-    def __init__(self, vertices: tuple[Vec2D, ...]):
-        self.vertices = vertices
-
-    """The index of the vertex to jump to before drawing lines between points."""
-    _jump_to_vertex_index: int
+class DrawMixin:
+    """Mixin class for drawing a collection of vertices."""
 
     @property
     def vertices(self) -> tuple[Vec2D, ...]:
@@ -30,6 +17,9 @@ class VertexCollection:
     def vertices(self, vertices: tuple[Vec2D, ...]) -> None:
         """Set vertices attribute."""
         self._vertices = vertices
+
+    """The index of the vertex to jump to before drawing lines between points."""
+    _jump_to_vertex_index: int
 
     def draw(
         self,
@@ -60,11 +50,24 @@ class VertexCollection:
         if fill is not None:
             fill.post_draw(turtle)
 
+
+class RotateMixin:
+    """Mixin class for rotating a collection of vertices."""
+
+    @property
+    def vertices(self) -> tuple[Vec2D, ...]:
+        return self._vertices
+
+    @vertices.setter
+    def vertices(self, vertices: tuple[Vec2D, ...]) -> None:
+        """Set vertices attribute."""
+        self._vertices = vertices
+
     def rotate(self, angle: Union[int, float], about_point: Vec2D) -> Self:
-        """Rotate polygon.
+        """Rotate vertices.
 
         Args:
-            angle (Union[int, float]): angle to rotate the polygon.
+            angle (Union[int, float]): angle, in degrees, to rotate the vertices.
             about_point (Vec2D): point to rotate about.
 
         """

@@ -1,9 +1,9 @@
 from turtle import Vec2D
 
-from ..vertex_collection import VertexCollection
+from ..vertex_collection import DrawMixin, RotateMixin
 
 
-class Polygon(VertexCollection):
+class Polygon(DrawMixin, RotateMixin):
     """Class for drawing an arbitrary polygon.
 
     Args:
