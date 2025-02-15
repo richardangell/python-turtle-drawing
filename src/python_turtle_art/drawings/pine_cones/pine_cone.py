@@ -3,7 +3,8 @@ from math import cos, sin
 from turtle import Turtle, Vec2D
 from typing import Optional, Union
 
-from ...fill import BaseFill, ColourFill
+from ...filling.base_fill import BaseFill
+from ...filling.colour_fill import ColourFill
 from ...helpers.angles import convert_degrees_to_radians
 from ...helpers.rotation import rotate_about_point
 from ...helpers.turtle import jump_to
