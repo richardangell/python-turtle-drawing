@@ -6,8 +6,8 @@ from .helpers.rotation import rotate_about_point
 from .helpers.turtle import jump_to
 
 
-class DrawMixin:
-    """Mixin class for drawing a collection of vertices."""
+class VerticesMixin:
+    """Mixin class for a collection of vertices."""
 
     @property
     def vertices(self) -> tuple[Vec2D, ...]:
@@ -17,6 +17,10 @@ class DrawMixin:
     def vertices(self, vertices: tuple[Vec2D, ...]) -> None:
         """Set vertices attribute."""
         self._vertices = vertices
+
+
+class DrawMixin(VerticesMixin):
+    """Mixin class for drawing a collection of vertices."""
 
     """The index of the vertex to jump to before drawing lines between points."""
     _jump_to_vertex_index: int
@@ -51,17 +55,8 @@ class DrawMixin:
             fill.post_draw(turtle)
 
 
-class RotateMixin:
+class RotateMixin(VerticesMixin):
     """Mixin class for rotating a collection of vertices."""
-
-    @property
-    def vertices(self) -> tuple[Vec2D, ...]:
-        return self._vertices
-
-    @vertices.setter
-    def vertices(self, vertices: tuple[Vec2D, ...]) -> None:
-        """Set vertices attribute."""
-        self._vertices = vertices
 
     def rotate(self, angle: Union[int, float], about_point: Vec2D) -> Self:
         """Rotate vertices.
