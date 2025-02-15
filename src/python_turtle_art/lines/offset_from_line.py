@@ -10,8 +10,7 @@ class OffsetFromLine:
     Attributes:
         proportion_lenth (float): proportion of the length along the line
             the new point should be placed.
-        offset (int): perpendicular distance from line point should be
-            placed.
+        offset (int): perpendicular distance from line point should be placed.
 
     """
 
@@ -27,21 +26,21 @@ class OffsetFromLine:
         point_along_line = p0 + self.proportion_lenth * delta
 
         return point_perpendicular_distance_from_line(
-            p0=p0, p1=point_along_line, n=self.offset
+            p0=p0, p1=point_along_line, distance=self.offset
         )
 
 
 def point_perpendicular_distance_from_line(
-    p0: Vec2D, p1: Vec2D, n: int | float
+    p0: Vec2D, p1: Vec2D, distance: int | float
 ) -> Vec2D:
-    """Find point which is perpendicular distance n from p1 in line p0, p1."""
+    """Find anticlockwise perpendicular point a distance from p1 on line p0, p1."""
 
     dx, dy = p0 - p1
     dist = sqrt(dx * dx + dy * dy)
     dx /= dist
     dy /= dist
 
-    x3 = p1[0] + n * dy
-    y3 = p1[1] - n * dx
+    x3 = p1[0] + distance * dy
+    y3 = p1[1] - distance * dx
 
     return Vec2D(x3, y3)
