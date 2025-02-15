@@ -85,9 +85,6 @@ class CurvedMouth(Mouth):
         original_colour = turtle.pencolor()
 
         if self.outline:
-            jump_to(turtle, self.start)
-
-            turtle.pencolor("white")
             QuadraticBezierCurve.from_start_and_end(
                 start=self.start,
                 end=self.end,
@@ -95,9 +92,6 @@ class CurvedMouth(Mouth):
                 steps=10,
             ).draw(turtle=turtle, colour="white", size=self.size + 2)  # type: ignore
 
-        jump_to(turtle, self.start)
-
-        turtle.pencolor(original_colour)
         QuadraticBezierCurve.from_start_and_end(
             start=self.start,
             end=self.end,
@@ -125,9 +119,6 @@ class CurvedTriangleMouth(Mouth):
 
     def draw(self, turtle: Turtle):
         original_colour = turtle.pencolor()
-        turtle.pencolor("white")
-
-        jump_to(turtle, self.start)
 
         QuadraticBezierCurve.from_start_and_end(
             start=self.start,
@@ -136,8 +127,6 @@ class CurvedTriangleMouth(Mouth):
             steps=10,
         ).draw(turtle=turtle, colour="white", size=self.size + 2)
 
-        jump_to(turtle, self.end)
-
         QuadraticBezierCurve.from_start_and_end(
             start=self.end,
             end=self.start,
@@ -145,8 +134,6 @@ class CurvedTriangleMouth(Mouth):
             steps=2,
         ).draw(turtle=turtle, colour="white", size=self.size + 2)
         turtle.pencolor(original_colour)
-
-        jump_to(turtle, self.start)
 
         QuadraticBezierCurve.from_start_and_end(
             start=self.start,
@@ -159,7 +146,6 @@ class CurvedTriangleMouth(Mouth):
             colour=original_colour,
             size=self.size,
         )
-        jump_to(turtle, self.end)
 
         QuadraticBezierCurve.from_start_and_end(
             start=self.end,
