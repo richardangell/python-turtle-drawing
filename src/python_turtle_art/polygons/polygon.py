@@ -1,5 +1,6 @@
-from turtle import Vec2D
+from turtle import Turtle, Vec2D
 
+from ..fill import BaseFill
 from ..vertex_collection import DrawMixin, RotateMixin
 
 
@@ -27,6 +28,23 @@ class Polygon(DrawMixin, RotateMixin):
         if len(vertices) < 3:
             raise ValueError("vertices must contain at least 3 points.")
         self._vertices = vertices
+
+    def draw(
+        self,
+        turtle: Turtle,
+        colour: str = "black",
+        size: int | None = None,
+        fill: BaseFill | None = None,
+    ):
+        """Set pensize and colour then draw polygon edges."""
+
+        if fill is not None:
+            fill.pre_draw(turtle)
+
+        super().draw(turtle=turtle, colour=colour, size=size)
+
+        if fill is not None:
+            fill.post_draw(turtle)
 
     def is_convex(self) -> bool:
         """Check if the polygon is convex."""

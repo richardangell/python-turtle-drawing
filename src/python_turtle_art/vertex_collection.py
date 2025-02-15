@@ -1,7 +1,6 @@
 from turtle import Turtle, Vec2D
 from typing import Optional, Self, Union
 
-from .fill import BaseFill
 from .helpers.rotation import rotate_about_point
 from .helpers.turtle import jump_to
 
@@ -30,12 +29,8 @@ class DrawMixin(VerticesMixin):
         turtle: Turtle,
         colour: str = "black",
         size: Optional[int] = None,
-        fill: Optional[BaseFill] = None,
     ):
         """Set pensize and colour then draw polygon edges."""
-
-        if fill is not None:
-            fill.pre_draw(turtle)
 
         original_colour = turtle.pencolor()
         original_pensize = turtle.pensize()
@@ -50,9 +45,6 @@ class DrawMixin(VerticesMixin):
 
         turtle.color(original_colour)
         turtle.pensize(original_pensize)
-
-        if fill is not None:
-            fill.post_draw(turtle)
 
 
 class RotateMixin(VerticesMixin):
