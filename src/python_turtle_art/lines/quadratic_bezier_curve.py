@@ -49,6 +49,9 @@ class QuadraticBezierCurve(Line):
         off_line: OffsetFromLine | None = None,
         steps: int = 10,
     ) -> QuadraticBezierCurve:
+        if start == end:
+            raise ValueError("Can only create curve between two different points.")
+
         off_line_ = OffsetFromLine() if off_line is None else off_line
 
         off_line_point = off_line_.to_point(start, end)
