@@ -30,23 +30,11 @@ class Polygon(DrawMixin, RotateMixin):
             raise ValueError("vertices must contain at least 3 points.")
         self._vertices = vertices
 
-    def draw(
-        self,
-        turtle: Turtle,
-        colour: str = "black",
-        size: int | None = None,
-        fill: BaseFill | None = None,
-    ):
-        """Set pensize and colour then draw polygon edges."""
-
-        if fill is not None:
-            fill.pre_draw(turtle)
-
-        super().draw(turtle=turtle, colour=colour, size=size)
-
-        if fill is not None:
-            fill.post_draw(turtle)
-
     def is_convex(self) -> bool:
         """Check if the polygon is convex."""
         return is_convex(self.vertices)
+
+    def fill(self, turtle: Turtle, filler: BaseFill):
+        """Fill the polygon."""
+
+        filler.fill(turtle=turtle, vertices=self.vertices)

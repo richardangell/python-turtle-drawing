@@ -31,22 +31,10 @@ class ConvexPolygon(DrawMixin, RotateMixin):
             raise ValueError("Polygon defined by supplied vertices are not convex.")
         self._vertices = vertices
 
-    def draw(
-        self,
-        turtle: Turtle,
-        colour: str = "black",
-        size: int | None = None,
-        fill: BaseConvexFill | BaseFill | None = None,
-    ):
-        """Set pensize and colour then draw polygon edges."""
+    def fill(self, turtle: Turtle, filler: BaseConvexFill | BaseFill):
+        """Fill the polygon."""
 
-        if fill is not None:
-            fill.pre_draw(turtle)
-
-        super().draw(turtle=turtle, colour=colour, size=size)
-
-        if fill is not None:
-            fill.post_draw(turtle)
+        filler.fill(turtle=turtle, vertices=self.vertices)
 
     def is_convex(self) -> bool:
         """Check if the polygon is convex."""
