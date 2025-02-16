@@ -37,7 +37,7 @@ class DrawMixin(VerticesMixin):
         original_colour = turtle.pencolor()
         original_pensize = turtle.pensize()
 
-        turtle.color(colour)
+        turtle.pencolor(colour)
         turtle.pensize(size)
 
         jump_to(turtle=turtle, position=self.vertices[self._jump_to_vertex_index])
@@ -45,7 +45,7 @@ class DrawMixin(VerticesMixin):
         for point in self.vertices:
             turtle.goto(point)
 
-        turtle.color(original_colour)
+        turtle.pencolor(original_colour)
         turtle.pensize(original_pensize)
 
 

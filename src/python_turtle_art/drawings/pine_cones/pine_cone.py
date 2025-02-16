@@ -39,7 +39,7 @@ class PineCone:
         self.horizontal_offset = horizontal_offset
         self.vertical_offset = vertical_offset
         self.inner_kite_fill: BaseFill = (
-            ColourFill(fillcolour="white")
+            ColourFill(fill_colour="white")
             if inner_kite_fill is None
             else inner_kite_fill
         )
