@@ -1,7 +1,7 @@
 from abc import abstractmethod
 from turtle import Turtle, Vec2D
 
-from ...fill import ColourFill
+from ...filling.colour_fill import ColourFill
 from ...helpers.turtle import jump_to
 from ...lines.offset_from_line import OffsetFromLine
 from ...lines.quadratic_bezier_curve import QuadraticBezierCurve

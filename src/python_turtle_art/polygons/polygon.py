@@ -1,6 +1,6 @@
 from turtle import Turtle, Vec2D
 
-from ..fill import BaseFill
+from ..filling.base_fill import BaseFill
 from ..vertices.vertices import DrawMixin, RotateMixin
 from .is_convex import is_convex
 
