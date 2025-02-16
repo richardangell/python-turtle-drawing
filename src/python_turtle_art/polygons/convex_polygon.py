@@ -1,9 +1,12 @@
-from turtle import Vec2D
+from turtle import Turtle, Vec2D
 
+from ..filling.base_fill import BaseFill
+from ..filling.convex_fill import ConvexFill
+from ..vertices.vertices import DrawMixin, RotateMixin
 from .is_convex import is_convex
 
 
-class ConvexMixin:
+class ConvexPolygon(DrawMixin, RotateMixin):
     """Mixin for a convex polygon.
 
     Defines a setter for the vertices property which enforces the convex property.
@@ -27,3 +30,24 @@ class ConvexMixin:
         if not is_convex(vertices):
             raise ValueError("Polygon defined by supplied vertices are not convex.")
         self._vertices = vertices
+
+    def draw(
+        self,
+        turtle: Turtle,
+        colour: str = "black",
+        size: int | None = None,
+        fill: ConvexFill | BaseFill | None = None,
+    ):
+        """Set pensize and colour then draw polygon edges."""
+
+        if fill is not None:
+            fill.pre_draw(turtle)
+
+        super().draw(turtle=turtle, colour=colour, size=size)
+
+        if fill is not None:
+            fill.post_draw(turtle)
+
+    def is_convex(self) -> bool:
+        """Check if the polygon is convex."""
+        return is_convex(self.vertices)

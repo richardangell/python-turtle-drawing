@@ -3,11 +3,11 @@ from __future__ import annotations
 from turtle import Vec2D
 
 from ...lines.offset_from_line import OffsetFromLine
-from ..convex_mixin import ConvexMixin
+from ..convex_polygon import ConvexPolygon
 from .curved_kite import CurvedKite
 
 
-class ConvexCurvedKite(ConvexMixin, CurvedKite):
+class ConvexCurvedKite(ConvexPolygon, CurvedKite):
     """Class representing a convex kite shape."""
 
     @classmethod
