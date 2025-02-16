@@ -1,9 +1,19 @@
+from __future__ import annotations
+
+from abc import ABC, abstractmethod
 from turtle import Turtle, Vec2D
 
-from ..filling.base_convex_fill import BaseConvexFill
-from ..filling.base_fill import BaseFill
 from ..vertices.vertices import DrawMixin, RotateMixin
 from .is_convex import is_convex
+
+
+class BaseConvexFill(ABC):
+    """Base class for fillers that operate on convex polygons only."""
+
+    @abstractmethod
+    def fill(self, turtle: Turtle, polygon: ConvexPolygon):
+        """Fill."""
+        raise NotImplementedError
 
 
 class ConvexPolygon(DrawMixin, RotateMixin):
@@ -31,10 +41,10 @@ class ConvexPolygon(DrawMixin, RotateMixin):
             raise ValueError("Polygon defined by supplied vertices are not convex.")
         self._vertices = vertices
 
-    def fill(self, turtle: Turtle, filler: BaseConvexFill | BaseFill):
+    def fill(self, turtle: Turtle, filler: BaseConvexFill):
         """Fill the polygon."""
 
-        filler.fill(turtle=turtle, vertices=self.vertices)
+        filler.fill(turtle=turtle, polygon=self)
 
     def is_convex(self) -> bool:
         """Check if the polygon is convex."""

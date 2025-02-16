@@ -3,13 +3,13 @@ from math import cos, sin
 from turtle import Turtle, Vec2D
 from typing import Optional, Union
 
-from ...filling.base_fill import BaseFill
 from ...filling.colour_fill import ColourFill
 from ...helpers.angles import convert_degrees_to_radians
 from ...helpers.rotation import rotate_about_point
 from ...helpers.turtle import jump_to
 from ...lines.offset_from_line import OffsetFromLine
 from ...polygons.kites.curved_kite import CurvedKite
+from ...polygons.polygon import BaseFill
 from .body import Arm, Limb
 from .body_part import BodyPart
 from .cuvred_kite_factory import CurvedKiteFactory
