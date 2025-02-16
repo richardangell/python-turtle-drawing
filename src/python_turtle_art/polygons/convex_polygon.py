@@ -1,7 +1,7 @@
 from turtle import Turtle, Vec2D
 
+from ..filling.base_convex_fill import BaseConvexFill
 from ..filling.base_fill import BaseFill
-from ..filling.convex_fill import ConvexFill
 from ..vertices.vertices import DrawMixin, RotateMixin
 from .is_convex import is_convex
 
@@ -36,7 +36,7 @@ class ConvexPolygon(DrawMixin, RotateMixin):
         turtle: Turtle,
         colour: str = "black",
         size: int | None = None,
-        fill: ConvexFill | BaseFill | None = None,
+        fill: BaseConvexFill | BaseFill | None = None,
     ):
         """Set pensize and colour then draw polygon edges."""
 

@@ -4,7 +4,7 @@ from abc import ABC, abstractmethod
 from turtle import Turtle
 
 
-class ConvexFill(ABC):
+class BaseConvexFill(ABC):
     @abstractmethod
     def pre_draw(self, turtle: Turtle):
         """Pre edge-drawing step."""
