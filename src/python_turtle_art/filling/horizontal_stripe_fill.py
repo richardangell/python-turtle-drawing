@@ -31,12 +31,13 @@ class HorizontalStipeFill(BaseConvexFill):
             polygon (ConvexPolygon): convex polygon to fill.
 
         """
-        stripes = self._get_horizontal_stipe_lines(polygon=polygon)
+        stripes = self.get_filling_lines(polygon=polygon)
 
         for stripe in stripes:
             stripe.draw(turtle=turtle, size=5)
 
-    def _get_horizontal_stipe_lines(self, polygon: ConvexPolygon) -> list[Line]:
+    def get_filling_lines(self, polygon: ConvexPolygon) -> list[Line]:
+        """Get the horizontal stripes that fill the polygon."""
         extreme_indices = polygon.get_extreme_y_vertices_indices()
         min_y_index = extreme_indices.minimum
         max_y_index = extreme_indices.maximum

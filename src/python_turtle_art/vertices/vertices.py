@@ -3,7 +3,7 @@
 from collections import namedtuple
 from math import inf
 from turtle import Turtle, Vec2D
-from typing import Optional, Self, Union
+from typing import Any, Optional, Self, Union
 
 from ..helpers.rotation import rotate_about_point
 from ..helpers.turtle import jump_to
@@ -98,3 +98,14 @@ class GetExtremeVerticesMixin(VerticesMixin):
             raise ValueError("Failed to find min or max y index.")
 
         return ExtremeIndices(minimum=minimum_y_index, maximum=maximum_y_index)
+
+
+class EqMixin(VerticesMixin):
+    """Mixin providing __eq__ method that compares vertices attribute."""
+
+    def __eq__(self, other: Any) -> bool:
+        """Check if vertices are equal."""
+        if not isinstance(other, EqMixin):
+            return False
+        else:
+            return self.vertices == other.vertices
