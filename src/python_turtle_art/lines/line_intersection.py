@@ -2,7 +2,7 @@ from turtle import Vec2D
 
 
 def get_horizontal_intersection_of_line(
-    p0: Vec2D, p1: Vec2D, horizontal_y: int
+    p0: Vec2D, p1: Vec2D, horizontal_y: int | float
 ) -> Vec2D:
     """Get the point at which a line intersects a horizontal line.
 
