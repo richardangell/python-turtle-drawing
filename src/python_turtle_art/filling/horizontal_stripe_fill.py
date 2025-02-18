@@ -176,10 +176,21 @@ def get_incremenets_from_origin_within_range(
 
     """
 
-    start = int((min_ // increment) * increment)
-    stop = int((max_ // increment) * increment)
+    if increment <= 0:
+        raise ValueError("Increment must be greater than zero.")
 
-    increments_in_range = [x for x in range(start, stop, increment) if min_ < x < max_]
+    start = int(((min_) // increment) * increment)
+    stop = int((((max_) // increment) + 1) * increment)
+
+    increment_remainder = origin % increment
+
+    increments_in_range = [
+        x
+        for x in range(
+            start + increment_remainder, stop + increment_remainder + 1, increment
+        )
+        if min_ < x < max_
+    ]
 
     if len(increments_in_range) == 0:
         warn(
