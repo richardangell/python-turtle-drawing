@@ -17,7 +17,7 @@ class BaseConvexFill(ABC):
 
 
 class ConvexPolygon(DrawMixin, RotateMixin, GetExtremeVerticesMixin, EqMixin):
-    """Mixin for a convex polygon.
+    """Convex polygon.
 
     Defines a setter for the vertices property which enforces the convex property.
 

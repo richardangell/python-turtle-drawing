@@ -106,7 +106,7 @@ class HorizontalStipeFill(BaseConvexFill):
             current_vertex = polygon.vertices[index]
             next_vertex = polygon.vertices[next_index]
 
-            while (horizontal_stipe_counter < len(horizontal_line_y)) and (
+            while (horizontal_stipe_counter >= 0) and (
                 next_vertex[1]
                 < horizontal_line_y[horizontal_stipe_counter]
                 <= current_vertex[1]
