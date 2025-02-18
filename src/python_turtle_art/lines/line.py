@@ -21,3 +21,6 @@ class Line(DrawMixin, RotateMixin):
         if len(vertices) < 2:
             raise ValueError("vertices must contain at least 2 points.")
         self._vertices = vertices
+
+    def __repr__(self) -> str:
+        return f"Line{self.vertices}"

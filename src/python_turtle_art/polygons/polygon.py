@@ -3,7 +3,7 @@ from __future__ import annotations
 from abc import abstractmethod
 from turtle import Turtle, Vec2D
 
-from ..vertices.vertices import DrawMixin, RotateMixin
+from ..vertices.vertices import DrawMixin, GetExtremeVerticesMixin, RotateMixin
 from .convex_polygon import BaseConvexFill, ConvexPolygon
 from .is_convex import is_convex
 
@@ -21,7 +21,7 @@ class BaseFill(BaseConvexFill):
         raise NotImplementedError
 
 
-class Polygon(DrawMixin, RotateMixin):
+class Polygon(DrawMixin, RotateMixin, GetExtremeVerticesMixin):
     """Class for drawing an arbitrary polygon.
 
     Args:

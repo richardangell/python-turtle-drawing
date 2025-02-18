@@ -3,7 +3,7 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from turtle import Turtle, Vec2D
 
-from ..vertices.vertices import DrawMixin, RotateMixin
+from ..vertices.vertices import DrawMixin, GetExtremeVerticesMixin, RotateMixin
 from .is_convex import is_convex
 
 
@@ -16,7 +16,7 @@ class BaseConvexFill(ABC):
         raise NotImplementedError
 
 
-class ConvexPolygon(DrawMixin, RotateMixin):
+class ConvexPolygon(DrawMixin, RotateMixin, GetExtremeVerticesMixin):
     """Mixin for a convex polygon.
 
     Defines a setter for the vertices property which enforces the convex property.
