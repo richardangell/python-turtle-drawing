@@ -4,7 +4,6 @@ import pytest
 
 from python_turtle_art.filling.horizontal_stripe_fill import HorizontalStipeFill
 from python_turtle_art.lines.line import Line
-from python_turtle_art.polygons.convex_polygon import ConvexPolygon
 from python_turtle_art.polygons.kites.convex_kite import ConvexKite
 
 
@@ -45,7 +44,7 @@ def test_get_filling_lines_in_kite():
 def test_get_filling_lines_in_square(fill_origin, expected_y_coords):
     horizontal_stripe_fill = HorizontalStipeFill(gap=3, origin=fill_origin)
 
-    square = ConvexPolygon(
+    square = ConvexKite(
         vertices=(Vec2D(-20, -20), Vec2D(20, -20), Vec2D(20, 20), Vec2D(-20, 20))
     )
 
