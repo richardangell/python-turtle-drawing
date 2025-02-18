@@ -1,5 +1,6 @@
 """Mixins providing functionality for collections of vertices."""
 
+from collections import namedtuple
 from math import inf
 from turtle import Turtle, Vec2D
 from typing import Optional, Self, Union
@@ -69,10 +70,13 @@ class RotateMixin(VerticesMixin):
         return self
 
 
+ExtremeIndices = namedtuple("ExtremeIndices", ["minimum", "maximum"])
+
+
 class GetExtremeVerticesMixin(VerticesMixin):
     """Mixin class for getting extreme vertices."""
 
-    def get_extreme_y_vertices_indices(self) -> tuple[int, int]:
+    def get_extreme_y_vertices_indices(self) -> ExtremeIndices:
         """Get the indices of the vertices with min and max y values."""
 
         minimum_y = inf
@@ -93,4 +97,4 @@ class GetExtremeVerticesMixin(VerticesMixin):
         if minimum_y_index == -1 or maximum_y_index == -1:
             raise ValueError("Failed to find min or max y index.")
 
-        return minimum_y_index, maximum_y_index
+        return ExtremeIndices(minimum=minimum_y_index, maximum=maximum_y_index)

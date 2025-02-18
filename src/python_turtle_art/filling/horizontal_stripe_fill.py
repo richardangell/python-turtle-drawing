@@ -1,5 +1,5 @@
+from collections.abc import Sequence
 from turtle import Turtle, Vec2D
-from typing import Sequence
 from warnings import warn
 
 from ..lines.line import Line
@@ -30,15 +30,15 @@ class HorizontalStipeFill(BaseConvexFill):
             polygon (ConvexPolygon): convex polygon to fill.
 
         """
-        stripes = self._get_horizontal_stipe_lines(turtle, polygon)
+        stripes = self._get_horizontal_stipe_lines(polygon=polygon)
 
         for stripe in stripes:
             stripe.draw(turtle=turtle, size=5)
 
-    def _get_horizontal_stipe_lines(
-        self, turtle: Turtle, polygon: ConvexPolygon
-    ) -> list[Line]:
-        min_y_index, max_y_index = polygon.get_extreme_y_vertices_indices()
+    def _get_horizontal_stipe_lines(self, polygon: ConvexPolygon) -> list[Line]:
+        extreme_indices = polygon.get_extreme_y_vertices_indices()
+        min_y_index = extreme_indices.minimum
+        max_y_index = extreme_indices.maximum
 
         if min_y_index == max_y_index:
             raise ValueError("Polygon has no area to fill.")
