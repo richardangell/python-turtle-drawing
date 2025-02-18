@@ -1,3 +1,4 @@
+from collections import namedtuple
 from collections.abc import Sequence
 from turtle import Turtle, Vec2D
 from warnings import warn
@@ -50,11 +51,11 @@ class HorizontalStipeFill(BaseConvexFill):
             origin=self.origin, increment=self.gap, min_=min_y, max_=max_y
         )
 
-        number_steps_min_to_max, number_steps_max_to_min = (
-            get_number_of_steps_between_indices(
-                index_a=min_y_index, index_b=max_y_index, sequence=polygon.vertices
-            )
+        number_steps = get_number_of_steps_between_indices(
+            index_a=min_y_index, index_b=max_y_index, sequence=polygon.vertices
         )
+        number_steps_min_to_max = number_steps.a_to_b
+        number_steps_max_to_min = number_steps.b_to_a
 
         horizontal_stipe_counter = 0
 
@@ -135,9 +136,12 @@ class HorizontalStipeFill(BaseConvexFill):
         return stripe_lines
 
 
+StepsBetweenIndices = namedtuple("StepsBetweenIndices", ["a_to_b", "b_to_a"])
+
+
 def get_number_of_steps_between_indices(
     index_a: int, index_b: int, sequence: Sequence
-) -> tuple[int, int]:
+) -> StepsBetweenIndices:
     """Calculate number of indexes between two indices in a sequence, wrapping the end.
 
     Args:
@@ -155,7 +159,7 @@ def get_number_of_steps_between_indices(
         number_steps_a_to_b = n - index_a + index_b
         number_steps_b_to_a = index_a - index_b
 
-    return number_steps_a_to_b, number_steps_b_to_a
+    return StepsBetweenIndices(a_to_b=number_steps_a_to_b, b_to_a=number_steps_b_to_a)
 
 
 def get_incremenets_from_origin_within_range(
