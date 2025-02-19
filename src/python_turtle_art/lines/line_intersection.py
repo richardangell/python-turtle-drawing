@@ -16,7 +16,10 @@ def get_horizontal_intersection_of_line(
 
     p0_to_y = constant - p0[1]
 
-    t = p0_to_y / p0_to_p1[1]
+    try:
+        t = p0_to_y / p0_to_p1[1]
+    except ZeroDivisionError as err:
+        raise ValueError("Line p0, p1 is horizontal.") from err
 
     intersection = p0 + (p0_to_p1 * t)
 
@@ -38,7 +41,10 @@ def get_vertical_intersection_of_line(
 
     p0_to_x = constant - p0[0]
 
-    t = p0_to_x / p0_to_p1[0]
+    try:
+        t = p0_to_x / p0_to_p1[0]
+    except ZeroDivisionError as err:
+        raise ValueError("Line p0, p1 is vertical.") from err
 
     intersection = p0 + (p0_to_p1 * t)
 
