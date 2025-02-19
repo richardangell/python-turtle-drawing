@@ -38,7 +38,9 @@ class HorizontalStipeFill(BaseConvexFill):
 
     def get_filling_lines(self, polygon: ConvexPolygon) -> list[Line]:
         """Get the horizontal stripes that fill the polygon."""
-        extreme_indices = polygon.get_extreme_y_vertices_indices()
+        extreme_indices = polygon.get_vertices_indices_with_min_and_max_values_on_axis(
+            axis=1
+        )
         min_y_index = extreme_indices.minimum
         max_y_index = extreme_indices.maximum
 
