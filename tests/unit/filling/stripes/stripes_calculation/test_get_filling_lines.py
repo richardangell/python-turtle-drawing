@@ -2,12 +2,12 @@ from turtle import Vec2D
 
 import pytest
 
-from python_turtle_art.filling.stripes import get_filling_lines
+from python_turtle_art.filling.stripes.stripes_calculation import get_filling_lines
 from python_turtle_art.lines.line import Line
 from python_turtle_art.polygons.kites.convex_kite import ConvexKite
 
 
-def test_get_filling_lines_in_kite():
+def test_horizontal_lines_in_kite():
     kite = ConvexKite.from_origin_and_dimensions(
         origin=Vec2D(0, 0),
         height=100,
@@ -39,7 +39,7 @@ def test_get_filling_lines_in_kite():
         (2, [-19, -16, -13, -10, -7, -4, -1, 2, 5, 8, 11, 14, 17]),
     ],
 )
-def test_get_filling_lines_in_square(fill_origin, expected_y_coords):
+def test_horizontal_lines_in_square(fill_origin, expected_y_coords):
     square = ConvexKite(
         vertices=(Vec2D(-20, -20), Vec2D(20, -20), Vec2D(20, 20), Vec2D(-20, 20))
     )

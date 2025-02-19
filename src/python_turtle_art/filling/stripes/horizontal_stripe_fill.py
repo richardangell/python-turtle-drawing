@@ -1,26 +1,28 @@
 from turtle import Turtle
 
-from ..polygons.convex_polygon import BaseConvexFill, ConvexPolygon
-from .stripes import get_filling_lines
+from ...polygons.convex_polygon import BaseConvexFill, ConvexPolygon
+from .stripes_calculation import get_filling_lines
 
 
-class VerticalStripeFill(BaseConvexFill):
-    """Fill a convex polygon with vertical stripes.
+class HorizontalStipeFill(BaseConvexFill):
+    """Fill a convex polygon with horizontal stripes.
 
     Args:
         gap (int): distance between each stripe.
-        origin (int): x-coordinate of the origin vertical stripes will be drawn
+        origin (int): y-coordinate of the origin horizontal stripes will be drawn
             relative to.
+        size (int): pen size for the stripes.
+        colour (str): pen colour for the stripes.
 
     """
 
-    axis: int = 0
+    axis: int = 1
 
-    def __init__(self, gap: int, size: int = 1, colour: str = "black", origin: int = 0):
+    def __init__(self, gap: int, origin: int = 0, size: int = 1, colour: str = "black"):
         self.gap = gap
+        self.origin = origin
         self.size = size
         self.colour = colour
-        self.origin = origin
 
     def fill(self, turtle: Turtle, polygon: ConvexPolygon):
         """Fill a convex polygon with horizontal stipes.
@@ -35,4 +37,4 @@ class VerticalStripeFill(BaseConvexFill):
         )
 
         for stripe in stripes:
-            stripe.draw(turtle=turtle, size=self.size, colour=self.colour)
+            stripe.draw(turtle=turtle, size=5)

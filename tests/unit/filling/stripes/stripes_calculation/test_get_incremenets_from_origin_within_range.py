@@ -1,6 +1,6 @@
 import pytest
 
-from python_turtle_art.filling.stripes import (
+from python_turtle_art.filling.stripes.stripes_calculation import (
     get_incremenets_from_origin_within_range,
 )
 

@@ -3,13 +3,13 @@ from collections.abc import Sequence
 from turtle import Vec2D
 from warnings import warn
 
-from ..lines.line import Line
-from ..lines.line_intersection import (
+from ...lines.line import Line
+from ...lines.line_intersection import (
     get_horizontal_intersection_of_line,
     get_vertical_intersection_of_line,
 )
-from ..polygons.convex_polygon import ConvexPolygon
-from ..vertices.vertices import Axis
+from ...polygons.convex_polygon import ConvexPolygon
+from ...vertices.vertices import Axis
 
 StepsBetweenIndices = namedtuple("StepsBetweenIndices", ["a_to_b", "b_to_a"])
 
