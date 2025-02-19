@@ -26,6 +26,11 @@ def square() -> ConvexKite:
     )
 
 
+def test_exception_if_invalid_axis_value(kite):
+    with pytest.raises(ValueError, match="2 is not a valid Axis"):
+        get_filling_lines(gap=10, origin=0, polygon=kite, axis=2)
+
+
 def test_horizontal_lines_in_kite(kite):
     expected = [
         Line(vertices=(Vec2D(-10, 10), Vec2D(10, 10))),
