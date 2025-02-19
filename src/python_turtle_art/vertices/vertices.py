@@ -1,7 +1,9 @@
 """Mixins providing functionality for collections of vertices."""
 
+from collections import namedtuple
+from math import inf
 from turtle import Turtle, Vec2D
-from typing import Optional, Self, Union
+from typing import Any, Optional, Self, Union
 
 from ..helpers.rotation import rotate_about_point
 from ..helpers.turtle import jump_to
@@ -66,3 +68,44 @@ class RotateMixin(VerticesMixin):
             )
 
         return self
+
+
+ExtremeIndices = namedtuple("ExtremeIndices", ["minimum", "maximum"])
+
+
+class GetExtremeVerticesMixin(VerticesMixin):
+    """Mixin class for getting extreme vertices."""
+
+    def get_extreme_y_vertices_indices(self) -> ExtremeIndices:
+        """Get the indices of the vertices with min and max y values."""
+
+        minimum_y = inf
+        maximum_y = -inf
+
+        minimum_y_index = -1
+        maximum_y_index = -1
+
+        for vertex_index, vertex in enumerate(self.vertices):
+            if vertex[1] < minimum_y:
+                minimum_y = vertex[1]
+                minimum_y_index = vertex_index
+
+            if vertex[1] > maximum_y:
+                maximum_y = vertex[1]
+                maximum_y_index = vertex_index
+
+        if minimum_y_index == -1 or maximum_y_index == -1:
+            raise ValueError("Failed to find min or max y index.")
+
+        return ExtremeIndices(minimum=minimum_y_index, maximum=maximum_y_index)
+
+
+class EqMixin(VerticesMixin):
+    """Mixin providing __eq__ method that compares vertices attribute."""
+
+    def __eq__(self, other: Any) -> bool:
+        """Check if vertices are equal."""
+        if not isinstance(other, EqMixin):
+            return False
+        else:
+            return self.vertices == other.vertices

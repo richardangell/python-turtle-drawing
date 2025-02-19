@@ -1,9 +1,9 @@
 from turtle import Vec2D
 
-from ..vertices.vertices import DrawMixin, RotateMixin
+from ..vertices.vertices import DrawMixin, EqMixin, RotateMixin
 
 
-class Line(DrawMixin, RotateMixin):
+class Line(DrawMixin, RotateMixin, EqMixin):
     """Class for drawing a line between arbitrary number of points."""
 
     _jump_to_vertex_index: int = 0
@@ -21,3 +21,6 @@ class Line(DrawMixin, RotateMixin):
         if len(vertices) < 2:
             raise ValueError("vertices must contain at least 2 points.")
         self._vertices = vertices
+
+    def __repr__(self) -> str:
+        return f"Line{self.vertices}"

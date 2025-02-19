@@ -3,13 +3,13 @@ from math import cos, sin
 from turtle import Turtle, Vec2D
 from typing import Optional, Union
 
-from ...filling.base_fill import BaseFill
 from ...filling.colour_fill import ColourFill
 from ...helpers.angles import convert_degrees_to_radians
 from ...helpers.rotation import rotate_about_point
 from ...helpers.turtle import jump_to
 from ...lines.offset_from_line import OffsetFromLine
 from ...polygons.kites.curved_kite import CurvedKite
+from ...polygons.polygon import BaseFill
 from .body import Arm, Limb
 from .body_part import BodyPart
 from .cuvred_kite_factory import CurvedKiteFactory
@@ -55,7 +55,8 @@ class PineCone:
         jump_to(turtle, self.outer_kite.vertices[0])
         self.outer_kite.rotate(
             self.outer_kite_rotation, self.outer_kite.vertices[0]
-        ).draw(turtle=turtle, fill=ColourFill(), colour="black")
+        ).draw(turtle=turtle, colour="black")
+        self.outer_kite.fill(turtle=turtle, filler=ColourFill())
 
         if self.inner_kite_factory.height is None:
             raise ValueError("inner_kite_factory.height not specified")
@@ -120,9 +121,8 @@ class PineCone:
 
             inner_kite = self.inner_kite_factory.get_kite(origin=center_origin)
             jump_to(turtle, inner_kite.vertices[0])
-            inner_kite.draw(
-                turtle=turtle, fill=self.inner_kite_fill, colour=self.inner_kite_colour
-            )
+            inner_kite.draw(turtle=turtle, colour=self.inner_kite_colour)
+            inner_kite.fill(turtle=turtle, filler=self.inner_kite_fill)
 
             center_origin_half_row_up = (
                 center_origin
@@ -155,9 +155,9 @@ class PineCone:
                 jump_to(turtle, inner_kite.vertices[0])
                 inner_kite.draw(
                     turtle=turtle,
-                    fill=self.inner_kite_fill,
                     colour=self.inner_kite_colour,
                 )
+                inner_kite.fill(turtle=turtle, filler=self.inner_kite_fill)
 
                 offset_origin_half_row_up = (
                     center_origin_half_row_up
@@ -174,9 +174,9 @@ class PineCone:
                 jump_to(turtle, inner_kite.vertices[0])
                 inner_kite.draw(
                     turtle=turtle,
-                    fill=self.inner_kite_fill,
                     colour=self.inner_kite_colour,
                 )
+                inner_kite.fill(turtle=turtle, filler=self.inner_kite_fill)
 
             # fill out row left from the center
             for i in range(n_side_inner_kites):
@@ -191,9 +191,9 @@ class PineCone:
                 jump_to(turtle, inner_kite.vertices[0])
                 inner_kite.draw(
                     turtle=turtle,
-                    fill=self.inner_kite_fill,
                     colour=self.inner_kite_colour,
                 )
+                inner_kite.fill(turtle=turtle, filler=self.inner_kite_fill)
 
                 offset_origin_half_row_up = (
                     center_origin_half_row_up
@@ -210,13 +210,13 @@ class PineCone:
                 jump_to(turtle, inner_kite.vertices[0])
                 inner_kite.draw(
                     turtle=turtle,
-                    fill=self.inner_kite_fill,
                     colour=self.inner_kite_colour,
                 )
+                inner_kite.fill(turtle=turtle, filler=self.inner_kite_fill)
 
         jump_to(turtle, self.outer_kite.vertices[0])
         self.outer_kite.draw(
-            turtle=turtle, fill=None, colour="black", size=self.outer_kite_line_width
+            turtle=turtle, colour="black", size=self.outer_kite_line_width
         )
 
         self._draw_final_body_parts(turtle)
