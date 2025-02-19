@@ -2,14 +2,12 @@ from turtle import Vec2D
 
 import pytest
 
-from python_turtle_art.filling.horizontal_stripe_fill import HorizontalStipeFill
+from python_turtle_art.filling.stripes import get_filling_lines
 from python_turtle_art.lines.line import Line
 from python_turtle_art.polygons.kites.convex_kite import ConvexKite
 
 
 def test_get_filling_lines_in_kite():
-    horizontal_stripe_fill = HorizontalStipeFill(gap=10, origin=0)
-
     kite = ConvexKite.from_origin_and_dimensions(
         origin=Vec2D(0, 0),
         height=100,
@@ -29,7 +27,7 @@ def test_get_filling_lines_in_kite():
         Line(vertices=(Vec2D(-10, 90), Vec2D(10, 90))),
     ]
 
-    actual = horizontal_stripe_fill.get_filling_lines(polygon=kite)
+    actual = get_filling_lines(gap=10, origin=0, polygon=kite, axis=1)
 
     assert actual == expected
 
@@ -42,8 +40,6 @@ def test_get_filling_lines_in_kite():
     ],
 )
 def test_get_filling_lines_in_square(fill_origin, expected_y_coords):
-    horizontal_stripe_fill = HorizontalStipeFill(gap=3, origin=fill_origin)
-
     square = ConvexKite(
         vertices=(Vec2D(-20, -20), Vec2D(20, -20), Vec2D(20, 20), Vec2D(-20, 20))
     )
@@ -53,6 +49,6 @@ def test_get_filling_lines_in_square(fill_origin, expected_y_coords):
         for y_coord in expected_y_coords
     ]
 
-    actual = horizontal_stripe_fill.get_filling_lines(polygon=square)
+    actual = get_filling_lines(gap=3, origin=fill_origin, polygon=square, axis=1)
 
     assert actual == expected

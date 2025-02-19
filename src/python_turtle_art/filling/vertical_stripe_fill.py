@@ -4,17 +4,17 @@ from ..polygons.convex_polygon import BaseConvexFill, ConvexPolygon
 from .stripes import get_filling_lines
 
 
-class HorizontalStipeFill(BaseConvexFill):
-    """Fill a convex polygon with horizontal stripes.
+class VerticalStripeFill(BaseConvexFill):
+    """Fill a convex polygon with vertical stripes.
 
     Args:
         gap (int): distance between each stripe.
-        origin (int): y-coordinate of the origin horizontal stripes will be drawn
+        origin (int): x-coordinate of the origin vertical stripes will be drawn
             relative to.
 
     """
 
-    axis: int = 1
+    axis: int = 0
 
     def __init__(self, gap: int, size: int = 1, colour: str = "black", origin: int = 0):
         self.gap = gap
@@ -35,4 +35,4 @@ class HorizontalStipeFill(BaseConvexFill):
         )
 
         for stripe in stripes:
-            stripe.draw(turtle=turtle, size=5)
+            stripe.draw(turtle=turtle, size=self.size, colour=self.colour)

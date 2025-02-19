@@ -1,6 +1,6 @@
 import pytest
 
-from python_turtle_art.filling.horizontal_stripe_fill import (
+from python_turtle_art.filling.stripes import (
     StepsBetweenIndices,
     get_number_of_steps_between_indices,
 )
