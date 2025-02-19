@@ -37,4 +37,4 @@ class HorizontalStipeFill(BaseConvexFill):
         )
 
         for stripe in stripes:
-            stripe.draw(turtle=turtle, size=5)
+            stripe.draw(turtle=turtle, colour=self.colour, size=self.size)
