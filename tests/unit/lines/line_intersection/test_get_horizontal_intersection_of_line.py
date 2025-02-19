@@ -7,6 +7,11 @@ from python_turtle_art.lines.line_intersection import (
 )
 
 
+def test_vertical_line_exception():
+    with pytest.raises(ValueError, match="Line p0, p1 is horizontal."):
+        get_horizontal_intersection_of_line(Vec2D(-1, -1), Vec2D(1, -1), 5)
+
+
 @pytest.mark.parametrize(
     ["p0", "p1", "horizontal_y", "expected"],
     [

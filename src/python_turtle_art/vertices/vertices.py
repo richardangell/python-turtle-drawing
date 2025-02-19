@@ -1,6 +1,7 @@
 """Mixins providing functionality for collections of vertices."""
 
 from collections import namedtuple
+from enum import Enum
 from math import inf
 from turtle import Turtle, Vec2D
 from typing import Any, Optional, Self, Union
@@ -73,31 +74,46 @@ class RotateMixin(VerticesMixin):
 ExtremeIndices = namedtuple("ExtremeIndices", ["minimum", "maximum"])
 
 
+class Axis(Enum):
+    """Enum for x and y axes."""
+
+    x = 0
+    y = 1
+
+
 class GetExtremeVerticesMixin(VerticesMixin):
     """Mixin class for getting extreme vertices."""
 
-    def get_extreme_y_vertices_indices(self) -> ExtremeIndices:
-        """Get the indices of the vertices with min and max y values."""
+    def get_vertices_indices_with_min_and_max_values_on_axis(
+        self, axis=0
+    ) -> ExtremeIndices:
+        """Get the indices of the vertices with min and max x or y values.
 
-        minimum_y = inf
-        maximum_y = -inf
+        Args:
+            axis (int): 0 for x axis, 1 for y axis.
 
-        minimum_y_index = -1
-        maximum_y_index = -1
+        """
+        axis_enum = Axis(axis)
+
+        minimum = inf
+        maximum = -inf
+
+        minimum_index = -1
+        maximum_index = -1
 
         for vertex_index, vertex in enumerate(self.vertices):
-            if vertex[1] < minimum_y:
-                minimum_y = vertex[1]
-                minimum_y_index = vertex_index
+            if vertex[axis] < minimum:
+                minimum = vertex[axis]
+                minimum_index = vertex_index
 
-            if vertex[1] > maximum_y:
-                maximum_y = vertex[1]
-                maximum_y_index = vertex_index
+            if vertex[axis] > maximum:
+                maximum = vertex[axis]
+                maximum_index = vertex_index
 
-        if minimum_y_index == -1 or maximum_y_index == -1:
-            raise ValueError("Failed to find min or max y index.")
+        if minimum_index == -1 or maximum_index == -1:
+            raise ValueError(f"Failed to find min or max {axis_enum.name} index.")
 
-        return ExtremeIndices(minimum=minimum_y_index, maximum=maximum_y_index)
+        return ExtremeIndices(minimum=minimum_index, maximum=maximum_index)
 
 
 class EqMixin(VerticesMixin):
