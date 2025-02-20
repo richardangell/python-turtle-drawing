@@ -2,12 +2,13 @@ from argparse import ArgumentParser, Namespace
 from datetime import datetime
 from turtle import Screen, Turtle, _Screen
 
-from .drawings import draw_image_pine_cones
+from .drawings import draw_image_pine_cones, draw_image_stars_3bp
 from .helpers.turtle import turn_off_turtle_animation, update_screen
 from .write import save_turtle_screen
 
 MODULE_DRAW_FUNCTION_MAPPING = {
     "pine_cones": draw_image_pine_cones,
+    "stars_3bp": draw_image_stars_3bp,
 }
 
 
@@ -38,20 +39,39 @@ def parse_arguments():
 
     parser = ArgumentParser()
     parser.add_argument(
-        "-q", "--quick", action="store_true", help="render image quickly"
-    )
-    parser.add_argument("-n", "--no_turtle", action="store_true", help="hide turtle")
-    parser.add_argument(
-        "-e", "--exit_on_click", action="store_true", help="exit turtle screen on click"
+        "-q", "--quick", action="store_true", help="Render the image quickly."
     )
     parser.add_argument(
-        "-s", "--save_image", action="store_true", help="save image to jpeg"
+        "-n",
+        "--no_turtle",
+        action="store_true",
+        help="Hide the turtle while the image is being drawn.",
     )
     parser.add_argument(
-        "--screen_height", action="store", type=int, default=4000, help="screen height"
+        "-e",
+        "--exit_on_click",
+        action="store_true",
+        help="Keep the screen open and only exit screen on click.",
     )
     parser.add_argument(
-        "--screen_width", action="store", type=int, default=4000, help="screen width"
+        "-s",
+        "--save_image",
+        action="store_true",
+        help="Save image to png. File will be timestamped.",
+    )
+    parser.add_argument(
+        "--screen_height",
+        action="store",
+        type=int,
+        default=4000,
+        help="The screen height.",
+    )
+    parser.add_argument(
+        "--screen_width",
+        action="store",
+        type=int,
+        default=4000,
+        help="The screen width.",
     )
     parser.add_argument(
         "-d",
@@ -59,7 +79,7 @@ def parse_arguments():
         action="store",
         type=str,
         default="pine_cones",
-        help="drawing to produce",
+        help="The name of the drawing to produce.",
     )
 
     return parser.parse_args(namespace=CommandLineArguments)
