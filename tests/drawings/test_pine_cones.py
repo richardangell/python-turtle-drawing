@@ -4,7 +4,6 @@ from pathlib import Path
 import pytest
 from PIL import Image, ImageChops
 
-from python_turtle_art.cli import setup_turtle_and_screen
 from python_turtle_art.drawings import draw_image_pine_cones
 from python_turtle_art.helpers.turtle import turn_off_turtle_animation, update_screen
 from python_turtle_art.write import get_canvas_image
@@ -17,7 +16,7 @@ from .helpers import assert_image_difference_within_tolerance
     condition=os.getenv("DISABLE_BEARTYPE") is None,
     reason="DISABLE_BEARTYPE environment variable not set",
 )
-def test_image_produced():
+def test_image_produced(setup_screen):
     """Check pine_cones.main.draw_image produces the expected image.
 
     Note, the function being tested generates lots of random values so if beartype
@@ -34,9 +33,8 @@ def test_image_produced():
     expected_image_file = Path("tests/drawings/expected_images/pine_cones.png")
     expected_image = Image.open(expected_image_file)
 
-    height, width = 4000, 4000
-    turtle_, screen = setup_turtle_and_screen(height, width)
-    turtle_.hideturtle()
+    turtle_, screen = setup_screen
+    height, width = screen.screensize()
 
     # Act
 
