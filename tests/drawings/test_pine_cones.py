@@ -12,6 +12,7 @@ from python_turtle_art.write import get_canvas_image
 from .helpers import assert_image_difference_within_tolerance
 
 
+@pytest.mark.slow
 @pytest.mark.skipif(
     condition=os.getenv("DISABLE_BEARTYPE") is None,
     reason="DISABLE_BEARTYPE environment variable not set",
@@ -30,7 +31,7 @@ def test_image_produced():
 
     # Arrange
 
-    expected_image_file = Path("tests/drawings/pine_cones.png")
+    expected_image_file = Path("tests/drawings/expected_images/pine_cones.png")
     expected_image = Image.open(expected_image_file)
 
     height, width = 4000, 4000
