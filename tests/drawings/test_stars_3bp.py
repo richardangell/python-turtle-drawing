@@ -1,5 +1,6 @@
 from pathlib import Path
 
+import pytest
 from PIL import Image, ImageChops
 
 from python_turtle_art.drawings import draw_image_stars_3bp
@@ -9,6 +10,13 @@ from python_turtle_art.write import get_canvas_image
 from .helpers import assert_image_difference_within_tolerance
 
 
+@pytest.mark.parametrize(
+    "setup_screen",
+    [
+        (4000, 4000),
+    ],
+    indirect=True,
+)
 def test_image_produced(setup_screen):
     """Check stars_3bp.main.draw_image produces the expected image."""
 
