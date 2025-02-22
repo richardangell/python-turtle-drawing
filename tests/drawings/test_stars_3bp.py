@@ -13,7 +13,7 @@ from .helpers import assert_image_difference_within_tolerance
 @pytest.mark.parametrize(
     "setup_screen",
     [
-        (None, (4000, 4000)),
+        ((1440 * 0.5, 900 * 0.75), (4000, 4000)),
     ],
     indirect=True,
 )
