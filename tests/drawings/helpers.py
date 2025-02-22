@@ -1,5 +1,6 @@
 import numpy as np
 from numpy.typing import NDArray
+from PIL import ImageChops
 from PIL.Image import Image
 
 
@@ -28,7 +29,8 @@ def get_adjacent_values(
 
 
 def assert_image_difference_within_tolerance(
-    difference: Image,
+    actual: Image,
+    expected: Image,
     tolerance_non_matching_pixels: int,
     tolerance_adjacent_pixels: int,
 ):
@@ -37,7 +39,8 @@ def assert_image_difference_within_tolerance(
     Also tests that none of the differing pixels are adjacent.
 
     Args:
-        difference (Image): Image of difference between expected and actual images.
+        actual (Image): Actual image.
+        expected (Image): Expected image.
         tolerance_non_matching_pixels (int): Maximum number of matching pixels that are
             allowed to differ (i.e. be non-zero) in difference.
         tolerance_adjacent_pixels (int): Maximum number of adjacent pixels allowed to
@@ -45,12 +48,18 @@ def assert_image_difference_within_tolerance(
 
     """
 
+    difference = ImageChops.difference(actual, expected)
+
     # sum over 3 channels for each pixel
     difference_arr = np.asarray(difference).sum(axis=2)
 
     non_matching_pixels = difference_arr > 0
 
     count_non_matching_pixels = (non_matching_pixels).sum()
+
+    if not count_non_matching_pixels <= tolerance_non_matching_pixels:
+        actual.save("actual.png")
+        difference.save("difference.png")
 
     assert count_non_matching_pixels <= tolerance_non_matching_pixels, (
         "Number of non-matching pixels outside tolerance."

@@ -1,6 +1,6 @@
 from argparse import ArgumentParser, Namespace
 from datetime import datetime
-from turtle import Screen, Turtle, _Screen
+from turtle import Screen, Turtle, _Screen, setup
 
 from .drawings import draw_image_pine_cones, draw_image_stars_3bp
 from .helpers.turtle import turn_off_turtle_animation, update_screen
@@ -12,12 +12,30 @@ MODULE_DRAW_FUNCTION_MAPPING = {
 }
 
 
-def setup_turtle_and_screen(height: int, width: int) -> tuple[Turtle, _Screen]:
-    """Create Turtle and Screen objects."""
+def setup_turtle_and_screen(
+    window_dimensions: tuple[int, int] | None, screen_dimensions: tuple[int, int] | None
+) -> tuple[Turtle, _Screen]:
+    """Create Turtle and Screen objects.
+
+    Args:
+        window_dimensions (tuple[int, int]): The width and height of the main window.
+            Values are passed to the turtle.setup() function.
+        screen_dimensions (tuple[int, int]): The width and height of the screen. Values
+            are passed to the Screen.screensize() function.
+
+    """
 
     turtle_ = Turtle()
+
+    if window_dimensions is None:
+        setup()
+    else:
+        setup(width=window_dimensions[0], height=window_dimensions[1])
+
     screen = Screen()
-    screen.screensize(height, width)
+
+    if screen_dimensions is not None:
+        screen.screensize(screen_dimensions[0], screen_dimensions[1])
 
     return turtle_, screen
 
@@ -60,6 +78,7 @@ def parse_arguments():
         help="Save image to png. File will be timestamped.",
     )
     parser.add_argument(
+        "-he",
         "--screen_height",
         action="store",
         type=int,
@@ -67,6 +86,7 @@ def parse_arguments():
         help="The screen height.",
     )
     parser.add_argument(
+        "-w",
         "--screen_width",
         action="store",
         type=int,
@@ -90,7 +110,10 @@ def run():
 
     args = parse_arguments()
 
-    turtle_, screen = setup_turtle_and_screen(args.screen_height, args.screen_width)
+    turtle_, screen = setup_turtle_and_screen(
+        window_dimensions=None,
+        screen_dimensions=(args.screen_width, args.screen_height),
+    )
 
     if args.no_turtle:
         turtle_.hideturtle()

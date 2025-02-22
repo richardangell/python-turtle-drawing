@@ -2,7 +2,7 @@ import os
 from pathlib import Path
 
 import pytest
-from PIL import Image, ImageChops
+from PIL import Image
 
 from python_turtle_art.drawings import draw_image_pine_cones
 from python_turtle_art.helpers.turtle import turn_off_turtle_animation, update_screen
@@ -14,7 +14,7 @@ from .helpers import assert_image_difference_within_tolerance
 @pytest.mark.parametrize(
     "setup_screen",
     [
-        (4000, 4000),
+        (None, (4000, 4000)),
     ],
     indirect=True,
 )
@@ -53,10 +53,9 @@ def test_image_produced(setup_screen):
 
     actual_image = get_canvas_image(screen.getcanvas(), height, width)
 
-    difference = ImageChops.difference(actual_image, expected_image)
-
     assert_image_difference_within_tolerance(
-        difference=difference,
+        actual=actual_image,
+        expected=expected_image,
         tolerance_non_matching_pixels=23,
         tolerance_adjacent_pixels=1,
     )

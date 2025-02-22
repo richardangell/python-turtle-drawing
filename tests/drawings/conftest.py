@@ -15,8 +15,10 @@ def setup_screen(request) -> Generator[tuple[turtle.Turtle, turtle._Screen], Any
 
     """
 
-    height, width = request.param
-    turtle_, screen = setup_turtle_and_screen(height, width)
+    window_dimensions, screen_dimensions = request.param
+    turtle_, screen = setup_turtle_and_screen(
+        window_dimensions=window_dimensions, screen_dimensions=screen_dimensions
+    )
     turtle_.hideturtle()
 
     yield turtle_, screen
