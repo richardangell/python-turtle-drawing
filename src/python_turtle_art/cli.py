@@ -1,7 +1,13 @@
+import tkinter as tk
 from argparse import ArgumentParser, Namespace
 from datetime import datetime
-from turtle import Screen, Turtle, _Screen, setup
+from turtle import (
+    RawTurtle,
+    TurtleScreen,
+    exitonclick,
+)
 
+from .draw import draw_image
 from .drawings import draw_image_pine_cones, draw_image_stars_3bp
 from .helpers.turtle import turn_off_turtle_animation, update_screen
 from .write import save_turtle_screen
@@ -9,12 +15,14 @@ from .write import save_turtle_screen
 MODULE_DRAW_FUNCTION_MAPPING = {
     "pine_cones": draw_image_pine_cones,
     "stars_3bp": draw_image_stars_3bp,
+    "draw": draw_image,
 }
 
 
 def setup_turtle_and_screen(
-    window_dimensions: tuple[int, int] | None, screen_dimensions: tuple[int, int] | None
-) -> tuple[Turtle, _Screen]:
+    window_dimensions: tuple[int | float, int | float] | None,
+    screen_dimensions: tuple[int, int] | None,
+) -> tuple[RawTurtle, TurtleScreen]:
     """Create Turtle and Screen objects.
 
     Args:
@@ -25,17 +33,36 @@ def setup_turtle_and_screen(
 
     """
 
-    turtle_ = Turtle()
+    # if window_dimensions is None:
+    #    setup()
+    # else:
+    #    setup(width=window_dimensions[0], height=window_dimensions[1])
 
-    if window_dimensions is None:
-        setup()
+    root = tk.Tk()
+    root.tk.call("tk", "scaling", 2.0)
+    if window_dimensions is not None:
+        canvas = tk.Canvas(
+            root,
+            width=window_dimensions[0],
+            height=window_dimensions[1],
+            borderwidth=0,
+            highlightthickness=0,
+        )
+        canvas.pack()
     else:
-        setup(width=window_dimensions[0], height=window_dimensions[1])
+        raise ValueError("window_dimensions must be provided")
 
-    screen = Screen()
+    screen = TurtleScreen(canvas)
+    l = 100
+    # screen.setworldcoordinates(-l, -l, l, l)
 
-    if screen_dimensions is not None:
-        screen.screensize(screen_dimensions[0], screen_dimensions[1])
+    # screen = Screen()
+
+    # if screen_dimensions is not None:
+    #    screen.screensize(screen_dimensions[0], screen_dimensions[1])
+
+    turtle_ = RawTurtle(screen)
+    # turtle_ = Turtle()
 
     return turtle_, screen
 
@@ -98,7 +125,7 @@ def parse_arguments():
         "--drawing",
         action="store",
         type=str,
-        default="pine_cones",
+        default="draw",
         help="The name of the drawing to produce.",
     )
 
@@ -111,7 +138,7 @@ def run():
     args = parse_arguments()
 
     turtle_, screen = setup_turtle_and_screen(
-        window_dimensions=None,
+        window_dimensions=(args.screen_width, args.screen_height),
         screen_dimensions=(args.screen_width, args.screen_height),
     )
 
@@ -139,4 +166,4 @@ def run():
         )
 
     if args.exit_on_click:
-        screen.exitonclick()
+        exitonclick()

@@ -1,12 +1,12 @@
 from io import BytesIO
-from turtle import ScrolledCanvas
+from tkinter import Canvas
 from typing import Optional
 
 from PIL import Image, ImageGrab
 
 
 def save_turtle_screen(
-    canvas: ScrolledCanvas,
+    canvas: Canvas,
     file: str,
     height: Optional[int] = None,
     width: Optional[int] = None,
@@ -17,14 +17,14 @@ def save_turtle_screen(
 
 
 def get_canvas_image(
-    canvas: ScrolledCanvas, height: Optional[int] = None, width: Optional[int] = None
+    canvas: Canvas, height: Optional[int] = None, width: Optional[int] = None
 ) -> Image.Image:
     """Get image on canvas.
 
     Requires ghostscript to be installed.
 
     """
-    ps = canvas.postscript(colormode="color", height=height, width=width)
+    ps = canvas.postscript(colormode="color")  # , height=height, width=width)
     return Image.open(BytesIO(ps.encode("utf-8")))
 
 
