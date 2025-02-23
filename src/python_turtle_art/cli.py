@@ -53,7 +53,7 @@ def setup_turtle_and_screen(
         raise ValueError("window_dimensions must be provided")
 
     screen = TurtleScreen(canvas)
-    l = 100
+    l = 50
     # screen.setworldcoordinates(-l, -l, l, l)
 
     # screen = Screen()
@@ -109,7 +109,7 @@ def parse_arguments():
         "--screen_height",
         action="store",
         type=int,
-        default=4000,
+        default=98,
         help="The screen height.",
     )
     parser.add_argument(
@@ -117,7 +117,7 @@ def parse_arguments():
         "--screen_width",
         action="store",
         type=int,
-        default=4000,
+        default=98,
         help="The screen width.",
     )
     parser.add_argument(

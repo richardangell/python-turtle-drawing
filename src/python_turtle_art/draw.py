@@ -9,10 +9,10 @@ def draw_image(turtle: RawTurtle):
     l = 48
     u = 48
 
-    Line(vertices=(Vec2D(-l, -l), Vec2D(u, -l)))  # .draw(turtle, size=1)
-    Line(vertices=(Vec2D(u, -l), Vec2D(u, u)))  # .draw(turtle, size=1)
-    Line(vertices=(Vec2D(u, u), Vec2D(-l, u)))  # .draw(turtle, size=1)
-    Line(vertices=(Vec2D(-l, u), Vec2D(-l, -l)))  # .draw(turtle, size=1)
+    Line(vertices=(Vec2D(-l, -l), Vec2D(u, -l))).draw(turtle, size=1)
+    Line(vertices=(Vec2D(u, -l), Vec2D(u, u))).draw(turtle, size=1)
+    Line(vertices=(Vec2D(u, u), Vec2D(-l, u))).draw(turtle, size=1)
+    Line(vertices=(Vec2D(-l, u), Vec2D(-l, -l))).draw(turtle, size=1)
 
     # bottom left
     l = -49
