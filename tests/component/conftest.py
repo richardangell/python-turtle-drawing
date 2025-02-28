@@ -19,10 +19,10 @@ def setup_screen_with_squares_background(
     parametrized with a tuple of height and width ints.
 
     """
+    window_dimensions = request.node.get_closest_marker("window_dimensions").args[0]
 
-    window_dimensions, screen_dimensions = request.param
     turtle, screen = setup_turtle_and_screen(
-        window_dimensions=window_dimensions, screen_dimensions=screen_dimensions
+        window_dimensions=window_dimensions, screen_dimensions=None
     )
     turtle.hideturtle()
     turn_off_turtle_animation(screen)
