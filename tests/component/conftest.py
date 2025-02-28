@@ -44,26 +44,22 @@ def draw_grey_squares_on_yellow_background(turtle: RawTurtle) -> None:
     background_square.draw(turtle, size=0.5)
     background_square.fill(turtle, ColourFill("yellow"))
 
-    # bottom left
-    l = -49
-    u = -2
-    kite = ConvexKite(vertices=(Vec2D(l, l), Vec2D(u, l), Vec2D(u, u), Vec2D(l, u)))
-    kite.draw(turtle, size=0.5, colour="grey")
+    bottom_left_square = ConvexKite(
+        vertices=(Vec2D(-49, -49), Vec2D(-2, -49), Vec2D(-2, -2), Vec2D(-49, -2))
+    )
+    bottom_left_square.draw(turtle, size=0.5, colour="grey")
 
-    # top right
-    l = 49
-    u = 2
-    kite = ConvexKite(vertices=(Vec2D(l, l), Vec2D(u, l), Vec2D(u, u), Vec2D(l, u)))
-    kite.draw(turtle, size=0.5, colour="grey")
+    top_right_square = ConvexKite(
+        vertices=(Vec2D(49, 49), Vec2D(2, 49), Vec2D(2, 2), Vec2D(49, 2))
+    )
+    top_right_square.draw(turtle, size=0.5, colour="grey")
 
-    # bottom right
-    l = -49
-    u = -2
-    kite = ConvexKite(vertices=(Vec2D(-l, l), Vec2D(-l, u), Vec2D(-u, u), Vec2D(-u, l)))
-    kite.draw(turtle, size=0.5, colour="grey")
+    bottom_right_square = ConvexKite(
+        vertices=(Vec2D(49, -49), Vec2D(49, -2), Vec2D(2, -2), Vec2D(2, -49))
+    )
+    bottom_right_square.draw(turtle, size=0.5, colour="grey")
 
-    # top left
-    l = -49
-    u = -2
-    kite = ConvexKite(vertices=(Vec2D(l, -l), Vec2D(l, -u), Vec2D(u, -u), Vec2D(u, -l)))
-    kite.draw(turtle, size=0.5, colour="grey")
+    top_left_square = ConvexKite(
+        vertices=(Vec2D(-49, 49), Vec2D(-49, 2), Vec2D(-2, 2), Vec2D(-2, 49))
+    )
+    top_left_square.draw(turtle, size=0.5, colour="grey")
