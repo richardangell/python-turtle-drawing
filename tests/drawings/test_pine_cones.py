@@ -8,7 +8,7 @@ from python_turtle_art.drawings import draw_image_pine_cones
 from python_turtle_art.helpers.turtle import turn_off_turtle_animation, update_screen
 from python_turtle_art.write import get_canvas_image
 
-from .helpers import assert_image_difference_within_tolerance
+from ..helpers import assert_image_difference_within_tolerance
 
 
 @pytest.mark.parametrize(
@@ -45,9 +45,9 @@ def test_image_produced(setup_screen):
 
     # Act
 
-    turn_off_turtle_animation()
+    turn_off_turtle_animation(screen)
     draw_image_pine_cones(turtle_)
-    update_screen()
+    update_screen(screen)
 
     # Assert
 
