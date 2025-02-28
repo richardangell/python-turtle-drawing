@@ -1,4 +1,4 @@
-import turtle
+from turtle import RawTurtle, TurtleScreen
 from typing import Any, Generator
 
 import pytest
@@ -7,13 +7,20 @@ from python_turtle_art.cli import setup_turtle_and_screen
 
 
 @pytest.fixture
-def setup_screen() -> Generator[tuple[turtle.Turtle, turtle._Screen], Any, None]:
-    """Set up 400 x 400 screen."""
+def setup_screen(request) -> Generator[tuple[RawTurtle, TurtleScreen], Any, None]:
+    """Set up turtle Screen and Turtle objects.
 
-    height, width = 4000, 4000
-    turtle_, screen = setup_turtle_and_screen(height, width)
-    turtle_.hideturtle()
+    Screen is set to the requested height and width. This fixture should be
+    parametrized with a tuple of height and width ints.
 
-    yield turtle_, screen
+    """
 
-    turtle.clearscreen()
+    window_dimensions, screen_dimensions = request.param
+    turtle, screen = setup_turtle_and_screen(
+        window_dimensions=window_dimensions, screen_dimensions=screen_dimensions
+    )
+    turtle.hideturtle()
+
+    yield turtle, screen
+
+    screen.clearscreen()

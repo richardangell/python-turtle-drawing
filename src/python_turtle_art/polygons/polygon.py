@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from abc import abstractmethod
-from turtle import Turtle, Vec2D
+from turtle import RawTurtle, Vec2D
 
 from ..vertices.vertices import DrawMixin, EqMixin, GetExtremeVerticesMixin, RotateMixin
 from .convex_polygon import BaseConvexFill, ConvexPolygon
@@ -16,7 +16,7 @@ class BaseFill(BaseConvexFill):
     """
 
     @abstractmethod
-    def fill(self, turtle: Turtle, polygon: Polygon | ConvexPolygon):
+    def fill(self, turtle: RawTurtle, polygon: Polygon | ConvexPolygon):
         """Fill."""
         raise NotImplementedError
 
@@ -50,7 +50,7 @@ class Polygon(DrawMixin, RotateMixin, GetExtremeVerticesMixin, EqMixin):
         """Check if the polygon is convex."""
         return is_convex(self.vertices)
 
-    def fill(self, turtle: Turtle, filler: BaseFill):
+    def fill(self, turtle: RawTurtle, filler: BaseFill):
         """Fill the polygon."""
 
         filler.fill(turtle=turtle, polygon=self)

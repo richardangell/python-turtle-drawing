@@ -1,14 +1,22 @@
 from pathlib import Path
 
-from PIL import Image, ImageChops
+import pytest
+from PIL import Image
 
 from python_turtle_art.drawings import draw_image_stars_3bp
 from python_turtle_art.helpers.turtle import turn_off_turtle_animation, update_screen
 from python_turtle_art.write import get_canvas_image
 
-from .helpers import assert_image_difference_within_tolerance
+from ..helpers import assert_image_difference_within_tolerance
 
 
+@pytest.mark.parametrize(
+    "setup_screen",
+    [
+        ((1440 * 0.5, 900 * 0.75), (4000, 4000)),
+    ],
+    indirect=True,
+)
 def test_image_produced(setup_screen):
     """Check stars_3bp.main.draw_image produces the expected image."""
 
@@ -22,18 +30,17 @@ def test_image_produced(setup_screen):
 
     # Act
 
-    turn_off_turtle_animation()
+    turn_off_turtle_animation(screen)
     draw_image_stars_3bp(turtle_)
-    update_screen()
+    update_screen(screen)
 
     # Assert
 
     actual_image = get_canvas_image(screen.getcanvas(), height, width)
 
-    difference = ImageChops.difference(actual_image, expected_image)
-
     assert_image_difference_within_tolerance(
-        difference=difference,
+        actual=actual_image,
+        expected=expected_image,
         tolerance_non_matching_pixels=0,
         tolerance_adjacent_pixels=0,
     )

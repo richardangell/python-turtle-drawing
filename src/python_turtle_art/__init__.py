@@ -7,7 +7,7 @@ from beartype.claw import beartype_this_package
 _beartype_strategy = (
     BeartypeStrategy.O0
     if os.getenv("DISABLE_BEARTYPE") is not None
-    else BeartypeStrategy.O1
+    else BeartypeStrategy.O0
 )
 
 beartype_this_package(conf=BeartypeConf(strategy=_beartype_strategy))

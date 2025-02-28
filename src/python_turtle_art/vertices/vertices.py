@@ -3,8 +3,8 @@
 from collections import namedtuple
 from enum import Enum
 from math import inf
-from turtle import Turtle, Vec2D
-from typing import Any, Optional, Self, Union
+from turtle import RawTurtle, Vec2D
+from typing import Any, Self, Union
 
 from ..helpers.rotation import rotate_about_point
 from ..helpers.turtle import jump_to
@@ -31,9 +31,9 @@ class DrawMixin(VerticesMixin):
 
     def draw(
         self,
-        turtle: Turtle,
+        turtle: RawTurtle,
         colour: str = "black",
-        size: Optional[int] = None,
+        size: int | float | None = None,
     ):
         """Set pensize and colour then draw polygon edges."""
 
@@ -41,7 +41,7 @@ class DrawMixin(VerticesMixin):
         original_pensize = turtle.pensize()
 
         turtle.pencolor(colour)
-        turtle.pensize(size)
+        turtle.pensize(size)  # type: ignore
 
         jump_to(turtle=turtle, position=self.vertices[self._jump_to_vertex_index])
 

@@ -1,4 +1,4 @@
-from turtle import Turtle
+from turtle import RawTurtle
 
 from ...polygons.convex_polygon import BaseConvexFill, ConvexPolygon
 from .stripes_calculation import get_filling_lines
@@ -24,7 +24,7 @@ class HorizontalStipeFill(BaseConvexFill):
         self.size = size
         self.colour = colour
 
-    def fill(self, turtle: Turtle, polygon: ConvexPolygon):
+    def fill(self, turtle: RawTurtle, polygon: ConvexPolygon):
         """Fill a convex polygon with horizontal stipes.
 
         Args:
