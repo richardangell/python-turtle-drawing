@@ -41,25 +41,25 @@ def draw_grey_squares_on_yellow_background(turtle: RawTurtle) -> None:
     background_square = ConvexKite(
         vertices=(Vec2D(-50, -50), Vec2D(50, -50), Vec2D(50, 50), Vec2D(-50, 50))
     )
-    background_square.draw(turtle, size=0.5)
+    background_square.draw(turtle, size=1)
     background_square.fill(turtle, ColourFill("yellow"))
 
     bottom_left_square = ConvexKite(
         vertices=(Vec2D(-49, -49), Vec2D(-2, -49), Vec2D(-2, -2), Vec2D(-49, -2))
     )
-    bottom_left_square.draw(turtle, size=0.5, colour="grey")
+    bottom_left_square.draw(turtle, size=1, colour="grey")
 
     top_right_square = ConvexKite(
         vertices=(Vec2D(49, 49), Vec2D(2, 49), Vec2D(2, 2), Vec2D(49, 2))
     )
-    top_right_square.draw(turtle, size=0.5, colour="grey")
+    top_right_square.draw(turtle, size=1, colour="grey")
 
     bottom_right_square = ConvexKite(
         vertices=(Vec2D(49, -49), Vec2D(49, -2), Vec2D(2, -2), Vec2D(2, -49))
     )
-    bottom_right_square.draw(turtle, size=0.5, colour="grey")
+    bottom_right_square.draw(turtle, size=1, colour="grey")
 
     top_left_square = ConvexKite(
         vertices=(Vec2D(-49, 49), Vec2D(-49, 2), Vec2D(-2, 2), Vec2D(-2, 49))
     )
-    top_left_square.draw(turtle, size=0.5, colour="grey")
+    top_left_square.draw(turtle, size=1, colour="grey")
