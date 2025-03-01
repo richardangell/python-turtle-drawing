@@ -51,7 +51,7 @@ def test_image_produced(setup_screen):
 
     # Assert
 
-    actual_image = get_canvas_image(screen.getcanvas(), height, width)
+    actual_image = get_canvas_image(screen, height, width)
 
     assert_image_difference_within_tolerance(
         actual=actual_image,

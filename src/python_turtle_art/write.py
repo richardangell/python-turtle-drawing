@@ -1,11 +1,13 @@
 from io import BytesIO
-from tkinter import Canvas
+from turtle import TurtleScreen
 
 from PIL import Image, ImageGrab
 
+from .helpers.turtle import update_screen
+
 
 def save_turtle_screen(
-    canvas: Canvas,
+    screen: TurtleScreen,
     file: str,
     height: int,
     width: int,
@@ -19,11 +21,12 @@ def save_turtle_screen(
         width (int): The width of the canvas.
 
     """
-    img = get_canvas_image(canvas, height, width)
+
+    img = get_canvas_image(screen, height, width)
     img.save(file)
 
 
-def get_canvas_image(canvas: Canvas, height: int, width: int) -> Image.Image:
+def get_canvas_image(screen: TurtleScreen, height: int, width: int) -> Image.Image:
     """Get image on canvas.
 
     Requires ghostscript to be installed.
@@ -37,6 +40,9 @@ def get_canvas_image(canvas: Canvas, height: int, width: int) -> Image.Image:
         width (int): The width of the image.
 
     """
+    update_screen(screen)
+    canvas = screen.getcanvas()
+
     ps = canvas.postscript(
         colormode="color", pagewidth=width - 1, pageheight=height - 1
     )
