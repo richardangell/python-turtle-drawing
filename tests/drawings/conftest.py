@@ -14,10 +14,18 @@ def setup_screen(request) -> Generator[tuple[RawTurtle, TurtleScreen], Any, None
     parametrized with a tuple of height and width ints.
 
     """
-    window_dimensions = request.node.get_closest_marker("window_dimensions").args[0]
+    window_dimensions_marker = request.node.get_closest_marker("window_dimensions")
+    screen_dimensions_marker = request.node.get_closest_marker("screen_dimensions")
+
+    window_dimensions = (
+        window_dimensions_marker.args[0] if window_dimensions_marker else None
+    )
+    screen_dimensions = (
+        screen_dimensions_marker.args[0] if screen_dimensions_marker else None
+    )
 
     turtle, screen = setup_turtle_and_screen(
-        window_dimensions=window_dimensions, screen_dimensions=None
+        window_dimensions=window_dimensions, screen_dimensions=screen_dimensions
     )
     turtle.hideturtle()
 

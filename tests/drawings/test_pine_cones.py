@@ -15,6 +15,7 @@ from ..helpers import assert_image_difference_within_tolerance
     condition=os.getenv("DISABLE_BEARTYPE") is None,
     reason="DISABLE_BEARTYPE environment variable not set",
 )
+@pytest.mark.screen_dimensions((4000, 4000))
 @pytest.mark.window_dimensions((1440 * 0.5, 900 * 0.75))
 @pytest.mark.slow
 def test_image_produced(setup_screen):

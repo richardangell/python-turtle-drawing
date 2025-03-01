@@ -163,7 +163,7 @@ def run():
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
         save_turtle_screen(
-            canvas=screen.getcanvas(),  # type: ignore
+            screen=screen,
             file=f"img {timestamp}.png",
             height=args.screen_height,
             width=args.screen_width,
