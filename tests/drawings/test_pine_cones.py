@@ -11,17 +11,11 @@ from python_turtle_art.write import get_canvas_image
 from ..helpers import assert_image_difference_within_tolerance
 
 
-@pytest.mark.parametrize(
-    "setup_screen",
-    [
-        ((1440 * 0.5, 900 * 0.75), (4000, 4000)),
-    ],
-    indirect=True,
-)
 @pytest.mark.skipif(
     condition=os.getenv("DISABLE_BEARTYPE") is None,
     reason="DISABLE_BEARTYPE environment variable not set",
 )
+@pytest.mark.window_dimensions((1440 * 0.5, 900 * 0.75))
 @pytest.mark.slow
 def test_image_produced(setup_screen):
     """Check pine_cones.main.draw_image produces the expected image.
