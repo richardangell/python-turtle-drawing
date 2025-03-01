@@ -35,7 +35,7 @@ def test_line(setup_screen_with_squares_background):
 
     # Assert
 
-    actual_image = get_canvas_image(screen, 100, 100)
+    actual_image = get_canvas_image(screen, 100, 100, True)
 
     expected_image_file = Path("tests/component/lines/expected_lines.png")
     expected_image = Image.open(expected_image_file)

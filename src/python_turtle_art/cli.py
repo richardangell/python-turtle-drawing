@@ -2,7 +2,7 @@ import tkinter as tk
 import warnings
 from argparse import ArgumentParser, Namespace
 from datetime import datetime
-from turtle import RawTurtle, TurtleScreen
+from turtle import RawTurtle, ScrolledCanvas, TurtleScreen
 
 from .draw import draw_image
 from .drawings import draw_image_pine_cones, draw_image_stars_3bp
@@ -17,7 +17,7 @@ MODULE_DRAW_FUNCTION_MAPPING = {
 
 
 def setup_turtle_and_screen(
-    window_dimensions: tuple[int | float, int | float] | None,
+    window_dimensions: tuple[int, int],
     screen_dimensions: tuple[int, int] | None,
 ) -> tuple[RawTurtle, TurtleScreen]:
     """Create Turtle and Screen objects.
@@ -29,15 +29,9 @@ def setup_turtle_and_screen(
             are passed to the Screen.screensize() function.
 
     """
-
-    # if window_dimensions is None:
-    #    setup()
-    # else:
-    #    setup(width=window_dimensions[0], height=window_dimensions[1])
-
     root = tk.Tk()
-    # root.tk.call("tk", "scaling", 2)
-    if window_dimensions is not None:
+
+    if screen_dimensions is None:
         canvas = tk.Canvas(
             root,
             width=window_dimensions[0],
@@ -47,23 +41,27 @@ def setup_turtle_and_screen(
             insertwidth=0,
             selectborderwidth=0,
         )
-        print(canvas.winfo_reqwidth(), canvas.winfo_reqheight())
         canvas.pack()
     else:
-        raise ValueError("window_dimensions must be provided")
+        canvas = ScrolledCanvas(
+            root,
+            window_dimensions[0],
+            window_dimensions[1],
+            screen_dimensions[0],
+            screen_dimensions[1],
+        )
+        canvas.pack(expand=1, fill="both")
+        sw = 1400
+        sh = 900
+        startx = (sw - window_dimensions[0]) / 2
+        starty = (sh - window_dimensions[1]) / 2
+        root.geometry(
+            "%dx%d%+d%+d" % (window_dimensions[0], window_dimensions[1], startx, starty)
+        )
 
     screen = TurtleScreen(canvas)
 
-    l = 100
-    # screen.setworldcoordinates(-l, -l, l, l)
-
-    # screen = Screen()
-
-    # if screen_dimensions is not None:
-    #    screen.screensize(screen_dimensions[0], screen_dimensions[1])
-
     turtle_ = RawTurtle(screen)
-    # turtle_ = Turtle()
 
     return turtle_, screen
 
@@ -106,8 +104,6 @@ def parse_arguments():
         help="Save image to png. File will be timestamped.",
     )
 
-    # 200 x 200 = 202 x 201 pixels, blank boarder: top, left, rifght
-    # 198 x 198 = 200 x 199 pixels, blank boarder: top, left, rifght
     parser.add_argument(
         "-he",
         "--screen_height",
@@ -170,4 +166,4 @@ def run():
         )
 
     if args.exit_on_click:
-        warnings.warn("exit_on_click not implemented")
+        warnings.warn("exit_on_click not implemented", stacklevel=1)

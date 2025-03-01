@@ -26,7 +26,9 @@ def save_turtle_screen(
     img.save(file)
 
 
-def get_canvas_image(screen: TurtleScreen, height: int, width: int) -> Image.Image:
+def get_canvas_image(
+    screen: TurtleScreen, height: int, width: int, page_width=False
+) -> Image.Image:
     """Get image on canvas.
 
     Requires ghostscript to be installed.
@@ -38,14 +40,25 @@ def get_canvas_image(screen: TurtleScreen, height: int, width: int) -> Image.Ima
         canvas (Canvas): The canvas to get the image from.
         height (int): The height of the image.
         width (int): The width of the image.
+        page_width (bool): If True pass height and width values to the pagewidth and
+            pageheight arguments of the postscript method. If False pass height and
+            width values to the width and height arguments of the postscript method.
 
     """
     update_screen(screen)
     canvas = screen.getcanvas()
 
-    ps = canvas.postscript(
-        colormode="color", pagewidth=width - 1, pageheight=height - 1
-    )
+    if page_width:
+        ps = canvas.postscript(
+            colormode="color", pagewidth=width - 1, pageheight=height - 1
+        )
+    else:
+        ps = canvas.postscript(
+            colormode="color",
+            width=width,
+            height=height,  # pagewidth=width - 1, pageheight=height - 1
+        )
+
     return Image.open(BytesIO(ps.encode("utf-8")))
 
 

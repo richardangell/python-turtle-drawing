@@ -5,7 +5,7 @@ import pytest
 from PIL import Image
 
 from python_turtle_art.drawings import draw_image_pine_cones
-from python_turtle_art.helpers.turtle import turn_off_turtle_animation, update_screen
+from python_turtle_art.helpers.turtle import turn_off_turtle_animation
 from python_turtle_art.write import get_canvas_image
 
 from ..helpers import assert_image_difference_within_tolerance
@@ -16,7 +16,7 @@ from ..helpers import assert_image_difference_within_tolerance
     reason="DISABLE_BEARTYPE environment variable not set",
 )
 @pytest.mark.screen_dimensions((4000, 4000))
-@pytest.mark.window_dimensions((1440 * 0.5, 900 * 0.75))
+@pytest.mark.window_dimensions((int(1440 * 0.5), int(900 * 0.75)))
 @pytest.mark.slow
 def test_image_produced(setup_screen):
     """Check pine_cones.main.draw_image produces the expected image.
@@ -42,7 +42,6 @@ def test_image_produced(setup_screen):
 
     turn_off_turtle_animation(screen)
     draw_image_pine_cones(turtle_)
-    update_screen(screen)
 
     # Assert
 

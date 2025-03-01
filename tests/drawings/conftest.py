@@ -17,9 +17,7 @@ def setup_screen(request) -> Generator[tuple[RawTurtle, TurtleScreen], Any, None
     window_dimensions_marker = request.node.get_closest_marker("window_dimensions")
     screen_dimensions_marker = request.node.get_closest_marker("screen_dimensions")
 
-    window_dimensions = (
-        window_dimensions_marker.args[0] if window_dimensions_marker else None
-    )
+    window_dimensions = window_dimensions_marker.args[0]
     screen_dimensions = (
         screen_dimensions_marker.args[0] if screen_dimensions_marker else None
     )

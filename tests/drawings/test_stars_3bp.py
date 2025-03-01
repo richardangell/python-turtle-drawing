@@ -4,13 +4,13 @@ import pytest
 from PIL import Image
 
 from python_turtle_art.drawings import draw_image_stars_3bp
-from python_turtle_art.helpers.turtle import turn_off_turtle_animation, update_screen
+from python_turtle_art.helpers.turtle import turn_off_turtle_animation
 from python_turtle_art.write import get_canvas_image
 
 from ..helpers import assert_image_difference_within_tolerance
 
 
-@pytest.mark.window_dimensions((1440 * 0.5, 900 * 0.75))
+@pytest.mark.window_dimensions((int(1440 * 0.5), int(900 * 0.75)))
 def test_image_produced(setup_screen):
     """Check stars_3bp.main.draw_image produces the expected image."""
 
@@ -26,7 +26,6 @@ def test_image_produced(setup_screen):
 
     turn_off_turtle_animation(screen)
     draw_image_stars_3bp(turtle_)
-    update_screen(screen)
 
     # Assert
 
