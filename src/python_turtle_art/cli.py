@@ -19,8 +19,12 @@ MODULE_DRAW_FUNCTION_MAPPING = {
 def setup_turtle_and_screen(
     window_dimensions: tuple[int, int],
     screen_dimensions: tuple[int, int] | None,
-) -> tuple[RawTurtle, TurtleScreen]:
+) -> tuple[RawTurtle, TurtleScreen, tk.Tk]:
     """Create Turtle and Screen objects.
+
+    Also return the tk.Tk object passed into the canvas for the turtle screen. This
+    is so it can be used in tests to close the window after the image has been
+    extracted from the canvas.
 
     Args:
         window_dimensions (tuple[int, int]): The width and height of the main window.
@@ -63,7 +67,7 @@ def setup_turtle_and_screen(
 
     turtle_ = RawTurtle(screen)
 
-    return turtle_, screen
+    return turtle_, screen, root
 
 
 class CommandLineArguments(Namespace):
@@ -137,7 +141,7 @@ def run():
 
     args = parse_arguments()
 
-    turtle, screen = setup_turtle_and_screen(
+    turtle, screen, _ = setup_turtle_and_screen(
         window_dimensions=(args.screen_width, args.screen_height),
         screen_dimensions=(args.screen_width, args.screen_height),
     )

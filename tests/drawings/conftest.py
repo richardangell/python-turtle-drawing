@@ -22,11 +22,11 @@ def setup_screen(request) -> Generator[tuple[RawTurtle, TurtleScreen], Any, None
         screen_dimensions_marker.args[0] if screen_dimensions_marker else None
     )
 
-    turtle, screen = setup_turtle_and_screen(
+    turtle, screen, root = setup_turtle_and_screen(
         window_dimensions=window_dimensions, screen_dimensions=screen_dimensions
     )
     turtle.hideturtle()
 
     yield turtle, screen
 
-    screen.clearscreen()
+    root.destroy()
