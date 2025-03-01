@@ -1,4 +1,4 @@
-from turtle import Turtle, Vec2D
+from turtle import RawTurtle, Vec2D
 
 from ...filling import ColourFill, HashFill
 from ...helpers.turtle import jump_to
@@ -7,7 +7,7 @@ from ...polygons.kites.convex_curved_kite import ConvexCurvedKite
 from ...polygons.kites.convex_kite import ConvexKite
 
 
-def draw_background(turtle: Turtle) -> None:
+def draw_background(turtle: RawTurtle) -> None:
     kite = ConvexKite(
         vertices=(
             Vec2D(200, -1000),
@@ -23,7 +23,7 @@ def draw_background(turtle: Turtle) -> None:
 
 
 def draw_circle_in_kite_centre(
-    turtle: Turtle, kite_origin: Vec2D, kite_height: int | float, radius: int
+    turtle: RawTurtle, kite_origin: Vec2D, kite_height: int | float, radius: int
 ) -> None:
     centre_kite = kite_origin + Vec2D(0, kite_height / 2)
     bottom_circle = centre_kite + Vec2D(0, -radius)
@@ -36,7 +36,7 @@ def draw_circle_in_kite_centre(
     turtle.end_fill()
 
 
-def draw_image(turtle: Turtle):
+def draw_image(turtle: RawTurtle):
     draw_background(turtle)
 
     kite = ConvexKite.from_origin_and_dimensions(
