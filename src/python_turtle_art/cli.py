@@ -4,7 +4,6 @@ from argparse import ArgumentParser, Namespace
 from datetime import datetime
 from turtle import RawTurtle, ScrolledCanvas, TurtleScreen
 
-from .draw import draw_image
 from .drawings import draw_image_pine_cones, draw_image_stars_3bp
 from .helpers.turtle import turn_off_turtle_animation, update_screen
 from .write import save_turtle_screen
@@ -12,7 +11,6 @@ from .write import save_turtle_screen
 MODULE_DRAW_FUNCTION_MAPPING = {
     "pine_cones": draw_image_pine_cones,
     "stars_3bp": draw_image_stars_3bp,
-    "draw": draw_image,
 }
 
 
