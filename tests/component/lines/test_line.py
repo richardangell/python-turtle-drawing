@@ -109,3 +109,42 @@ def test_horizontal_lines(setup_screen_with_squares_background):
         tolerance_non_matching_pixels=0,
         tolerance_adjacent_pixels=0,
     )
+
+
+@pytest.mark.window_dimensions((100, 100))
+def test_rotated_lines(setup_screen_with_squares_background):
+    """Test rotated lines of different lengths and thickness."""
+    # Arrange
+
+    turtle, screen = setup_screen_with_squares_background
+
+    # Act
+
+    line = Line(vertices=(Vec2D(0, 5), Vec2D(0, 15)))
+
+    for _ in range(12):
+        line.rotate(angle=30, about_point=Vec2D(0, 0)).draw(turtle, size=1)
+
+    line2 = Line(vertices=(Vec2D(0, 25), Vec2D(0, 40)))
+
+    for _ in range(6):
+        line2.rotate(angle=60, about_point=Vec2D(0, 0)).draw(turtle, size=2)
+
+        line2_mid = line2.vertices[0] + line2.vertices[1]
+        line2.rotate(
+            angle=90, about_point=Vec2D(line2_mid[0] / 2, line2_mid[1] / 2)
+        ).draw(turtle, size=2)
+
+    # Assert
+
+    actual_image = get_canvas_image(screen, 100, 100, True)
+
+    expected_image_file = Path("tests/component/lines/expected_rotated_lines.png")
+    expected_image = Image.open(expected_image_file)
+
+    assert_image_difference_within_tolerance(
+        actual=actual_image,
+        expected=expected_image,
+        tolerance_non_matching_pixels=0,
+        tolerance_adjacent_pixels=0,
+    )
