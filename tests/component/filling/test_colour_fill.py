@@ -12,7 +12,7 @@ from ...helpers import assert_image_difference_within_tolerance
 
 
 @pytest.mark.window_dimensions((100, 100))
-def test_star(setup_screen_with_squares_background):
+def test_colour_fill(setup_screen_with_squares_background):
     # Arrange
 
     turtle, screen = setup_screen_with_squares_background
