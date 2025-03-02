@@ -127,7 +127,7 @@ def parse_arguments():
         "--drawing",
         action="store",
         type=str,
-        default="draw",
+        default="stars_3bp",
         help="The name of the drawing to produce.",
     )
 

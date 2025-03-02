@@ -33,7 +33,7 @@ class DrawMixin(VerticesMixin):
         self,
         turtle: RawTurtle,
         colour: str = "black",
-        size: int | float | None = None,
+        size: int | None = None,
     ):
         """Set pensize and colour then draw polygon edges."""
 
@@ -41,7 +41,7 @@ class DrawMixin(VerticesMixin):
         original_pensize = turtle.pensize()
 
         turtle.pencolor(colour)
-        turtle.pensize(size)  # type: ignore
+        turtle.pensize(size)
 
         jump_to(turtle=turtle, position=self.vertices[self._jump_to_vertex_index])
 
