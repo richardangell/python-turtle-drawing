@@ -143,7 +143,7 @@ def run():
 
     turtle, screen, _ = setup_turtle_and_screen(
         window_dimensions=(args.screen_width, args.screen_height),
-        screen_dimensions=(args.screen_width, args.screen_height),
+        screen_dimensions=None,
     )
 
     if args.no_turtle:
@@ -167,6 +167,7 @@ def run():
             file=f"img {timestamp}.png",
             height=args.screen_height,
             width=args.screen_width,
+            page_width=True,
         )
 
     if args.exit_on_click:

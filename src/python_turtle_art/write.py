@@ -7,10 +7,7 @@ from .helpers.turtle import update_screen
 
 
 def save_turtle_screen(
-    screen: TurtleScreen,
-    file: str,
-    height: int,
-    width: int,
+    screen: TurtleScreen, file: str, height: int, width: int, page_width: bool = False
 ) -> None:
     """Save turtle screen to file.
 
@@ -22,12 +19,12 @@ def save_turtle_screen(
 
     """
 
-    img = get_canvas_image(screen, height, width)
+    img = get_canvas_image(screen, height, width, page_width)
     img.save(file)
 
 
 def get_canvas_image(
-    screen: TurtleScreen, height: int, width: int, page_width=False
+    screen: TurtleScreen, height: int, width: int, page_width: bool = False
 ) -> Image.Image:
     """Get image on canvas.
 
