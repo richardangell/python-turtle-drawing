@@ -7,7 +7,6 @@ from typing import Optional
 import numpy as np
 
 from ...helpers.rotation import rotate_about_point
-from ...helpers.turtle import update_screen
 from ...lines.offset_from_line import OffsetFromLine
 from ...polygons.kites.curved_kite import CurvedKite
 from .body import Limb
@@ -78,8 +77,6 @@ def draw_background_characters(turtle: Turtle, initial_seed: Optional[int] = Non
                 ).create()
 
                 random_pine_cone.draw(turtle)
-
-            update_screen()
 
 
 def draw_main_character(turtle: Turtle):

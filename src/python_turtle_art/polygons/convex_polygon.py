@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
-from turtle import Turtle, Vec2D
+from turtle import RawTurtle, Vec2D
 
 from ..vertices.vertices import DrawMixin, EqMixin, GetExtremeVerticesMixin, RotateMixin
 from .is_convex import is_convex
@@ -11,7 +11,7 @@ class BaseConvexFill(ABC):
     """Base class for fillers that operate on convex polygons only."""
 
     @abstractmethod
-    def fill(self, turtle: Turtle, polygon: ConvexPolygon):
+    def fill(self, turtle: RawTurtle, polygon: ConvexPolygon):
         """Fill."""
         raise NotImplementedError
 
@@ -41,7 +41,7 @@ class ConvexPolygon(DrawMixin, RotateMixin, GetExtremeVerticesMixin, EqMixin):
             raise ValueError("Polygon defined by supplied vertices are not convex.")
         self._vertices = vertices
 
-    def fill(self, turtle: Turtle, filler: BaseConvexFill):
+    def fill(self, turtle: RawTurtle, filler: BaseConvexFill):
         """Fill the polygon."""
 
         filler.fill(turtle=turtle, polygon=self)

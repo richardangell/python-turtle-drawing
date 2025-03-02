@@ -1,6 +1,8 @@
+import tkinter as tk
+import warnings
 from argparse import ArgumentParser, Namespace
 from datetime import datetime
-from turtle import Screen, Turtle, _Screen
+from turtle import RawTurtle, ScrolledCanvas, TurtleScreen
 
 from .drawings import draw_image_pine_cones, draw_image_stars_3bp
 from .helpers.turtle import turn_off_turtle_animation, update_screen
@@ -12,14 +14,58 @@ MODULE_DRAW_FUNCTION_MAPPING = {
 }
 
 
-def setup_turtle_and_screen(height: int, width: int) -> tuple[Turtle, _Screen]:
-    """Create Turtle and Screen objects."""
+def setup_turtle_and_screen(
+    window_dimensions: tuple[int, int],
+    screen_dimensions: tuple[int, int] | None,
+) -> tuple[RawTurtle, TurtleScreen, tk.Tk]:
+    """Create Turtle and Screen objects.
 
-    turtle_ = Turtle()
-    screen = Screen()
-    screen.screensize(height, width)
+    Also return the tk.Tk object passed into the canvas for the turtle screen. This
+    is so it can be used in tests to close the window after the image has been
+    extracted from the canvas.
 
-    return turtle_, screen
+    Args:
+        window_dimensions (tuple[int, int]): The width and height of the main window.
+            Values are passed to the turtle.setup() function.
+        screen_dimensions (tuple[int, int]): The width and height of the screen. Values
+            are passed to the Screen.screensize() function.
+
+    """
+    root = tk.Tk()
+
+    if screen_dimensions is None:
+        canvas = tk.Canvas(
+            root,
+            width=window_dimensions[0],
+            height=window_dimensions[1],
+            borderwidth=0,
+            highlightthickness=0,
+            insertwidth=0,
+            selectborderwidth=0,
+        )
+        canvas.pack()
+    else:
+        canvas = ScrolledCanvas(
+            root,
+            window_dimensions[0],
+            window_dimensions[1],
+            screen_dimensions[0],
+            screen_dimensions[1],
+        )
+        canvas.pack(expand=1, fill="both")
+        sw = 1400
+        sh = 900
+        startx = (sw - window_dimensions[0]) / 2
+        starty = (sh - window_dimensions[1]) / 2
+        root.geometry(
+            "%dx%d%+d%+d" % (window_dimensions[0], window_dimensions[1], startx, starty)
+        )
+
+    screen = TurtleScreen(canvas)
+
+    turtle_ = RawTurtle(screen)
+
+    return turtle_, screen, root
 
 
 class CommandLineArguments(Namespace):
@@ -59,18 +105,21 @@ def parse_arguments():
         action="store_true",
         help="Save image to png. File will be timestamped.",
     )
+
     parser.add_argument(
+        "-he",
         "--screen_height",
         action="store",
         type=int,
-        default=4000,
+        default=100,
         help="The screen height.",
     )
     parser.add_argument(
+        "-w",
         "--screen_width",
         action="store",
         type=int,
-        default=4000,
+        default=100,
         help="The screen width.",
     )
     parser.add_argument(
@@ -78,7 +127,7 @@ def parse_arguments():
         "--drawing",
         action="store",
         type=str,
-        default="pine_cones",
+        default="stars_3bp",
         help="The name of the drawing to produce.",
     )
 
@@ -90,30 +139,34 @@ def run():
 
     args = parse_arguments()
 
-    turtle_, screen = setup_turtle_and_screen(args.screen_height, args.screen_width)
+    turtle, screen, _ = setup_turtle_and_screen(
+        window_dimensions=(args.screen_width, args.screen_height),
+        screen_dimensions=None,
+    )
 
     if args.no_turtle:
-        turtle_.hideturtle()
+        turtle.hideturtle()
 
     if args.quick:
-        turn_off_turtle_animation()
+        turn_off_turtle_animation(screen)
 
     drawing_function = MODULE_DRAW_FUNCTION_MAPPING[args.drawing]
 
-    drawing_function(turtle=turtle_)
+    drawing_function(turtle=turtle)
 
     if args.quick:
-        update_screen()
+        update_screen(screen)
 
     if args.save_image:
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
         save_turtle_screen(
-            canvas=screen.getcanvas(),  # type: ignore
+            screen=screen,
             file=f"img {timestamp}.png",
             height=args.screen_height,
             width=args.screen_width,
+            page_width=True,
         )
 
     if args.exit_on_click:
-        screen.exitonclick()
+        warnings.warn("exit_on_click not implemented", stacklevel=1)
