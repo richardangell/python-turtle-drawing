@@ -3,11 +3,6 @@ from typing import Any, Generator
 
 import pytest
 
-from python_turtle_art.cli import setup_turtle_and_screen
-from python_turtle_art.filling import ColourFill
-from python_turtle_art.helpers.turtle import turn_off_turtle_animation
-from python_turtle_art.polygons.kites.convex_kite import ConvexKite
-
 
 @pytest.fixture
 def setup_screen_with_squares_background(
@@ -19,6 +14,11 @@ def setup_screen_with_squares_background(
     parametrized with a tuple of height and width ints.
 
     """
+    # Import not at the top of the script so that pytest_configure hook function
+    # from top level conftest.py can execute before the package is imported.
+    from python_turtle_art.cli import setup_turtle_and_screen
+    from python_turtle_art.helpers.turtle import turn_off_turtle_animation
+
     window_dimensions = request.node.get_closest_marker("window_dimensions").args[0]
 
     turtle, screen, root = setup_turtle_and_screen(
@@ -36,6 +36,10 @@ def setup_screen_with_squares_background(
 
 def draw_grey_squares_on_yellow_background(turtle: RawTurtle) -> None:
     """Draw four grey squares on a yellow background."""
+    # Import not at the top of the script so that pytest_configure hook function
+    # from top level conftest.py can execute before the package is imported.
+    from python_turtle_art.filling import ColourFill
+    from python_turtle_art.polygons.kites.convex_kite import ConvexKite
 
     background_square = ConvexKite(
         vertices=(Vec2D(-50, -50), Vec2D(50, -50), Vec2D(50, 50), Vec2D(-50, 50))

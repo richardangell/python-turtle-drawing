@@ -3,17 +3,21 @@ from typing import Any, Generator
 
 import pytest
 
-from python_turtle_art.cli import setup_turtle_and_screen
-
 
 @pytest.fixture
-def setup_screen(request) -> Generator[tuple[RawTurtle, TurtleScreen], Any, None]:
+def setup_screen(
+    request: pytest.FixtureRequest,
+) -> Generator[tuple[RawTurtle, TurtleScreen], Any, None]:
     """Set up turtle Screen and Turtle objects.
 
     Screen is set to the requested height and width. This fixture should be
     parametrized with a tuple of height and width ints.
 
     """
+    # Import not at the top of the script so that pytest_configure hook function
+    # from top level conftest.py can execute before the package is imported.
+    from python_turtle_art.cli import setup_turtle_and_screen
+
     window_dimensions_marker = request.node.get_closest_marker("window_dimensions")
     screen_dimensions_marker = request.node.get_closest_marker("screen_dimensions")
 
