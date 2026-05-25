@@ -1,6 +1,7 @@
 from turtle import RawTurtle
 
-from ...polygons.convex_polygon import BaseConvexFill, ConvexPolygon
+from ...polygons.convex_polygon import ConvexPolygon
+from ..base_convex_fill import BaseConvexFill
 from .stripes_calculation import get_filling_lines
 
 

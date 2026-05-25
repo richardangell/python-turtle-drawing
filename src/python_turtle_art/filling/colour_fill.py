@@ -1,15 +1,15 @@
 from turtle import RawTurtle
 
 from ..helpers.turtle import jump_to
-from ..polygons.convex_polygon import ConvexPolygon
-from ..polygons.polygon import BaseFill, Polygon
+from ..polygons.polygon import Polygon
+from .base_fill import BaseFill
 
 
 class ColourFill(BaseFill):
     def __init__(self, fill_colour="black"):
         self.fill_colour = fill_colour
 
-    def fill(self, turtle: RawTurtle, polygon: Polygon | ConvexPolygon):
+    def fill(self, turtle: RawTurtle, polygon: Polygon):
         original_fill_colour = turtle.fillcolor()
         turtle.fillcolor(self.fill_colour)
         turtle.begin_fill()
