@@ -36,7 +36,7 @@ def test_colour_fill(setup_screen_with_squares_background):
 
     star.draw(turtle, size=2)
 
-    star.fill(turtle, ColourFill("blue"))
+    ColourFill("blue").fill(turtle, star)
 
     # Assert
 

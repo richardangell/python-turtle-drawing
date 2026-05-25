@@ -30,7 +30,7 @@ def test_star(setup_screen_with_squares_background):
 
     hashed_fill = HashFill(gap=2, origin=1, size=1)
 
-    square.fill(turtle, hashed_fill)
+    hashed_fill.fill(turtle, square)
 
     # Assert
 

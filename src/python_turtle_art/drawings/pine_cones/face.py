@@ -146,7 +146,7 @@ class CurvedTriangleMouth(Mouth):
         mouth_polygon = Polygon(vertices=curve.vertices)
 
         if self.fill:
-            mouth_polygon.fill(turtle=turtle, filler=ColourFill(self.colour))
+            ColourFill(self.colour).fill(turtle=turtle, polygon=mouth_polygon)
 
         mouth_polygon.draw(
             turtle=turtle,

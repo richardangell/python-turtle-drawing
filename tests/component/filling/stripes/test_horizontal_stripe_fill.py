@@ -31,7 +31,7 @@ def test_star(setup_screen_with_squares_background):
 
     horizontal_stripes = HorizontalStipeFill(gap=2, origin=1, size=1)
 
-    triangle.fill(turtle, horizontal_stripes)
+    horizontal_stripes.fill(turtle, triangle)
 
     # Assert
 

@@ -19,7 +19,7 @@ def draw_background(turtle: RawTurtle) -> None:
     cross_fill = HashFill(gap=6, origin=0, size=4)
 
     kite.draw(turtle, size=5)
-    kite.fill(turtle, cross_fill)
+    cross_fill.fill(turtle, kite)
 
 
 def draw_circle_in_kite_centre(
@@ -49,9 +49,9 @@ def draw_image(turtle: RawTurtle):
     white_fill = ColourFill(fill_colour="white")
     cross_fill = HashFill(gap=6, origin=0, size=1)
 
-    kite.fill(turtle, white_fill)
+    white_fill.fill(turtle, kite)
     kite.draw(turtle, size=5)
-    kite.fill(turtle, cross_fill)
+    cross_fill.fill(turtle, kite)
 
     draw_circle_in_kite_centre(
         turtle=turtle,
@@ -73,9 +73,9 @@ def draw_image(turtle: RawTurtle):
         ),
     )
 
-    kite2.fill(turtle, white_fill)
+    white_fill.fill(turtle, kite2)
     kite2.draw(turtle, size=5)
-    kite2.fill(turtle, cross_fill)
+    cross_fill.fill(turtle, kite2)
 
     draw_circle_in_kite_centre(
         turtle=turtle,
@@ -97,9 +97,9 @@ def draw_image(turtle: RawTurtle):
         ),
     )
 
-    kite3.fill(turtle, white_fill)
+    white_fill.fill(turtle, kite3)
     kite3.draw(turtle, size=5)
-    kite3.fill(turtle, cross_fill)
+    cross_fill.fill(turtle, kite3)
 
     draw_circle_in_kite_centre(
         turtle=turtle,

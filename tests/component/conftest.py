@@ -41,7 +41,7 @@ def draw_grey_squares_on_yellow_background(turtle: RawTurtle) -> None:
         vertices=(Vec2D(-50, -50), Vec2D(50, -50), Vec2D(50, 50), Vec2D(-50, 50))
     )
     background_square.draw(turtle, size=1)
-    background_square.fill(turtle, ColourFill("yellow"))
+    ColourFill("yellow").fill(turtle, background_square)
 
     bottom_left_square = ConvexKite(
         vertices=(Vec2D(-49, -49), Vec2D(-2, -49), Vec2D(-2, -2), Vec2D(-49, -2))

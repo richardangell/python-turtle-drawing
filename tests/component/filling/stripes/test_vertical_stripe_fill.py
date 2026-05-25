@@ -36,7 +36,7 @@ def test_star(setup_screen_with_squares_background):
 
     vertical_stripes = VerticalStripeFill(gap=3, origin=1, size=1)
 
-    convex_curved_kite.fill(turtle, vertical_stripes)
+    vertical_stripes.fill(turtle, convex_curved_kite)
 
     # Assert
 
